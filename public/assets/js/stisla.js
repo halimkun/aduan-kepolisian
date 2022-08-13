@@ -15,6 +15,7 @@
       body: '',
       buttons: [],
       autoFocus: true,
+      removeOnDismiss: false,
       created: function() {},
       appended: function() {},
       onFormSubmit: function() {},
@@ -43,28 +44,28 @@
       }
 
       // Modal base template
-      var modal_template = '   <div class="modal'+ (options.animation == true ? ' fade' : '') +'" tabindex="-1" role="dialog" id="'+ id +'">  '  + 
-                 '     <div class="modal-dialog '+options.size+(options.center ? ' modal-dialog-centered' : '')+'" role="document">  '  + 
-                 '       <div class="modal-content">  '  + 
+      var modal_template = '   <div class="modal'+ (options.animation == true ? ' fade' : '') +'" tabindex="-1" role="dialog" id="'+ id +'">  '  +
+                 '     <div class="modal-dialog '+options.size+(options.center ? ' modal-dialog-centered' : '')+'" role="document">  '  +
+                 '       <div class="modal-content">  '  +
                  ((options.header == true) ?
-                 '         <div class="modal-header">  '  + 
-                 '           <h5 class="modal-title">'+ options.title +'</h5>  '  + 
+                 '         <div class="modal-header">  '  +
+                 '           <h5 class="modal-title">'+ options.title +'</h5>  '  +
                  ((options.closeButton == true) ?
-                 '           <button type="button" class="close" data-dismiss="modal" aria-label="Close">  '  + 
-                 '             <span aria-hidden="true">&times;</span>  '  + 
+                 '           <button type="button" class="close" data-dismiss="modal" aria-label="Close">  '  +
+                 '             <span aria-hidden="true">&times;</span>  '  +
                  '           </button>  '
-                 : '') + 
+                 : '') +
                  '         </div>  '
                  : '') +
-                 '         <div class="modal-body">  '  + 
+                 '         <div class="modal-body">  '  +
                  '         </div>  '  +
                  (options.buttons.length > 0 ?
-                 '         <div class="modal-footer">  '  + 
-                 '         </div>  '  
-                 : '')+ 
-                 '       </div>  '  + 
-                 '     </div>  '  + 
-                 '  </div>  ' ; 
+                 '         <div class="modal-footer">  '  +
+                 '         </div>  '
+                 : '')+
+                 '       </div>  '  +
+                 '     </div>  '  +
+                 '  </div>  ' ;
 
       // Convert modal to object
       var modal_template = $(modal_template);
@@ -95,7 +96,7 @@
 
       // add footer body class
       if(options.footerClass) $(modal_template).find('.modal-footer').addClass(options.footerClass);
-      
+
       // execute 'created' callback
       options.created.call(this, modal_template, options);
 
@@ -119,7 +120,7 @@
             if(typeof options.autoFocus == 'boolean')
               modal_form.find('input:eq(0)').focus(); // the first input element will be focused
             // if type of `autoFocus` option is `string` and `autoFocus` option is an HTML element
-            else if(typeof options.autoFocus == 'string' && modal_form.find(options.autoFocus).length) 
+            else if(typeof options.autoFocus == 'string' && modal_form.find(options.autoFocus).length)
               modal_form.find(options.autoFocus).focus(); // find elements and focus on that
           });
         }
@@ -153,8 +154,14 @@
       }
 
       $(document).on("click", '.' + trigger_class, function() {
-        $('#' + id).modal(options.modal);
-        
+        let modal = $('#' + id).modal(options.modal);
+
+        if(options.removeOnDismiss) {
+          modal.on('hidden.bs.modal', function() {
+            modal.remove();
+          });
+        }
+
         return false;
       });
     });
@@ -203,7 +210,7 @@
   $.cardProgressDismiss = function(card, dismissed) {
     var me = $(card);
     me.removeClass('card-progress');
-    me.find('.card-progress-dismiss').remove();   
+    me.find('.card-progress-dismiss').remove();
     if(dismissed)
       dismissed.call(this, me);
   }
@@ -256,5 +263,75 @@
       }, 100);
       chat.onShow.call(this, append_element);
   }
-})(jQuery, this, 0);
 
+  $("body").niceScroll();
+  $('.selectric').on("selectric-open",function (event, element, selectric) {
+    $(selectric.elements.itemsScroll).niceScroll();
+  })
+  $('.select2').on('select2:open', function (e) {
+    $('.select2-results__options').niceScroll();
+  });
+  // settings
+  setTheme();
+  $(".settings").click(function() {
+    if ($($(this).data('target')).hasClass('active')) {
+      $($(this).data('target')).removeClass('active');
+    } else {
+      $($(this).data('target')).addClass('active');
+    }
+  })
+  $('.settings-container').click(function(e) {
+    if (!$.inArray('settings-container',e.target.classList)) {
+      $(this).removeClass('active');
+    }
+  });
+
+  $('.btn-theme').click(function() {
+    var beforeTheme = sessionStorage.getItem('theme');
+    var theme = $(this).data('theme');
+    beforeTheme = beforeTheme ? beforeTheme : 'theme-primary';
+
+    $(this).closest('.grid').find('.settings-ring-active').removeClass('settings-ring-active');
+    $(this).addClass('settings-ring-active');
+
+    $('body').addClass(theme).removeClass(beforeTheme);
+
+    sessionStorage.setItem('theme',theme);
+  })
+  $('.btn-scheme').click(function(){
+    var schemebefore = sessionStorage.getItem('scheme');
+    var scheme = $(this).data('scheme');
+    $('body').removeClass(schemebefore).addClass(scheme);
+    $(this).closest('.grid').find('.settings-ring-active').removeClass('settings-ring-active');
+    $(this).addClass('settings-ring-active');
+    sessionStorage.setItem('scheme',scheme);
+    if ($('body').hasClass('dark')) {
+      $('body').find('.jqvmap-zoomin').parent().css('background-color','#0f172a');
+    }else{
+      $('body').find('.jqvmap-zoomin').parent().css('background-color','#ffffff');
+    }
+  });
+
+
+  function setTheme() {
+    $(document).ready(function () {
+      var theme = sessionStorage.getItem('theme');
+      var scheme = sessionStorage.getItem('scheme');
+      if (theme == null){
+        theme = 'theme-primary';
+        sessionStorage.setItem('theme',theme);
+      };
+      if (scheme == null){
+        scheme = 'light';
+        sessionStorage.setItem('scheme',scheme);
+      };
+      if (scheme == 'dark') {
+        $('body').find('.jqvmap-zoomin').parent().css('background-color','#0f172a');
+      }else{
+        $('body').find('.jqvmap-zoomin').parent().css('background-color','#ffffff');
+      }
+      $('body').addClass(`${theme} ${scheme}`);
+      $(`.btn-theme[data-theme="${theme}"],.btn-scheme[data-scheme="${scheme}"]`).addClass('settings-ring-active');
+    })
+  }
+})(jQuery, this, 0);
