@@ -322,7 +322,7 @@
         sessionStorage.setItem('theme',theme);
       };
       if (scheme == null){
-        scheme = 'light';
+        scheme = 'dark';
         sessionStorage.setItem('scheme',scheme);
       };
       if (scheme == 'dark') {
