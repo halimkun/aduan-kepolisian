@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>General Dashboard &mdash; Stisla</title>
+    <title><?= isset($title) ? $title : 'Sistem Pelaporan' ?></title>
 
     <!-- Top Script -->
     <?= $this->include('Components/top_script'); ?>

@@ -8,10 +8,10 @@
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
-            <li><a class="nav-link" href="<?= base_url('admin') ?>"><i class="fas fa-fire"></i> <span>User</span></a></li>
+            <li class="<?= makeActiveSidebar('dashboard') ?>"><a class="nav-link" href="<?= base_url('dashboard') ?>"><i class="fas fa-fire"></i> <span>User</span></a></li>
             
             <li class="menu-header">Pengguna</li>
-            <li><a class="nav-link" href="<?= base_url('admin/user') ?>"><i class="fas fa-users"></i> <span>User</span></a></li>
+            <li class="<?= makeActiveSidebar('user') ?>"><a class="nav-link" href="<?= base_url('user') ?>"><i class="fas fa-users"></i> <span>User</span></a></li>
 
             <li class="menu-header">Starter</li>
             <li class="dropdown">

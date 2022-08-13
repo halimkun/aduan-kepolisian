@@ -15,7 +15,7 @@
                             <i class="fas fa-circle text-primary"></i>
                             <b class="text-capitalize">Primary</b>
                         </div>
-                        <div class="btn btn-fill text-nowrap text-truncate rounded-pill py-2 btn-theme" data-theme='theme-secondary'>
+                        <!-- <div class="btn btn-fill text-nowrap text-truncate rounded-pill py-2 btn-theme" data-theme='theme-secondary'>
                             <i class="fas fa-circle text-secondary"></i>
                             <b class="text-capitalize">secondary</b>
                         </div>
@@ -38,7 +38,7 @@
                         <div class="btn btn-fill text-nowrap text-truncate rounded-pill py-2 btn-theme" data-theme='theme-darkbody'>
                             <i class="fas fa-circle text-dark"></i>
                             <b class="text-capitalize">dark</b>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="dropdown-divider my-4"></div>
                     <div class="text-dark font-weight-bold text-uppercase settings-title">SCHEME</div>
