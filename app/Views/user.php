@@ -16,30 +16,48 @@
                 </div>
             </div>
             <div class="card-body">
+                <?= $this->include('Components/flash_message'); ?>
                 <div class="table-responsive">
                     <table class="table" id="tableUser">
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Groups</th>
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>Username</th>
-                                <th></th>
+                                <th><i class="fa fa-cogs"></i></th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <?php $i = 1 ?>
+                            <?php foreach ($users as $user) : ?>
+                                <?php $roles = $user->getRoles() ?>
+                                <tr>
+                                    <td><?= $i++ ?></td>
+                                    <td><?= end($roles) ?></td>
+                                    <td><?= $user->nama ?></td>
+                                    <td><?= $user->email ?></td>
+                                    <td><?= $user->username ?></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info shadow-sm" title="edit user">
+                                            <i class="fa fa-pen"></i>
+                                        </button>
+
+                                        <button class="btn btn-sm btn-warning shadow-sm" title="ubah password user">
+                                            <i class="fa fa-key"></i>
+                                        </button>
+
+                                        <?php if (!in_array('admin', $roles)) : ?>
+                                            <button class="btn btn-sm btn-danger shadow-sm" title="hapus data user" data-confirm="Woops...|Apakah anda yakin akan menghapus data <b><?= $user->nama ?></b>" data-confirm-yes="$.ajax({ url: '/user/delete/<?= $user->id ?>', type: 'DELETE', data: {'id' : <?= $user->id ?>}, success: function(result) { window.location.href='/admin/user'; } });">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        <?php endif ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
                     </table>
-                    <tbody>
-                        <?= $i = 1 ?>
-                        <?php foreach ($users as $user) : ?>
-                            <tr>
-                                <td><?= $i++ ?></td>
-                                <td><?= $user->name ?></td>
-                                <td><?= $user->email ?></td>
-                                <td><?= $user->username ?></td>
-                                <td></td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
                 </div>
             </div>
         </div>
@@ -133,7 +151,7 @@
     $(document).ready(function() {
         $('#tableUser').DataTable({
             'columnDefs': [{
-                targets: [0, 4],
+                targets: [0, 5],
                 sortable: false
             }]
         });
