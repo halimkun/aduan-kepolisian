@@ -23,4 +23,9 @@ class User extends BaseController
 
         return view('user/home', $data);
     }
+
+    public function store()
+    {
+        dd($this->request->getPost());
+    }
 }
