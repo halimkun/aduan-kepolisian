@@ -2,7 +2,12 @@
 <?= $this->section('content'); ?>
 <section class="section user-page">
     <div class="section-header">
-        <h1>Pengguna dan Jabatan</h1>
+        <h1>Pengguna</h1>
+        <div class="section-header-breadcrumb">
+            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalUserInfo">
+                <i class="fa fa-info-circle"></i>
+            </button>
+        </div>
     </div>
     <div class="section-body">
         <div class="card shadow-sm rounded">
@@ -35,12 +40,12 @@
                                 <?php $roles = $user->getRoles() ?>
                                 <tr>
                                     <td><?= $i++ ?></td>
-                                    <td><?= end($roles) ?></td>
+                                    <td><?= badgeGen(end($roles)) ?></td>
                                     <td><?= $user->nama ?></td>
-                                    <td><?= $user->email ?></td>
+                                    <td><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
                                     <td><?= $user->username ?></td>
                                     <td>
-                                        <button class="btn btn-sm btn-info shadow-sm" title="edit user">
+                                        <button class="btn btn-sm btn-info shadow-sm btn-edit" title="edit user" data-user="<?= $user->id ?>" data-toggle="modal" data-target="#editPengguna">
                                             <i class="fa fa-pen"></i>
                                         </button>
 
@@ -64,71 +69,36 @@
     </div>
 </section>
 
-<!-- Modal Tambah Pengguna -->
-<div class="modal fade" tabindex="-1" role="dialog" id="tambahPengguna">
-    <div class="modal-dialog modal-lg" role="document">
+<?= $this->include('Components/modal/tambah_user'); ?>
+<?= $this->include('Components/modal/edit_user'); ?>
+
+<!-- bootstrap modal modalUserInfo -->
+<div class="modal fade" id="modalUserInfo" tabindex="-1" role="dialog" aria-labelledby="modalUserInfoTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Data Pengguna</h5>
+                <h5 class="modal-title" id="modalUserInfoTitle">Perhatian !</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <strong>Perhatian!</strong>
-                    <p>
-                        Setiap pengguna baru akan dimasukan dalam groups <strong class="text-dark">pengguna</strong>, anda bisa merubah group setelah berhasil menambahkan pengguna.
-                    </p>
-                </div>
-                <form action="/user/store" method="post" autocomplete="off"> <?= csrf_field() ?>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nama" class="form-label">Nama Lengkap</label>
-                                <input type="text" name="nama" id="nama" placeholder="nama lengkap pengguna" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                                <select name="jenis_kelamin" id="jenis_kelamin" class="custom-select">
-                                    <option value="-"> -- PILIH -- </option>
-                                    <option value="laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="tglLahir" class="form-label">Tanggal Lahir</label>
-                                <input type="date" name="tglLahir" id="tglLahir" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="pekerjaan" class="form-label">Pekerjaan</label>
-                                <input type="text" name="pekerjaan" id="pekerjaan" placeholder="Pekerjaan" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" name="username" id="username" placeholder="username pengguna" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" id="email" placeholder="email pengguna" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="alamat" class="form-label">Alamat</label>
-                                <textarea name="alamat" id="alamat" class="form-control" style="height: 136px;"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="float-right">
-                        <button type="submit" class="btn btn-primary shadow-sm">SIMPAN</button>
-                    </div>
-                </form>
+                <ul>
+                    <li>
+                        <kbd>Username</kbd> Pengguna ataupun admin tidak dapat dirubah.
+                    </li>
+                    <li>
+                        <kbd>Password Default</kbd> user adalah tanggal lahir dengan format (ddmmyyyy), contoh <code>05121998</code>
+                    </li>
+                    <li>
+                        Reset Password user akan mengembalikannya ke format default (lihat point sebelumnnya).
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
+
 <?= $this->endSection(); ?>
 
 <?= $this->section('topLibrary'); ?>
@@ -155,6 +125,32 @@
                 sortable: false
             }]
         });
+
+        $(".btn-edit").each(function() {
+            $(this).on("click", function() {
+                // get data using ajax and append to input
+                $.ajax({
+                    url: '/user/getById/' + $(this).data('user'),
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == 'success') {
+                            $('#editPengguna #user_detail').val(result.data.id);
+                            $('#editPengguna #nama').val(result.data.nama);
+                            $('#editPengguna #tglLahir').val(result.data.tanggal_lahir);
+                            $('#editPengguna #pekerjaan').val(result.data.pekerjaan);
+                            $('#editPengguna #username').val(result.data.username);
+                            $('#editPengguna #email').val(result.data.email);
+                            $('#editPengguna #alamat').val(result.data.alamat);
+                            $('#editPengguna #jenis_kelamin').val(result.data.jenis_kelamin)
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                });
+            });
+        });
+
     });
 </script>
 <?= $this->endSection(); ?>

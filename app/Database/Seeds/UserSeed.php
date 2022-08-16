@@ -21,7 +21,7 @@ class UserSeed extends Seeder
             'username'      => 'admin',
             'password'      => 'admin',
             'nama'          => 'Nama Admin',
-            'jenis_kelamin' => 'Laki-laki',
+            'jenis_kelamin' => 'laki-laki',
             'tanggal_lahir' => '1990-01-01',
             'pekerjaan'     => 'Pengusaha',
             'alamat'        => 'Alamat Admin',

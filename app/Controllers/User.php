@@ -21,10 +21,14 @@ class User extends BaseController
         return redirect()->to(base_url('/admin/user'));
     }
 
-    // public function getById($id)
-    // {
-    //     return
-    // }
+    public function getById($id)
+    {
+        if ($this->user->find($id) !== null) {
+            return $this->response->setJSON([ 'status' => 'success','data' => $this->user->find($id)]);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'User not found']);
+        }
+    }
 
     public function store()
     {
@@ -54,10 +58,11 @@ class User extends BaseController
         }
     }
 
-    public function update($id)
+    public function update()
     {
-        if ($this->request->getMethod() == 'patch') {
+        if ($this->request->getMethod() == 'post') {
             $data = [
+                'id' => $this->request->getPost('user_detail'),
                 'nama' => $this->request->getPost('nama'),
                 'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
                 'tanggal_lahir' => $this->request->getPost('tglLahir'),
@@ -66,7 +71,7 @@ class User extends BaseController
                 'email' => $this->request->getPost('email'),
             ];
 
-            if ($this->user->update($id, $data)) {
+            if ($this->user->save($data)) {
                 session()->setFlashdata('success', 'Data berhasil diupdate');
                 return redirect()->to(base_url('user'));
             } else {
