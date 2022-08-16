@@ -25,6 +25,13 @@ class Admin extends BaseController
         ]);
     }
 
+    public function aduan()
+    {
+        return view('aduan', [
+            'segments' => $this->request->uri->getSegments(),
+        ]);
+    }
+
     public function user()
     {
         $data = [
