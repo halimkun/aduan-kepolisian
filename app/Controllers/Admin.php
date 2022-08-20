@@ -29,6 +29,7 @@ class Admin extends BaseController
     {
         return view('aduan', [
             'segments' => $this->request->uri->getSegments(),
+            'users' => $this->user->findAll()
         ]);
     }
 
@@ -41,5 +42,23 @@ class Admin extends BaseController
         ];
 
         return view('user', $data);
+    }
+
+    // get all user
+    public function user_show()
+    {
+        return $this->response->setJSON(
+            $this->user->select(
+                [
+                    'nama',
+                    'username',
+                    'email',
+                    'jenis_kelamin',
+                    'pekerjaan',
+                    'alamat',
+                    'tanggal_lahir'
+                ]
+            )->findAll()
+        );
     }
 }

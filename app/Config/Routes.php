@@ -37,6 +37,8 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->delete('/user/delete/(:num)', 'User::delete/$1');
 
+$routes->resource('aduan');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
