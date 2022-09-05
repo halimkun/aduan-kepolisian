@@ -49,7 +49,7 @@
                                             <i class="fa fa-pen"></i>
                                         </button>
 
-                                        <button class="btn btn-sm btn-warning shadow-sm" title="ubah password user">
+                                        <button class="btn btn-sm btn-warning shadow-sm btn-edit-p" data-nama="<?= $user->nama ?>" data-user="<?= $user->id ?>" data-tgl="<?=$user->tanggal_lahir?>" data-toggle="modal" data-target="#ubahPassword" title="ubah password user">
                                             <i class="fa fa-key"></i>
                                         </button>
 
@@ -71,6 +71,7 @@
 
 <?= $this->include('Components/modal/tambah_user'); ?>
 <?= $this->include('Components/modal/edit_user'); ?>
+<?= $this->include('Components/modal/ubah_password'); ?>
 
 <!-- bootstrap modal modalUserInfo -->
 <div class="modal fade" id="modalUserInfo" tabindex="-1" role="dialog" aria-labelledby="modalUserInfoTitle" aria-hidden="true">
@@ -126,14 +127,30 @@
             }]
         });
 
+        $('.btn-edit-p').each(function() {
+            $(this).on('click', function() {
+                let tgl = $(this).data('tgl');
+                let nama = $(this).data('nama');
+                let user = $(this).data('user');
+
+                fd = tgl.split('-');
+                $('#ubahPassword #ud').val(user);
+                $('#ubahPassword #np').val(fd[2] + fd[1] + fd[0]);
+                $('#ubahPassword #namaUser').append(nama);
+            });
+        });
+
         $(".btn-edit").each(function() {
             $(this).on("click", function() {
-                // get data using ajax and append to input
                 $.ajax({
-                    url: '/user/getById/' + $(this).data('user'),
-                    type: 'GET',
+                    url: '<?= base_url('user/getById') ?>',
+                    type: 'POST',
+                    data: {
+                        id: $(this).data('user'),
+                    },
                     dataType: 'json',
                     success: function(result) {
+                        console.log(result);
                         if (result.status == 'success') {
                             $('#editPengguna #user_detail').val(result.data.id);
                             $('#editPengguna #nama').val(result.data.nama);
