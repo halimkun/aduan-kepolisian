@@ -12,7 +12,10 @@
                 <form action="/aduan/create" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <h6 class="font-weight-bold">Data Pelapor</h6>
-                        <div class="dropdown-divider mb-3 text-primary bg-primary"></div>
+                        <div class="dropdown-divider"></div>
+                        <div class="progress load_user_input my-3" style="display:none;">
+                            <div class="progress-bar-animated progress-bar-striped bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -47,7 +50,7 @@
                     </div>
                     <div class="mb-3">
                         <h6 class="font-weight-bold">Detail Aduan</h6>
-                        <div class="dropdown-divider mb-3 text-primary bg-primary"></div>
+                        <div class="dropdown-divider"></div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

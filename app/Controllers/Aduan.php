@@ -48,4 +48,21 @@ class Aduan extends BaseController
             return redirect()->to(base_url('admin/aduan'));
         }
     }
+
+    public function getById()
+    {
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to(base_url('/admin/aduan'));
+        } else {
+            $id = $this->request->getVar('id');
+
+            if ($this->aduan->find($id) !== null) {
+                return $this->response->setJSON([ 'status' => 'success','data' => $this->aduan->select([
+                    'nomor', 'status', 'tanggal', 'jenis', 'judul', 'lokasi', 'keterangan', 'foto'
+                ])->find($id)]);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Data not found']);
+            }
+        }
+    }
 }
