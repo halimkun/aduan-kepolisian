@@ -3,12 +3,10 @@
 <section class="section">
     <div class="section-header">
         <h1>Aduan</h1>
-        <!-- <div class="section-header-breadcrumb">
-            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalAduanInfo">
-                <i class="fa fa-info-circle"></i>
-            </button>
-        </div> -->
     </div>
+
+    <?= $this->include('Components/flash_message'); ?>
+
     <div class="section-body">
         <div class="card shadow rounded">
             <div class="card-header">
@@ -60,9 +58,29 @@
 <script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
 
 <script>
-    // ready
     $(document).ready(function() {
         $('#tableAduan').DataTable();
+        $('.user_select').on('change', function() {
+            var id = $(this).val();
+            $.ajax({
+                url: '<?= base_url('user/getById') ?>',
+                type: 'POST',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status == 'success') {
+                        $("#tambahAduan #pekerjaan").val(res.data.pekerjaan);
+                        $("#tambahAduan #jenis_kelamin").val(res.data.jenis_kelamin);
+                        $("#tambahAduan #tanggal_lahir").val(res.data.tanggal_lahir);
+                        $("#tambahAduan #alamat").val(res.data.alamat);
+                    } else {
+                        alert('Gagal mengambil data user');
+                    }
+                }
+            });
+        });
     });
 </script>
 <?= $this->endSection(); ?>

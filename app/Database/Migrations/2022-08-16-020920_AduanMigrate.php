@@ -39,6 +39,9 @@ class AduanMigrate extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'lokasi' => [
+                'type' => 'TEXT',
+            ],
             'keterangan' => [
                 'type' => 'TEXT',
             ],

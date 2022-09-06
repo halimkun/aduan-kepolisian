@@ -14,7 +14,9 @@ class AduanModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'user_id', 'nomor', 'status', 'jenis', 'judul', 'keterangan', 'foto', 'tanggal'
+        'user_id', 'nomor', 'status', 'tanggal',
+        'jenis', 'judul', 'lokasi', 'keterangan',
+        'foto'
     ];
 
     // Dates
