@@ -6,11 +6,13 @@ use App\Controllers\BaseController;
 
 class Admin extends BaseController
 {
-    protected $user;
+    protected $userModel;
+    protected $aduanModel;
 
     public function __construct()
     {
-        $this->user = new \App\Models\UserModel();
+        $this->userModel = new \App\Models\UserModel();
+        $this->aduanModel = new \App\Models\AduanModel();
     }
 
     public function index()
@@ -29,7 +31,8 @@ class Admin extends BaseController
     {
         return view('aduan', [
             'segments' => $this->request->uri->getSegments(),
-            'users' => $this->user->findAll()
+            'users' => $this->userModel->findAll(),
+            'aduan' => $this->aduanModel->findAll()
         ]);
     }
 
@@ -38,25 +41,20 @@ class Admin extends BaseController
         $data = [
             'title' => 'User',
             'segments' => $this->request->uri->getSegments(),
-            'users' => $this->user->findAll(),
+            'users' => $this->userModel->findAll(),
         ];
 
         return view('user', $data);
     }
 
-    // get all user
     public function user_show()
     {
         return $this->response->setJSON(
-            $this->user->select(
+            $this->userModel->select(
                 [
-                    'nama',
-                    'username',
-                    'email',
-                    'jenis_kelamin',
-                    'pekerjaan',
-                    'alamat',
-                    'tanggal_lahir'
+                    'nama','username','email',
+                    'jenis_kelamin','pekerjaan',
+                    'alamat','tanggal_lahir'
                 ]
             )->findAll()
         );

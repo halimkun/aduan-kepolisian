@@ -21,12 +21,20 @@ class User extends BaseController
         return redirect()->to(base_url('/admin/user'));
     }
 
-    public function getById($id)
+    public function getById()
     {
-        if ($this->user->find($id) !== null) {
-            return $this->response->setJSON([ 'status' => 'success','data' => $this->user->find($id)]);
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to(base_url('/admin/user'));
         } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'User not found']);
+            $id = $this->request->getVar('id');
+
+            if ($this->user->find($id) !== null) {
+                return $this->response->setJSON([ 'status' => 'success','data' => $this->user->select([
+                    'jenis_kelamin', 'tanggal_lahir', 'pekerjaan', 'alamat', 'username', 'email', 'nama', 'id'
+                ])->find($id)]);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'User not found']);
+            }
         }
     }
 
@@ -70,6 +78,25 @@ class User extends BaseController
                 'alamat' => $this->request->getPost('alamat'),
                 'email' => $this->request->getPost('email'),
             ];
+
+            if ($this->user->save($data)) {
+                session()->setFlashdata('success', 'Data berhasil diupdate');
+                return redirect()->to(base_url('user'));
+            } else {
+                session()->setFlashdata('error', 'Data gagal diupdate');
+                return redirect()->to(base_url('user'));
+            }
+        } else {
+            return redirect()->to(base_url('/admin/user'));
+        }
+    }
+
+    public function updatePass() {
+        if ($this->request->getMethod() == 'post') {
+            $data = new EntitiesUser([
+                'id' => $this->request->getPost('user_detail'),
+                'password' => $this->request->getPost('np'),
+            ]);
 
             if ($this->user->save($data)) {
                 session()->setFlashdata('success', 'Data berhasil diupdate');
