@@ -32,7 +32,8 @@ class Admin extends BaseController
         return view('aduan', [
             'segments' => $this->request->uri->getSegments(),
             'users' => $this->userModel->findAll(),
-            'aduan' => $this->aduanModel->findAll()
+            'aduan' => $this->aduanModel->findAll(),
+            'agent' => $this->request->getUserAgent()
         ]);
     }
 

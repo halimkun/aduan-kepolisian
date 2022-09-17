@@ -30,9 +30,9 @@ class Aduan extends BaseController
 
         $data = [
             'user_id' => $this->request->getPost('users'),
-            'nomor' => rand(100000, 999999),
-            'status' => 'pending',
-            'tanggal'=> $this->request->getPost('tanggal_kejadian'),
+            'nomor' => rand(10000000, 99999999),
+            'status' => 'belum diproses',
+            'tanggal' => $this->request->getPost('tanggal_kejadian'),
             'jenis' => $this->request->getPost('jenis_aduan'),
             'judul' => $this->request->getPost('judul'),
             'lokasi' => $this->request->getPost('lokasi'),
@@ -49,6 +49,25 @@ class Aduan extends BaseController
         }
     }
 
+    public function update_stts()
+    {
+        // method is not post
+        if($this->request->getMethod() == 'post') {
+            if ($this->aduan->save([
+                'id' => $this->request->getPost('data'),
+                'status' => $this->request->getPost('status'),
+            ])) {
+                session()->setFlashdata('success', 'Status aduan berhasil diubah');
+                return redirect()->to(base_url('admin/aduan'));
+            } else {
+                session()->setFlashdata('error', 'Status aduan gagal diubah, nampaknya ada yang salah.');
+                return redirect()->to(base_url('admin/aduan'));
+            }
+        } else {
+            return redirect()->to(base_url('admin/aduan'));
+        }
+    }
+
     public function getById()
     {
         if ($this->request->getMethod() !== 'post') {
@@ -57,7 +76,7 @@ class Aduan extends BaseController
             $id = $this->request->getVar('id');
 
             if ($this->aduan->find($id) !== null) {
-                return $this->response->setJSON([ 'status' => 'success','data' => $this->aduan->select([
+                return $this->response->setJSON(['status' => 'success', 'data' => $this->aduan->select([
                     'nomor', 'status', 'tanggal', 'jenis', 'judul', 'lokasi', 'keterangan', 'foto'
                 ])->find($id)]);
             } else {

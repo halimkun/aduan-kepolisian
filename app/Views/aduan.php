@@ -3,6 +3,11 @@
 <section class="section">
     <div class="section-header">
         <h1>Aduan</h1>
+        <div class="section-header-breadcrumb">
+            <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modalAduanInfo">
+                <i class="fa fa-info-circle"></i>
+            </button>
+        </div>
     </div>
 
     <?= $this->include('Components/flash_message'); ?>
@@ -18,37 +23,86 @@
                 </div>
             </div>
             <div class="card-body">
+                <?php if ($agent->isMobile()) : ?>
+                    <div class="text-right">
+                        <button class="btn btn-primary btn-sm mb-3 shadow-sm" type="button" data-toggle="collapse" data-target="#colFilter" aria-expanded="false" aria-controls="colFilter">
+                            <i class="fa fa-filter mr-2"></i>Filter
+                        </button>
+                    </div>
+                <?php endif ?>
+
+                <div class="row <?= $agent->isMobile() ? 'collapse' : '' ?>" <?php if ($agent->isMobile()) : ?> id="colFilter" <?php endif; ?>>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="filterSearch">Search</label>
+                            <input type="text" name="filterSearch" class="form-control" placeholder="input keywords" id="filterSearch">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="filterStatus">Status</label>
+                            <select name="filterStatus" id="filterStatus" class="form-control">
+                                <option value="">Semua Status</option>
+                                <option value="belum diproses">Belum Diproses</option>
+                                <option value="dalam proses">Dalam Proses</option>
+                                <option value="selesai">Selesai</option>
+                                <option value="dibatalkan">Dibatalkan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="filterJenis">Jenis</label>
+                            <select class="form-control" id="filterJenis">
+                                <option value="">Semua Jenis Aduan</option>
+                                <option value="kehilangan">Kehilangan</option>
+                                <option value="pencurian">Pencurian</option>
+                                <option value="kejadian">Kejadian</option>
+                                <option value="kecelakaan">Kecelakaan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="filterTgl">Tanggal</label>
+                            <input type="date" name="filterTgl" id="filterTgl" class="form-control" placeholder="Pilih Tanggal">
+                        </div>
+                    </div>
+                </div>
+
                 <table class="table table-hover" id="tableAduan">
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th></th>
-                            <th>Pelapor</th>
-                            <th>Nomor Aduan</th>
+                            <th>Nomor</th>
+                            <th><span class="sr-only">Status</span></th>
+                            <th>Oleh</th>
+                            <th>Tanggal</th>
+                            <th>Jenis</th>
                             <th>Aduan</th>
+                            <th>Lokasi</th>
                             <th>Keterangan</th>
                             <th><i class="fa fa-cog"></i></th>
-                            <th class="d-none"></th>
-                            <th class="d-none"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $i = 1 ?>
                         <?php foreach ($aduan as $item) : ?>
-                            <tr>
+                            <tr data-u="<?= $item->user_id ?>" data-i="<?= $item->id ?>">
                                 <td id="row_nomor"><?= $i++ ?></td>
-                                <td id="row_status"><?= badgeStatusGen($item->status) ?></td>
+                                <td id="row_nomor_aduan"><kbd><?= $item->nomor ?></kbd></td>
+                                <td id="row_status" data-dt='<?= $item->id ?>' data-stts='<?= $item->status ?>'><?= badgeStatusGen($item->status) ?></td>
                                 <td id="row_pelapor"><?= getUserName($item->user_id) ?></td>
-                                <td id="row_nomor"><kbd><?= $item->nomor ?></kbd></td>
+                                <td id="row_tanggal"><abbr title="Tanggal Kejadian"><?= $item->tanggal ?></abbr></td>
+                                <td id="row_jenis"><b><u><?= $item->jenis ?></u></b></td>
                                 <td id="row_judul"><?= $item->judul ?></td>
+                                <td id="row_lokasi"><?= $item->lokasi ?></td>
                                 <td id="row_keterangan"><?= $item->keterangan ?></td>
-                                <td>
+                                <td id="row_action">
                                     <button class="btn btn-update-status btn-sm btn-icon btn-primary shadow-sm" data-item="<?= $item->id ?>" title="Update Status Aduan">
                                         <i class="fas fa-tag"></i>
                                     </button>
                                 </td>
-                                <td class="d-none"><?= $item->user_id ?></td>
-                                <td class="d-none"><?= $item->id ?></td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
@@ -58,7 +112,32 @@
     </div>
 </section>
 
-
+<!-- bootstrap modal modalAduanInfo -->
+<div class="modal fade" id="modalAduanInfo" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modalAduanInfoTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAduanInfoTitle">Perhatian !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li class="font-weight-bold">
+                        Aduan tidak dapat <span class="text-danger">dihapus</span>.
+                    </li>
+                    <li class="font-weight-bold">
+                        Aduan hanya bisa <span class="text-info">diubah statusnya saja</span>.
+                    </li>
+                    <li class="font-weight-bold">
+                        Bila ada informasi yang perlu diubah, bisa dilakukan pembatalan dan menambahkan keterangan dibatalkan.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->endSection(); ?>
 
 <?= $this->section('topLibrary'); ?>
@@ -76,6 +155,7 @@
 
 <?= $this->include('/Components/modal/tambah_aduan'); ?>
 <?= $this->include('/Components/modal/detail_aduan'); ?>
+<?= $this->include('/Components/modal/edit_status'); ?>
 
 <!-- JS Libraies -->
 <script src="<?= base_url('assets/modules/select2/dist/js/select2.full.min.js') ?>"></script>
@@ -85,61 +165,127 @@
 
 <script>
     $(document).ready(function() {
-        var table = $('#tableAduan').DataTable();
-        const modalDetail = $("#detailAduan");
-        async function getAduanData(a){return await $.ajax({url:"<?= base_url('/aduan/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}async function getUserData(a){return await $.ajax({url:"<?= base_url('/user/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}
-
-        $('#tableAduan tbody').on('click', 'tr td#row_nomor, tr td#row_status, tr td#row_pelapor, tr td#row_nomor, tr td#row_judul, tr td#row_keterangan', function() {
-            modalDetail.modal('toggle')
-            $(".load_data_detail").show();
-            modalDetail.find(".dLaporan").empty(); modalDetail.find(".dPelapor").empty(); modalDetail.find(".judulLaporan").empty()
-            
-            setTimeout(async () => {
-                var data = table.row(this).data();
-                const user = await getUserData(data[7]);
-                const res = await getAduanData(data[8]);
-
-                modalDetail.find(".judulLaporan").append(data[4] + " ( " + data[3] + " ) ");
-
-                const detailPelapor = `
-                    <div class="mb-3"> <h5>Detail Pelapor</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nama</b></td><td style="width:30px;">:</td><td>${user.data.nama}</td></tr><tr> <td style="width:40%;"><b>Tanggal Lahir</b></td><td style="width:30px;">:</td><td>${user.data.tanggal_lahir}</td></tr><tr> <td style="width:40%;"><b>Pekerjaan</b></td><td style="width:30px;">:</td><td>${user.data.pekerjaan}</td></tr></table> </div>
-                `;
-                const detailLaporan = `
-                    <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${res.data.nomor}</td></tr><tr> <td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${res.data.status}</td></tr><tr> <td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${res.data.tanggal}</td></tr><tr> <td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${res.data.jenis}</td></tr><tr> <td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${res.data.judul}</td></tr><tr> <td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${res.data.lokasi}</td></tr><tr> <td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${res.data.keterangan}</td></tr></table> </div>
-                `;
-                
-                modalDetail.find(".dLaporan").append(detailLaporan);
-                modalDetail.find(".dPelapor").append(detailPelapor);
-
-                $(".load_data_detail").hide();
-            }, 1000);
+        /** data table initialize */
+        var table = $("#tableAduan").DataTable({
+            responsive: true,
+            dom: "Brtp",
+            buttons: [{
+                extend: "copy",
+                text: "Copy",
+                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5]
+                }
+            }, {
+                extend: "excel",
+                text: "Excel",
+                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5]
+                }
+            }, {
+                extend: "print",
+                text: "Print",
+                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5]
+                }
+            }]
         });
 
-        $('.user_select').on('change', async function() {
-            var id = $(this).val();
-            $(".load_user_input").show();
-            if (id == '-') {
-                $("#tambahAduan #pekerjaan").val('');
-                $("#tambahAduan #jenis_kelamin").val('');
-                $("#tambahAduan #tanggal_lahir").val('');
-                $("#tambahAduan #alamat").val('');
-                $(".load_user_input").hide();
-            } else {
-                const user = await getUserData(id);
-                setTimeout(() => {
-                    if (user.status == 'success') {
-                        $("#tambahAduan #pekerjaan").val(user.data.pekerjaan);
-                        $("#tambahAduan #jenis_kelamin").val(user.data.jenis_kelamin);
-                        $("#tambahAduan #tanggal_lahir").val(user.data.tanggal_lahir);
-                        $("#tambahAduan #alamat").val(user.data.alamat);
-                    } else {
-                        alert('Gagal mengambil data user');
-                    }
-                    $(".load_user_input").hide();
-                }, 1000);
+        $("#filterSearch").on("keyup", function() {
+            table.search(this.value).draw();
+        });
+
+        $("#filterStatus").on("change", (function() {
+            table.column(2).search(this.value).draw()
+        }));
+
+        $("#filterTgl").on("change", (function() {
+            table.column(4).search(this.value).draw()
+        }));
+
+        $("#filterJenis").on("change", (function() {
+            table.column(5).search(this.value).draw()
+        }));
+
+        $('#tableAduan_filter.dataTables_filter [type=search]').removeClass('form-control-sm')
+
+        /** get data aduan dan user */
+        async function getAduanData(a) {
+            return await $.ajax({
+                url: "<?= base_url('/aduan/getById') ?>",
+                type: "POST",
+                data: {
+                    id: a
+                },
+                dataType: "JSON"
+            })
+        }
+        async function getUserData(a) {
+            return await $.ajax({
+                url: "<?= base_url('/user/getById') ?>",
+                type: "POST",
+                data: {
+                    id: a
+                },
+                dataType: "JSON"
+            })
+        }
+
+        /** hanle create */
+        $(".user_select").on("change", (async function() {
+            var a = $(this).val();
+            if ($(".load_user_input").show(), "-" == a) $("#tambahAduan #pekerjaan").val(""), $("#tambahAduan #jenis_kelamin").val(""), $("#tambahAduan #tanggal_lahir").val(""), $("#tambahAduan #alamat").val(""), $(".load_user_input").hide();
+            else {
+                const t = await getUserData(a);
+                setTimeout((() => {
+                    "success" == t.status ? ($("#tambahAduan #pekerjaan").val(t.data.pekerjaan), $("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin), $("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir), $("#tambahAduan #alamat").val(t.data.alamat)) : alert("Gagal mengambil data user"), $(".load_user_input").hide()
+                }), 1e3)
             }
-        });
+        }));
 
+        /** handle update status */
+        $("#tableAduan tbody").on("click", "tr td#row_action", (function() {
+            const t = $("#ubahStatusAduan");
+            var a = table.row(this).data(),
+                n = $(this).parent().find("td#row_status").data("stts"),
+                d = $(this).parent().find("td#row_status").data("dt");
+            t.find("#una").empty().append(a[1]), t.find("#status").val(n), t.find("#data").val(d), t.modal("toggle")
+        }));
+
+        // !TODO fix detail aduan
+        <?php if (!$agent->isMobile()) : ?>
+            const modalDetail = $("#detailAduan");
+            $('#tableAduan tbody').on('click', 'tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan', function() {
+                modalDetail.modal('toggle');
+                modalDetail.find(".dLaporan").empty();
+                modalDetail.find(".dPelapor").empty();
+                modalDetail.find(".judulLaporan").empty()
+                $(".load_data_detail").show();
+
+                setTimeout(async () => {
+                    var data = table.row(this).data();
+                    const o = await getUserData($(this).parent().data('u'));
+                    const i = await getAduanData($(this).parent().data('i'));
+                    
+                    modalDetail.find(".judulLaporan").empty().append(i.data.judul + " ( " + i.data.nomor + " ) ");
+
+                    const detailPelapor = `
+                        <div class="mb-3"> <h5>Detail Pelapor</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nama</b></td><td style="width:30px;">:</td><td>${o.data.nama}</td></tr><tr> <td style="width:40%;"><b>Tanggal Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tanggal_lahir}</td></tr><tr> <td style="width:40%;"><b>Pekerjaan</b></td><td style="width:30px;">:</td><td>${o.data.pekerjaan}</td></tr><tr> <td style="width:40%;"><b>Email</b></td><td style="width:30px;">:</td><td><a href='mailto:${o.data.email}'>${o.data.email}</a></td></tr></table> </div>
+                    `;
+
+                    const detailLaporan = `
+                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr> <td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr> <td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr> <td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr> <td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr> <td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr> <td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div>
+                    `;
+
+                    modalDetail.find(".dLaporan").append(detailLaporan);
+                    modalDetail.find(".dPelapor").append(detailPelapor);
+
+                    $(".load_data_detail").hide();
+                }, 1000);
+            });
+        <?php endif; ?>
     });
 </script>
 <?= $this->endSection(); ?>

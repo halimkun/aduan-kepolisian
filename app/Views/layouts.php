@@ -10,7 +10,7 @@
     <?= $this->include('Components/top_script'); ?>
 </head>
 
-<body>
+<body onresize="location.reload();">
     <?= $this->include('Components/settings') ;?>
     <div id="app">
         <div class="main-wrapper">
