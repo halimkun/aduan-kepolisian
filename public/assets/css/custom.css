@@ -6,3 +6,14 @@
  */
 
 /*# sourceMappingURL=custom.css.map */
+.dt-button-background {
+    display: none !important;
+}
+
+.table {
+    width: 100% !important;
+}
+
+table.dataTable>tbody>tr.child ul.dtr-details {
+    width: 100% !important;
+}
