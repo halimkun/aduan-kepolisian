@@ -1,4 +1,3 @@
-<!-- Modal edit Pengguna -->
 <div class="modal fade" tabindex="-1" role="dialog" id="editPengguna">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -9,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/user/update" method="post" autocomplete="off"> <?= csrf_field() ?>
+                <form action="/user/update" method="post" autocomplete="off"> 
                 <input type="hidden" name="user_detail" id="user_detail">
                     <div class="row">
                         <div class="col-md-6">

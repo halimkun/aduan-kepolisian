@@ -1,4 +1,3 @@
-<!-- Modal Tambah Pengguna -->
 <div class="modal fade" tabindex="-1" role="dialog" id="tambahPengguna">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -9,14 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <strong>Perhatian!</strong>
-                    <p>
-                        Setiap pengguna baru akan dimasukan dalam groups <strong class="text-dark">pengguna</strong>, anda bisa merubah group setelah berhasil menambahkan pengguna.
-                    </p>
-                </div> -->
-                <form action="/user/store" method="post" autocomplete="off"> <?= csrf_field() ?>
+                <form action="/user/store" method="post" autocomplete="off"> 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">

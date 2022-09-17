@@ -1,4 +1,3 @@
-<!-- Modal Tambah Pengguna -->
 <div class="modal fade" tabindex="-1" role="dialog" id="tambahAduan">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -10,6 +9,7 @@
             </div>
             <div class="modal-body">
                 <form action="/aduan/create" method="post" enctype="multipart/form-data">
+                    
                     <div class="mb-3">
                         <h6 class="font-weight-bold">Data Pelapor</h6>
                         <div class="dropdown-divider"></div>
@@ -60,6 +60,7 @@
                                         <option value="kehilangan">Kehilangan</option>
                                         <option value="pencurian">Pencurian</option>
                                         <option value="kejadian">Kejadian</option>
+                                        <option value="kecelakaan">Kecelakaan</option>
                                     </select>
                                 </div>
                             </div>

@@ -1,9 +1,8 @@
-<!-- Modal Tambah Pengguna -->
-<div class="modal fade" tabindex="-1" role="dialog" id="ubahPassword">
+<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" id="ubahPassword">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Data Pengguna</h5>
+                <h5 class="modal-title">Ubah Password</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -18,7 +17,6 @@
                     password akan dikembalikan menjadi password default. <kbd>Password Default</kbd> user adalah tanggal lahir dengan format (ddmmyyyy), contoh <code>05121998</code>
                 </div>
                 <form action="/user/updatePass" method="post" autocomplete="off">
-                    <?= csrf_field() ?>
                     <input type="hidden" id="ud" name="user_detail" value="">
                     <input type="hidden" id="np" name="np" value="">
                     <div class="float-right">
