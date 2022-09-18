@@ -52,7 +52,7 @@ class Aduan extends BaseController
     public function update_stts()
     {
         // method is not post
-        if($this->request->getMethod() == 'post') {
+        if ($this->request->getMethod() == 'post') {
             if ($this->aduan->save([
                 'id' => $this->request->getPost('data'),
                 'status' => $this->request->getPost('status'),
@@ -83,5 +83,12 @@ class Aduan extends BaseController
                 return $this->response->setJSON(['status' => 'error', 'message' => 'Data not found']);
             }
         }
+    }
+
+    public function ag()
+    {
+        return $this->response->setJSON(['status' => 'success', 'data' => $this->aduan->select([
+            'nomor', 'status', 'tanggal', 'jenis', 'judul', 'lokasi', 'keterangan', 'foto'
+        ])->findAll()]);
     }
 }
