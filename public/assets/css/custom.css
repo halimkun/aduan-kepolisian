@@ -17,3 +17,7 @@
 table.dataTable>tbody>tr.child ul.dtr-details {
     width: 100% !important;
 }
+
+.chocolat-wrapper {
+    z-index: 9991 !important;
+}

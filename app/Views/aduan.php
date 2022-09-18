@@ -146,6 +146,7 @@
 <link rel="stylesheet" href="<?= base_url('assets/modules/datatables/datatables.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/modules/chocolat/dist/css/chocolat.css') ?>">
 <?= $this->endSection(); ?>
 
 <?= $this->section('bottomLibrary'); ?>
@@ -162,113 +163,40 @@
 <script src="<?= base_url('assets/modules/datatables/datatables.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
+<script src="<?= base_url('assets/modules/chocolat/dist/js/jquery.chocolat.min.js') ?>"></script>
 
 <script>
     $(document).ready(function() {
         /** data table initialize */
-        var table = $("#tableAduan").DataTable({
-            responsive: true,
-            dom: "Brtp",
-            buttons: [{
-                extend: "copy",
-                text: "Copy",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [0, 2, 3, 4, 5]
-                }
-            }, {
-                extend: "excel",
-                text: "Excel",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [0, 2, 3, 4, 5]
-                }
-            }, {
-                extend: "print",
-                text: "Print",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [0, 2, 3, 4, 5]
-                }
-            }]
-        });
+        var table=$("#tableAduan").DataTable({responsive:!0,dom:"Brtp",buttons:[{extend:"copy",text:"Copy",className:"btn btn-sm btn-icon btn-secondary text-dark shadow-sm",exportOptions:{columns:[1,2,3,4,5,6,7,8]}},{extend:"excel",text:"Excel",className:"btn btn-sm btn-icon btn-secondary text-dark shadow-sm",exportOptions:{columns:[1,2,3,4,5,6,7,8]}},{extend:"print",text:"Print",className:"btn btn-sm btn-icon btn-secondary text-dark shadow-sm",exportOptions:{columns:[1,2,3,4,5,6,7,8]}}]});
 
-        $("#filterSearch").on("keyup", function() {
-            table.search(this.value).draw();
-        });
-
-        $("#filterStatus").on("change", (function() {
-            table.column(2).search(this.value).draw()
-        }));
-
-        $("#filterTgl").on("change", (function() {
-            table.column(4).search(this.value).draw()
-        }));
-
-        $("#filterJenis").on("change", (function() {
-            table.column(5).search(this.value).draw()
-        }));
-
-        $('#tableAduan_filter.dataTables_filter [type=search]').removeClass('form-control-sm')
+        $("#filterSearch").on("keyup",(function(){table.search(this.value).draw()})),$("#filterStatus").on("change",(function(){table.column(2).search(this.value).draw()})),$("#filterTgl").on("change",(function(){table.column(4).search(this.value).draw()})),$("#filterJenis").on("change",(function(){table.column(5).search(this.value).draw()}));
 
         /** get data aduan dan user */
-        async function getAduanData(a) {
-            return await $.ajax({
-                url: "<?= base_url('/aduan/getById') ?>",
-                type: "POST",
-                data: {
-                    id: a
-                },
-                dataType: "JSON"
-            })
-        }
-        async function getUserData(a) {
-            return await $.ajax({
-                url: "<?= base_url('/user/getById') ?>",
-                type: "POST",
-                data: {
-                    id: a
-                },
-                dataType: "JSON"
-            })
-        }
+        async function getAduanData(a){return await $.ajax({url:"<?= base_url('/aduan/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}async function getUserData(a){return await $.ajax({url:"<?= base_url('/user/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}
 
         /** hanle create */
-        $(".user_select").on("change", (async function() {
-            var a = $(this).val();
-            if ($(".load_user_input").show(), "-" == a) $("#tambahAduan #pekerjaan").val(""), $("#tambahAduan #jenis_kelamin").val(""), $("#tambahAduan #tanggal_lahir").val(""), $("#tambahAduan #alamat").val(""), $(".load_user_input").hide();
-            else {
-                const t = await getUserData(a);
-                setTimeout((() => {
-                    "success" == t.status ? ($("#tambahAduan #pekerjaan").val(t.data.pekerjaan), $("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin), $("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir), $("#tambahAduan #alamat").val(t.data.alamat)) : alert("Gagal mengambil data user"), $(".load_user_input").hide()
-                }), 1e3)
-            }
-        }));
+        $(".user_select").on("change",(async function(){var a=$(this).val();if($(".load_user_input").show(),"-"==a)$("#tambahAduan #pekerjaan").val(""),$("#tambahAduan #jenis_kelamin").val(""),$("#tambahAduan #tanggal_lahir").val(""),$("#tambahAduan #alamat").val(""),$(".load_user_input").hide();else{const t=await getUserData(a);setTimeout((()=>{"success"==t.status?($("#tambahAduan #pekerjaan").val(t.data.pekerjaan),$("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin),$("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir),$("#tambahAduan #alamat").val(t.data.alamat)):alert("Gagal mengambil data user"),$(".load_user_input").hide()}),1e3)}}));
 
         /** handle update status */
-        $("#tableAduan tbody").on("click", "tr td#row_action", (function() {
-            const t = $("#ubahStatusAduan");
-            var a = table.row(this).data(),
-                n = $(this).parent().find("td#row_status").data("stts"),
-                d = $(this).parent().find("td#row_status").data("dt");
-            t.find("#una").empty().append(a[1]), t.find("#status").val(n), t.find("#data").val(d), t.modal("toggle")
-        }));
+        $("#tableAduan tbody").on("click","tr td#row_action",(function(){const t=$("#ubahStatusAduan");var a=table.row(this).data(),d=$(this).parent().find("td#row_status").data("stts"),n=$(this).parent().find("td#row_status").data("dt");t.find("#una").empty().append(a[1]),t.find("#status").val(d),t.find("#data").val(n),t.modal("toggle")}));
 
-        // !TODO fix detail aduan
         <?php if (!$agent->isMobile()) : ?>
             const modalDetail = $("#detailAduan");
             $('#tableAduan tbody').on('click', 'tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan', function() {
                 modalDetail.modal('toggle');
+
+                $(".load_data_detail").show();
+                
                 modalDetail.find(".dLaporan").empty();
                 modalDetail.find(".dPelapor").empty();
                 modalDetail.find(".judulLaporan").empty()
-                $(".load_data_detail").show();
 
                 setTimeout(async () => {
                     var data = table.row(this).data();
                     const o = await getUserData($(this).parent().data('u'));
                     const i = await getAduanData($(this).parent().data('i'));
-                    
+
                     modalDetail.find(".judulLaporan").empty().append(i.data.judul + " ( " + i.data.nomor + " ) ");
 
                     const detailPelapor = `
@@ -276,11 +204,13 @@
                     `;
 
                     const detailLaporan = `
-                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr> <td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr> <td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr> <td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr> <td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr> <td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr> <td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div>
+                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr> <td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr> <td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr> <td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr> <td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr> <td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr> <td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="/foto_kejadian/${i.data.foto}" data-title="${i.data.judul}"></div></div></div>
                     `;
 
                     modalDetail.find(".dLaporan").append(detailLaporan);
                     modalDetail.find(".dPelapor").append(detailPelapor);
+
+                    const me=$(".gallery .gallery-item");me.attr("href",me.data("image")),me.attr("title",me.data("title")),me.parent().hasClass("gallery-md")&&me.css({height:me.parent().data("item-height"),width:me.parent().data("item-height")}),me.css({backgroundImage:'url("'+me.data("image")+'")'}),jQuery().Chocolat&&($(".gallery").Chocolat({className:"gallery",imageSelector:".gallery-item"}));
 
                     $(".load_data_detail").hide();
                 }, 1000);
