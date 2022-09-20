@@ -24,6 +24,10 @@ class Admin extends BaseController
     {
         return view('home', [
             'segments' => $this->request->uri->getSegments(),
+            'pengguna' => $this->userModel->withGroup("pengguna")->findAll(),
+            'aduan' => $this->aduanModel->findAll(),
+            'aduan_terbaru' => $this->aduanModel->where('DATE(tanggal)', date('Y-m-d'))->findAll(),
+            'monthly' => $this->aduanModel->select('COUNT(*) as total, MONTH(tanggal) as bulan')->groupBy('MONTH(tanggal)')->findAll(),
         ]);
     }
 

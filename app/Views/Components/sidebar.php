@@ -13,6 +13,9 @@
             
             <li class="menu-header">Pengguna</li>
             <li class="<?= makeActiveSidebar('user') ?>"><a class="nav-link" href="<?= base_url('admin/user') ?>"><i class="fas fa-users"></i> <span>User</span></a></li>    
+            
+            <li class="menu-header">Setting</li>
+            <li class="<?= makeActiveSidebar('settings') ?>"><a class="nav-link" href="<?= base_url('admin/settings') ?>"><i class="fas fa-cogs"></i> <span>Site Setting</span></a></li>    
         </ul>
 
         <!-- <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
