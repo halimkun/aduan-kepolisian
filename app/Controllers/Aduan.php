@@ -20,13 +20,8 @@ class Aduan extends BaseController
 
     public function create()
     {
-        d($this->request->getFile('foto_aduan'));
-
         $bukti = $this->request->getFile('foto_aduan');
         $bukti_file_name = $bukti->getRandomName();
-
-        // upload file
-        $bukti->move('foto_kejadian', $bukti_file_name);
 
         $data = [
             'user_id' => $this->request->getPost('users'),
@@ -41,6 +36,8 @@ class Aduan extends BaseController
         ];
 
         if ($this->aduan->save($data)) {
+            $bukti->move('foto_kejadian', $bukti_file_name);
+            
             session()->setFlashdata('success', 'Aduan berhasil ditambahkan');
             return redirect()->to(base_url('admin/aduan'));
         } else {
@@ -51,7 +48,6 @@ class Aduan extends BaseController
 
     public function update_stts()
     {
-        // method is not post
         if ($this->request->getMethod() == 'post') {
             if ($this->aduan->save([
                 'id' => $this->request->getPost('data'),
@@ -85,10 +81,80 @@ class Aduan extends BaseController
         }
     }
 
-    public function ag()
+    public function getAll()
     {
-        return $this->response->setJSON(['status' => 'success', 'data' => $this->aduan->select([
-            'nomor', 'status', 'tanggal', 'jenis', 'judul', 'lokasi', 'keterangan', 'foto'
-        ])->findAll()]);
+        $aduan = $this->aduan->select(
+            'user_id, nomor, status, tanggal, jenis, judul, 
+            lokasi, keterangan, foto, created_at, updated_at 
+            deleted_at'
+        )->orderBy('tanggal', "DESC")->findAll();
+
+        return $aduan;
+    }
+
+    public function getLatest()
+    {
+        $aduan = $this->aduan->select(
+            'user_id, nomor, status, tanggal, jenis, judul, 
+            lokasi, keterangan, foto, created_at, updated_at 
+            deleted_at'
+        )->orderBy('tanggal', 'DESC')->findAll(1);
+
+        return $aduan;
+    }
+
+    public function getByNum($num)
+    {
+        $aduan = $this->aduan->select(
+            'user_id, nomor, status, tanggal, jenis, judul, 
+            lokasi, keterangan, foto, created_at, updated_at 
+            deleted_at'
+        )->where('nomor', $num)->findAll();
+
+        return $aduan;
+    }
+
+    public function getByJenis($jenis)
+    {
+        $aduan = $this->aduan->select(
+            'user_id, nomor, status, tanggal, jenis, judul, 
+            lokasi, keterangan, foto, created_at, updated_at 
+            deleted_at'
+        )->orderBy('tanggal', "DESC")->where('jenis', $jenis)->findAll();
+
+        return $aduan;
+    }
+
+    public function getByStatus($status)
+    {
+        $aduan = $this->aduan->select(
+            'user_id, nomor, status, tanggal, jenis, judul, 
+            lokasi, keterangan, foto, created_at, updated_at 
+            deleted_at'
+        )->orderBy('tanggal', "DESC")->where('status', $status)->findAll();
+
+        return $aduan;
+    }
+
+    public function getByYear($year)
+    {
+        $aduan = $this->aduan->select(
+            'user_id, nomor, status, tanggal, jenis, judul, 
+            lokasi, keterangan, foto, MONTH(tanggal) as bulan, created_at, updated_at 
+            deleted_at'
+        )->where('YEAR(tanggal)', $year)->orderBy('MONTH(tanggal)', 'ASC')->findAll();
+
+        return $aduan;
+    }
+
+    public function chartYearly($year)
+    {
+        $aduan = $this->aduan->select('COUNT(*) as total, MONTH(tanggal) as bulan, YEAR(tanggal) as tahun')
+            ->where('YEAR(tanggal)', $year)
+            ->groupBy('MONTH(tanggal)')
+            ->orderBy('MONTH(tanggal)', 'ASC')
+            ->findAll();
+
+        return $aduan;
     }
 }
