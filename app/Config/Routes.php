@@ -37,6 +37,25 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->delete('/user/delete/(:num)', 'User::delete/$1');
 
+// admin
+$routes->get('/admin/aduan/add', 'Admin::aduan_add');
+
+// Api Endpoints (Aduan)
+$routes->get('/api/aduan', 'Api::aduan');
+$routes->get('/api/aduan/all', 'Api::aduan_getall');
+$routes->get('/api/aduan/new', 'Api::aduan_getlatest');
+$routes->get('/api/aduan/(:num)', 'Api::aduan_getbynum/$1');
+$routes->get('/api/aduan/cat/(:any)', 'Api::aduan_getbyjenis/$1');
+$routes->get('/api/aduan/status/(:any)', 'Api::aduan_getbystatus/$1');
+$routes->get('/api/aduan/year/(:num)', 'Api::aduan_getByYear/$1');
+$routes->get('/api/aduan/chart/year/(:num)', 'Api::aduan_chartYearly/$1');
+
+$routes->put('/api/aduan/update', 'Api::aduan_updatestts');
+
+$routes->delete('/api/aduan/delete/(:num)', 'Api::aduan_delete/$1');
+
+$routes->post('/api/aduan/create', 'Api::aduan_create');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

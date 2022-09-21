@@ -27,7 +27,7 @@ class Admin extends BaseController
             'pengguna' => $this->userModel->withGroup("pengguna")->findAll(),
             'aduan' => $this->aduanModel->findAll(),
             'aduan_terbaru' => $this->aduanModel->where('DATE(tanggal)', date('Y-m-d'))->findAll(),
-            'monthly' => $this->aduanModel->select('COUNT(*) as total, MONTH(tanggal) as bulan')->groupBy('MONTH(tanggal)')->findAll(),
+            'tahun' => $this->aduanModel->select('YEAR(tanggal) as tahun')->groupBy('YEAR(tanggal)')->orderBy('YEAR(tanggal)', 'DESC')->findAll(),
         ]);
     }
 
@@ -36,7 +36,17 @@ class Admin extends BaseController
         return view('aduan', [
             'segments' => $this->request->uri->getSegments(),
             'users' => $this->userModel->findAll(),
-            'aduan' => $this->aduanModel->findAll(),
+            'aduan' => $this->aduanModel->orderBy('tanggal', "DESC")->findAll(),
+            'agent' => $this->request->getUserAgent()
+        ]);
+    }
+
+    public function aduan_add()
+    {
+        return view('aduan_add', [
+            'segments' => $this->request->uri->getSegments(),
+            'users' => $this->userModel->findAll(),
+            'aduan' => $this->aduanModel->orderBy('tanggal', "DESC")->findAll(),
             'agent' => $this->request->getUserAgent()
         ]);
     }
@@ -57,9 +67,9 @@ class Admin extends BaseController
         return $this->response->setJSON(
             $this->userModel->select(
                 [
-                    'nama','username','email',
-                    'jenis_kelamin','pekerjaan',
-                    'alamat','tanggal_lahir'
+                    'nama', 'username', 'email',
+                    'jenis_kelamin', 'pekerjaan',
+                    'alamat', 'tanggal_lahir'
                 ]
             )->findAll()
         );

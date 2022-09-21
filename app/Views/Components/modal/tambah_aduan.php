@@ -8,8 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/aduan/create" method="post" enctype="multipart/form-data">
-                    
+                <form action="/aduan/create" method="post" enctype="multipart/form-data">  
                     <div class="mb-3">
                         <h6 class="font-weight-bold">Data Pelapor</h6>
                         <div class="dropdown-divider"></div>
