@@ -9,6 +9,9 @@
             </button>
         </div>
     </div>
+
+    <?= $this->include('Components/flash_message'); ?>
+
     <div class="section-body">
         <div class="card shadow-sm rounded">
             <div class="card-header">
@@ -21,7 +24,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <?= $this->include('Components/flash_message'); ?>
                 <div class="table-responsive">
                     <div class="table-responsive">
                         <table class="table" id="tableUser">

@@ -40,7 +40,9 @@ class User extends BaseController
 
     public function store()
     {
-        if ($this->request->getMethod() == 'post') {
+        if (!$this->request->getMethod() == 'post') {
+            return redirect()->to(base_url('/admin/user'));
+        } else {
             $data = new EntitiesUser([
                 'nama' => $this->request->getPost('nama'),
                 'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
@@ -54,15 +56,13 @@ class User extends BaseController
                 'password' => date('dmY', strtotime($this->request->getPost('tglLahir'))),
             ]);
 
-            if ($this->user->withGroup($this->config->defaultUserGroup)->insert($data)) {
+            if ($this->user->withGroup($this->config->defaultUserGroup)->insert($data)) {                
                 session()->setFlashdata('success', 'Data berhasil disimpan');
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'));
             } else {
                 session()->setFlashdata('error', 'Data gagal disimpan');
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'))->with('errors', $this->user->errors());
             }
-        } else {
-            return redirect()->to(base_url('/admin/user'));
         }
     }
 
@@ -81,10 +81,10 @@ class User extends BaseController
 
             if ($this->user->save($data)) {
                 session()->setFlashdata('success', 'Data berhasil diupdate');
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'));
             } else {
                 session()->setFlashdata('error', 'Data gagal diupdate');
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'));
             }
         } else {
             return redirect()->to(base_url('/admin/user'));
@@ -100,10 +100,10 @@ class User extends BaseController
 
             if ($this->user->save($data)) {
                 session()->setFlashdata('success', 'Data berhasil diupdate');
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'));
             } else {
                 session()->setFlashdata('error', 'Data gagal diupdate');
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'));
             }
         } else {
             return redirect()->to(base_url('/admin/user'));
@@ -115,9 +115,9 @@ class User extends BaseController
     {
         if ($this->request->getMethod() == 'delete') {
             if ($this->user->delete($id)) {
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'));
             } else {
-                return redirect()->to(base_url('user'));
+                return redirect()->to(base_url('admin/user'));
             }
         } else {
             return redirect()->to(base_url('/admin/user'));

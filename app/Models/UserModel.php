@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 use Faker\Generator;
 use Myth\Auth\Authorization\GroupModel;
-use Myth\Auth\Entities\User;
+use \App\Entities\User;
 
 /**
  * @method User|null first()
