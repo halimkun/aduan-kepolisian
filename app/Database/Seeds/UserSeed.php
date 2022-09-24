@@ -20,11 +20,16 @@ class UserSeed extends Seeder
             'email'         => 'int.halim@gmail.com',
             'username'      => 'admin',
             'password'      => 'admin',
-            'nama'          => 'Nama Admin',
+
+            'nama'          => 'Gito',
+            'tempat_lahir'  => 'Pekalongan',
+            'nomor_hp'      => '081234567890',
+            'tanggal_lahir' => '1991-01-01',
+            'agama'         => 'islam',
             'jenis_kelamin' => 'laki-laki',
-            'tanggal_lahir' => '1990-01-01',
             'pekerjaan'     => 'Pengusaha',
             'alamat'        => 'Alamat Admin',
+            
             'active'        => 1,
         ]);
 

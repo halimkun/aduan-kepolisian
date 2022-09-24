@@ -120,6 +120,9 @@
 <script src="<?= base_url('assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/select2/dist/js/select2.full.min.js') ?>"></script>
+<!-- validation -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
 
 <script>
     // ready
@@ -129,6 +132,35 @@
                 targets: [0, 5],
                 sortable: false
             }]
+        });
+
+        jQuery.validator.setDefaults({
+            errorClass: "is-invalid text-danger",
+            validClass: "is-valid",
+        });
+
+        $.validator.addMethod("myfield", function(value, element) {
+            return this.optional(element) || /^[a-z0-9\-\s]+$/i.test(value);
+        }, "Username must contain only letters, numbers, or dashes.");
+
+        $.validator.addMethod("selectEq", function(value, element, arg) {
+            return arg !== value;
+        }, `this field not valid`);
+
+        $('#formTambahUser, #formEditUser').validate({
+            rules: {
+                nama:{required:true,minlength:5,myfield:true},
+                username:{required:true,minlength:6,myfield:true},
+                email:{required:true,email:true,myfield:true},
+                nomorHp:{required:true,number:true,minlength:10,maxlength:13,myfield:true},
+                tempatLahir:{required:true,minlength:5,myfield:true},
+                tglLahir:{required:true,date:true,myfield:true},
+                pekerjaan:{required:true,minlength:5,myfield:true},
+                agama:{required:true,myfield:true,selectEq:'-'},
+                jenis_kelamin:{required:true,myfield:true,selectEq:'-'},
+                alamat:{required:true,minlength:10,myfield:true},
+            },
+
         });
 
         $('.btn-edit-p').each(function() {
@@ -154,6 +186,7 @@
                     },
                     dataType: 'json',
                     success: function(result) {
+                        console.log(result);
                         if (result.status == 'success') {
                             $('#editPengguna #user_detail').val(result.data.id);
                             $('#editPengguna #nama').val(result.data.nama);
@@ -163,6 +196,9 @@
                             $('#editPengguna #email').val(result.data.email);
                             $('#editPengguna #alamat').val(result.data.alamat);
                             $('#editPengguna #jenis_kelamin').val(result.data.jenis_kelamin)
+                            $('#editPengguna #nomorHp').val(result.data.nomor_hp)
+                            $('#editPengguna #tempat_lahir').val(result.data.tempat_lahir)
+                            $('#editPengguna #agama').val(result.data.agama)
                         } else {
                             alert(result.message);
                         }

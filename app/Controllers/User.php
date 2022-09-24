@@ -30,7 +30,8 @@ class User extends BaseController
 
             if ($this->user->find($id) !== null) {
                 return $this->response->setJSON([ 'status' => 'success','data' => $this->user->select([
-                    'jenis_kelamin', 'tanggal_lahir', 'pekerjaan', 'alamat', 'username', 'email', 'nama', 'id'
+                    'jenis_kelamin', 'tanggal_lahir', 'pekerjaan', 'alamat', 'username', 
+                    'email', 'nama', 'id', 'tempat_lahir', 'agama', 'nomor_hp'
                 ])->find($id)]);
             } else {
                 return $this->response->setJSON(['status' => 'error', 'message' => 'User not found']);
@@ -45,15 +46,18 @@ class User extends BaseController
         } else {
             $data = new EntitiesUser([
                 'nama' => $this->request->getPost('nama'),
-                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+                'tempat_lahir' => $this->request->getPost('tempatLahir'),
                 'tanggal_lahir' => $this->request->getPost('tglLahir'),
+                'agama' => $this->request->getPost('agama'),
+                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
                 'pekerjaan' => $this->request->getPost('pekerjaan'),
                 'alamat' => $this->request->getPost('alamat'),
+                'nomor_hp' => $this->request->getPost('nomorHp'),
+
                 'username' => $this->request->getPost('username'),
                 'email' => $this->request->getPost('email'),
-
-                'active' => 1,
                 'password' => date('dmY', strtotime($this->request->getPost('tglLahir'))),
+                'active' => 1,
             ]);
 
             if ($this->user->withGroup($this->config->defaultUserGroup)->insert($data)) {                

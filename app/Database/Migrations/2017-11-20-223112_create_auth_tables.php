@@ -13,11 +13,16 @@ class CreateAuthTables extends Migration
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'email'            => ['type' => 'varchar', 'constraint' => 255],
             'username'         => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
+            
             'nama'             => ['type' => 'varchar', 'constraint' => 255],
-            'jenis_kelamin'    => ['type' => 'varchar', 'constraint' => 12],
+            'tempat_lahir'     => ['type' => 'varchar', 'constraint' => 255],
             'tanggal_lahir'    => ['type' => 'date'],
+            'jenis_kelamin'    => ['type' => 'varchar', 'constraint' => 12],
+            'agama'            => ['type' => 'varchar', 'constraint' => 255],
             'pekerjaan'        => ['type' => 'varchar', 'constraint' => 255],
             'alamat'           => ['type' => 'text'],
+            'nomor_hp'         => ['type' => 'varchar', 'constraint' => 20],
+
             'password_hash'    => ['type' => 'varchar', 'constraint' => 255],
             'reset_hash'       => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'reset_at'         => ['type' => 'datetime', 'null' => true],
