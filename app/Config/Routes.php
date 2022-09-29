@@ -50,11 +50,13 @@ $routes->get('/api/aduan/status/(:any)', 'Api::aduan_getbystatus/$1');
 $routes->get('/api/aduan/year/(:num)', 'Api::aduan_getByYear/$1');
 $routes->get('/api/aduan/chart/year/(:num)', 'Api::aduan_chartYearly/$1');
 
-$routes->put('/api/aduan/update', 'Api::aduan_updatestts');
+$routes->post('/api/aduan/create', 'Api::aduan_create');
+
+$routes->post('/api/aduan/update', 'Api::aduan_update');
+$routes->put('/api/aduan/status/update', 'Api::aduan_updatestts');
 
 $routes->delete('/api/aduan/delete/(:num)', 'Api::aduan_delete/$1');
 
-$routes->post('/api/aduan/create', 'Api::aduan_create');
 
 /*
  * --------------------------------------------------------------------

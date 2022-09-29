@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="filterStatus">Status</label>
                             <select name="filterStatus" id="filterStatus" class="form-control">
-                                <option value="-">Semua Status</option>
+                                <option value="">Semua Status</option>
                                 <option value="belum diproses">Belum Diproses</option>
                                 <option value="dalam proses">Dalam Proses</option>
                                 <option value="selesai">Selesai</option>
@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <label for="filterJenis">Jenis</label>
                             <select class="form-control" id="filterJenis">
-                                <option value="-">Semua Jenis Aduan</option>
+                                <option value="">Semua Jenis Aduan</option>
                                 <option value="kehilangan">Kehilangan</option>
                                 <option value="pencurian">Pencurian</option>
                                 <option value="kejadian">Kejadian</option>
@@ -176,7 +176,7 @@
         async function getAduanData(a){return await $.ajax({url:"<?= base_url('/aduan/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}async function getUserData(a){return await $.ajax({url:"<?= base_url('/user/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}
 
         /** hanle create */
-        $(".user_select").on("change",(async function(){var a=$(this).val();if($(".load_user_input").show(),"-"==a)$("#tambahAduan #pekerjaan").val(""),$("#tambahAduan #jenis_kelamin").val(""),$("#tambahAduan #tanggal_lahir").val(""),$("#tambahAduan #alamat").val(""),$(".load_user_input").hide();else{const t=await getUserData(a);setTimeout((()=>{"success"==t.status?($("#tambahAduan #pekerjaan").val(t.data.pekerjaan),$("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin),$("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir),$("#tambahAduan #alamat").val(t.data.alamat)):alert("Gagal mengambil data user"),$(".load_user_input").hide()}),1e3)}}));
+        $(".user_select").on("change",(async function(){var a=$(this).val();if($(".load_user_input").show(),"-"==a)$("#tambahAduan #pekerjaan").val(""),$("#tambahAduan #jenis_kelamin").val(""),$("#tambahAduan #tanggal_lahir").val(""),$("#tambahAduan #alamat").val(""),$(".load_user_input").hide();else{const t=await getUserData(a);setTimeout((()=>{"success" == t.status ? ($("#tambahAduan #pekerjaan").val(t.data.pekerjaan), $("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin), $("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir), $("#tambahAduan #tempat_lahir").val(t.data.tempat_lahir), $("#tambahAduan #agama").val(t.data.agama), $("#tambahAduan #nomor_hp").val(t.data.nomor_hp), $("#tambahAduan #alamat").val(t.data.alamat)) : alert("Gagal mengambil data user"), $(".load_user_input").hide()}),1e3)}}));
 
         /** handle update status */
         $("#tableAduan tbody").on("click","tr td#row_action",(function(){const t=$("#ubahStatusAduan");var a=table.row(this).data(),d=$(this).parent().find("td#row_status").data("stts"),n=$(this).parent().find("td#row_status").data("dt");t.find("#una").empty().append(a[1]),t.find("#status").val(d),t.find("#data").val(n),t.modal("toggle")}));
@@ -200,11 +200,11 @@
                     modalDetail.find(".judulLaporan").empty().append(i.data.judul + " ( " + i.data.nomor + " ) ");
 
                     const detailPelapor = `
-                        <div class="mb-3"> <h5>Detail Pelapor</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nama</b></td><td style="width:30px;">:</td><td>${o.data.nama}</td></tr><tr> <td style="width:40%;"><b>Tanggal Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tanggal_lahir}</td></tr><tr> <td style="width:40%;"><b>Pekerjaan</b></td><td style="width:30px;">:</td><td>${o.data.pekerjaan}</td></tr><tr> <td style="width:40%;"><b>Email</b></td><td style="width:30px;">:</td><td><a href='mailto:${o.data.email}'>${o.data.email}</a></td></tr></table> </div>
+                        <div class="mb-3"> <h5>Detail Pelapor</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nama</b></td><td style="width:30px;">:</td><td>${o.data.nama}</td></tr><tr><td style="width:40%;"><b>Tempat Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tempat_lahir}</td></tr><tr><td style="width:40%;"><b>Tanggal Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tanggal_lahir}</td></tr><tr><td style="width:40%;"><b>Jenis Kelamin</b></td><td style="width:30px;">:</td><td>${o.data.jenis_kelamin}</td></tr><tr><td style="width:40%;"><b>Agama</b></td><td style="width:30px;">:</td><td>${o.data.agama}</td></tr><tr><td style="width:40%;"><b>Pekerjaan</b></td><td style="width:30px;">:</td><td>${o.data.pekerjaan}</td></tr><tr><td style="width:40%;"><b>Nomor HP</b></td><td style="width:30px;">:</td><td><a href='tlp:${o.data.nomor_hp}'>${o.data.nomor_hp}</a></td></tr><tr><td style="width:40%;"><b>Email</b></td><td style="width:30px;">:</td><td><a href='mailto:${o.data.email}'>${o.data.email}</a></td></tr><tr><td style="width:40%;"><b>Alamat</b></td><td style="width:30px;">:</td><td>${o.data.alamat}</td></tr></table> </div>
                     `;
 
                     const detailLaporan = `
-                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr> <td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr> <td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr> <td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr> <td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr> <td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr> <td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr> <td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="/foto_kejadian/${i.data.foto}" data-title="${i.data.judul}"></div></div></div>
+                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="/foto_kejadian/${i.data.foto}" data-title="${i.data.judul}"></div></div></div>
                     `;
 
                     modalDetail.find(".dLaporan").append(detailLaporan);

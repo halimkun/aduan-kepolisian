@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/aduan/create" method="post" enctype="multipart/form-data">  
+                <form action="/aduan/create" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <h6 class="font-weight-bold">Data Pelapor</h6>
                         <div class="dropdown-divider"></div>
@@ -26,19 +26,44 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="jenis_kelamin">Jenis Kelamin</label>
-                                    <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_lahir">Tanggal Lahir</label>
-                                    <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" readonly>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="jenis_kelamin">Jenis Kelamin</label>
+                                            <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tempat_lahir">Tempat Lahir</label>
+                                            <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="agama">Agama</label>
+                                            <input type="text" class="form-control" id="agama" name="agama" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tanggal_lahir">Tanggal Lahir</label>
+                                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" readonly>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="pekerjaan">Pekerjaan</label>
-                                    <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" readonly>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pekerjaan">Pekerjaan</label>
+                                            <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="nomor_hp">Nomor HP</label>
+                                            <input type="text" class="form-control" id="nomor_hp" name="nomor_hp" readonly>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="alamat">Alamat</label>

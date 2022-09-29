@@ -29,7 +29,7 @@ class Api extends BaseController
     public function aduan()
     {
         return $this->response->setJSON([
-            'code' => 200,
+            'code' => 500,
             'success' => false,
             'message' => 'Terjadi kesalahan, silahkan coba lagi.',
         ]);
@@ -147,6 +147,38 @@ class Api extends BaseController
         ]);
     }
 
+    public function Aduan_update()
+    {
+        $data = $this->request->getPost();
+        $aduan = $this->am->where('nomor', $data['nomor_aduan'])->first();
+
+        $ready = [
+            'id' => $aduan->id,
+            'user_id' => $data['user_id'],
+            'nomor' => $data['nomor_aduan'],
+            'status' => $data['status'],
+            'tanggal' => $data['tanggal_kejadian'],
+            'jenis' => $data['jenis_aduan'],
+            'judul' => $data['judul'],
+            'lokasi' => $data['lokasi'],
+            'keterangan' => $data['keterangan'],
+        ];
+        
+        if ($this->am->save($ready)) {
+            return $this->response->setJSON([
+                'code' => 200,
+                'success' => true,
+                'message' => 'Aduan berhasil diubah',
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'code' => 406,
+                'success' => false,
+                'message' => 'Aduan gagal diubah',
+            ]);
+        }
+    }
+
     public function aduan_updatestts()
     {
         $data = $this->request->getJSON();
@@ -163,7 +195,7 @@ class Api extends BaseController
             ]);
         } else {
             return $this->response->setJSON([
-                'code' => 200,
+                'code' => 406,
                 'success' => false,
                 'message' => 'Status aduan gagal diubah',
             ]);

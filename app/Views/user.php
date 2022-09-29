@@ -127,6 +127,19 @@
 <script>
     // ready
     $(document).ready(function() {
+        const jqv_rules = {
+            nama:{required:true,minlength:5,myfield:true},
+            username:{required:true,minlength:5,myfield:true},
+            email:{required:true,email:true},
+            nomorHp:{required:true,number:true,minlength:10,maxlength:13,myfield:true},
+            tempatLahir:{required:true,minlength:5,myfield:true},
+            tglLahir:{required:true,date:true,myfield:true},
+            pekerjaan:{required:true,minlength:5,myfield:true},
+            agama:{required:true,myfield:true,selectEq:'-'},
+            jenis_kelamin:{required:true,myfield:true,selectEq:'-'},
+            alamat:{required:true,minlength:10,myfield:true},
+        };
+
         $('#tableUser').DataTable({
             'columnDefs': [{
                 targets: [0, 5],
@@ -147,21 +160,9 @@
             return arg !== value;
         }, `this field not valid`);
 
-        $('#formTambahUser, #formEditUser').validate({
-            rules: {
-                nama:{required:true,minlength:5,myfield:true},
-                username:{required:true,minlength:6,myfield:true},
-                email:{required:true,email:true,myfield:true},
-                nomorHp:{required:true,number:true,minlength:10,maxlength:13,myfield:true},
-                tempatLahir:{required:true,minlength:5,myfield:true},
-                tglLahir:{required:true,date:true,myfield:true},
-                pekerjaan:{required:true,minlength:5,myfield:true},
-                agama:{required:true,myfield:true,selectEq:'-'},
-                jenis_kelamin:{required:true,myfield:true,selectEq:'-'},
-                alamat:{required:true,minlength:10,myfield:true},
-            },
+        $('#formTambahUser').validate({ rules: jqv_rules});
+        $('#formEditUser').validate({ rules: jqv_rules});
 
-        });
 
         $('.btn-edit-p').each(function() {
             $(this).on('click', function() {

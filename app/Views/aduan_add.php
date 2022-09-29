@@ -24,19 +24,44 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="jenis_kelamin">Jenis Kelamin</label>
-                            <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" readonly>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                                    <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tempat_lahir">Tempat Lahir</label>
+                                    <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="agama">Agama</label>
+                                    <input type="text" class="form-control" id="agama" name="agama" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" readonly>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="pekerjaan">Pekerjaan</label>
-                            <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" readonly>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pekerjaan">Pekerjaan</label>
+                                    <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nomor_hp">Nomor HP</label>
+                                    <input type="text" class="form-control" id="nomor_hp" name="nomor_hp" readonly>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="alamat">Alamat</label>
@@ -108,11 +133,39 @@
 
 <script>
     $(document).ready(function() {
-       /** get data aduan dan user */
-        async function getAduanData(a){return await $.ajax({url:"<?= base_url('/aduan/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}async function getUserData(a){return await $.ajax({url:"<?= base_url('/user/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}
+        /** get data aduan dan user */
+        async function getAduanData(a) {
+            return await $.ajax({
+                url: "<?= base_url('/aduan/getById') ?>",
+                type: "POST",
+                data: {
+                    id: a
+                },
+                dataType: "JSON"
+            })
+        }
+        async function getUserData(a) {
+            return await $.ajax({
+                url: "<?= base_url('/user/getById') ?>",
+                type: "POST",
+                data: {
+                    id: a
+                },
+                dataType: "JSON"
+            })
+        }
 
         /** handle create */
-        $(".user_select").on("change",(async function(){var a=$(this).val();if($(".load_user_input").show(),"-"==a)$("#tambahAduan #pekerjaan").val(""),$("#tambahAduan #jenis_kelamin").val(""),$("#tambahAduan #tanggal_lahir").val(""),$("#tambahAduan #alamat").val(""),$(".load_user_input").hide();else{const t=await getUserData(a);setTimeout((()=>{"success"==t.status?($("#tambahAduan #pekerjaan").val(t.data.pekerjaan),$("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin),$("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir),$("#tambahAduan #alamat").val(t.data.alamat)):alert("Gagal mengambil data user"),$(".load_user_input").hide()}),1e3)}}));
+        $(".user_select").on("change", (async function() {
+            var a = $(this).val();
+            if ($(".load_user_input").show(), "-" == a) $("#tambahAduan #pekerjaan").val(""), $("#tambahAduan #jenis_kelamin").val(""), $("#tambahAduan #tanggal_lahir").val(""), $("#tambahAduan #alamat").val(""), $(".load_user_input").hide();
+            else {
+                const t = await getUserData(a);
+                setTimeout((() => {
+                    "success" == t.status ? ($("#tambahAduan #pekerjaan").val(t.data.pekerjaan), $("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin), $("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir), $("#tambahAduan #tempat_lahir").val(t.data.tempat_lahir), $("#tambahAduan #agama").val(t.data.agama), $("#tambahAduan #nomor_hp").val(t.data.nomor_hp), $("#tambahAduan #alamat").val(t.data.alamat)) : alert("Gagal mengambil data user"), $(".load_user_input").hide()
+                }), 1e3)
+            }
+        }));
     });
 </script>
 <?= $this->endSection(); ?>

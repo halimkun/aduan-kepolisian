@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <label for="username" class="form-label ml-2">Username</label>
                                 ( <small class="text-warning">tidak dapat diubah</small> )
-                                <input type="text" name="username" id="username" placeholder="username pengguna" class="form-control">
+                                <input type="text" name="username" id="username" readonly placeholder="username pengguna" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="email" class="form-label">Email</label>

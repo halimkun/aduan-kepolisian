@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
 
-            <div class="card">
+            <div class="card mt-4">
                 <h2 class="card-header"><?=lang('Auth.register')?></h2>
                 <div class="card-body">
 
