@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
-use CodeIgniter\Entity\Entity;
+use CodeIgniter\Entity;
+use Myth\Auth\Authorization\GroupModel;
+use Myth\Auth\Authorization\PermissionModel;
 use Exception;
 use Myth\Auth\Password;
 use RuntimeException;

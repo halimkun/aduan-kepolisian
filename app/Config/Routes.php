@@ -25,7 +25,7 @@ $routes->set404Override();
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
 // Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-//$routes->setAutoRoute(false);
+$routes->setAutoRoute(true);
 
 /*
  * --------------------------------------------------------------------
@@ -35,7 +35,28 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->delete('/user/delete/(:num)', 'User::delete/$1');
+
+// admin
+$routes->get('/admin/aduan/add', 'Admin::aduan_add');
+
+// Api Endpoints (Aduan)
+$routes->get('/api/aduan', 'Api::aduan');
+$routes->get('/api/aduan/all', 'Api::aduan_getall');
+$routes->get('/api/aduan/new', 'Api::aduan_getlatest');
+$routes->get('/api/aduan/(:num)', 'Api::aduan_getbynum/$1');
+$routes->get('/api/aduan/cat/(:any)', 'Api::aduan_getbyjenis/$1');
+$routes->get('/api/aduan/status/(:any)', 'Api::aduan_getbystatus/$1');
+$routes->get('/api/aduan/year/(:num)', 'Api::aduan_getByYear/$1');
+$routes->get('/api/aduan/chart/year/(:num)', 'Api::aduan_chartYearly/$1');
+
+$routes->post('/api/aduan/create', 'Api::aduan_create');
+
+$routes->post('/api/aduan/update', 'Api::aduan_update');
+$routes->put('/api/aduan/status/update', 'Api::aduan_updatestts');
+
+$routes->delete('/api/aduan/delete/(:num)', 'Api::aduan_delete/$1');
+
 
 /*
  * --------------------------------------------------------------------

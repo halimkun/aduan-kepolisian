@@ -15,7 +15,7 @@ class Auth extends \Myth\Auth\Config\Auth
      *
      * @var string
      */
-    public $defaultUserGroup;
+    public $defaultUserGroup='pengguna';
 
     /**
      * --------------------------------------------------------------------
@@ -173,7 +173,7 @@ class Auth extends \Myth\Auth\Config\Auth
      *
      * @var bool
      */
-    public $allowRegistration = true;
+    public $allowRegistration = false;
 
     /**
      * --------------------------------------------------------------------
@@ -185,7 +185,8 @@ class Auth extends \Myth\Auth\Config\Auth
      *
      * @var string|null Name of the ActivatorInterface class
      */
-    public $requireActivation = 'Myth\Auth\Authentication\Activators\EmailActivator';
+    // public $requireActivation = 'Myth\Auth\Authentication\Activators\EmailActivator';
+    public $requireActivation = false;
 
     /**
      * --------------------------------------------------------------------
@@ -198,6 +199,7 @@ class Auth extends \Myth\Auth\Config\Auth
      * @var string|null Name of the ResetterInterface class
      */
     public $activeResetter = 'Myth\Auth\Authentication\Resetters\EmailResetter';
+    // public $activeResetter = false;
 
     /**
      * --------------------------------------------------------------------
