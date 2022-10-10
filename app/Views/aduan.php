@@ -146,7 +146,7 @@
 <link rel="stylesheet" href="<?= base_url('assets/modules/datatables/datatables.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css') ?>">
-<link rel="stylesheet" href="<?= base_url('assets/modules/chocolat/dist/css/chocolat.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/modules/chocolat/css/chocolat.css') ?>">
 <?= $this->endSection(); ?>
 
 <?= $this->section('bottomLibrary'); ?>
@@ -159,11 +159,11 @@
 <?= $this->include('/Components/modal/edit_status'); ?>
 
 <!-- JS Libraies -->
-<script src="<?= base_url('assets/modules/select2/dist/js/select2.full.min.js') ?>"></script>
+<script src="<?= base_url('assets/modules/select2/js/select2.full.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/datatables.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
-<script src="<?= base_url('assets/modules/chocolat/dist/js/jquery.chocolat.min.js') ?>"></script>
+<script src="<?= base_url('assets/modules/chocolat/js/jquery.chocolat.min.js') ?>"></script>
 
 <script>
     $(document).ready(function() {

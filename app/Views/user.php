@@ -119,7 +119,7 @@
 <script src="<?= base_url('assets/modules/datatables/datatables.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
-<script src="<?= base_url('assets/modules/select2/dist/js/select2.full.min.js') ?>"></script>
+<script src="<?= base_url('assets/modules/select2/js/select2.full.min.js') ?>"></script>
 <!-- validation -->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>

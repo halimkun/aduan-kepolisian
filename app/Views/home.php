@@ -80,7 +80,7 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('bottomLibrary'); ?>
-<script src="<?= base_url('assets/modules/select2/dist/js/select2.full.min.js') ?>"></script>
+<script src="<?= base_url('assets/modules/select2/js/select2.full.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/chart.min.js') ?>"></script>
 
 <script>

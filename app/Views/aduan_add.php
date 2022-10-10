@@ -129,7 +129,7 @@
 
 <?= $this->section('bottomLibrary'); ?>
 <!-- JS Libraies -->
-<script src="<?= base_url('assets/modules/select2/dist/js/select2.full.min.js') ?>"></script>
+<script src="<?= base_url('assets/modules/select2/js/select2.full.min.js') ?>"></script>
 
 <script>
     $(document).ready(function() {
