@@ -76,7 +76,7 @@
 
 <?= $this->section('topLibrary'); ?>
 <!-- CSS Libraies -->
-<link rel="stylesheet" href="<?= base_url('assets/modules/select2/dist/css/select2.min.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/modules/select2/css/select2.min.css') ?>">
 <?= $this->endSection(); ?>
 
 <?= $this->section('bottomLibrary'); ?>
