@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/user/store" method="post" id="formTambahUser" autocomplete="off">
+                <form action="<?= base_url('/user/store') ?>" method="post" id="formTambahUser" autocomplete="off">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">

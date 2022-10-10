@@ -16,7 +16,7 @@
                     <hr>
                     password akan dikembalikan menjadi password default. <kbd>Password Default</kbd> user adalah tanggal lahir dengan format (ddmmyyyy), contoh <code>05121998</code>
                 </div>
-                <form action="/user/updatePass" method="post" autocomplete="off">
+                <form action="<?= base_url('/user/updatePass') ?>" method="post" autocomplete="off">
                     <input type="hidden" id="ud" name="user_detail" value="">
                     <input type="hidden" id="np" name="np" value="">
                     <div class="float-right">

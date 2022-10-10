@@ -12,7 +12,7 @@
                     Anda akan merubah status aduan<br />dengan nomor aduan : <span id="una"></span>
                 </h6>
 
-                <form action="/aduan/update_stts" method="post" class="mt-4">
+                <form action="<?= base_url('/aduan/update_stts') ?>" method="post" class="mt-4">
                     <input type="hidden" id="data" name="data">
                     <div class="form-group">
                         <div class="form-label">Pilih Status</div>

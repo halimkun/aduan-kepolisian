@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/user/update" method="post" id="formEditUser" autocomplete="off">
+                <form action="<?= base_url('/user/update') ?>" method="post" id="formEditUser" autocomplete="off">
                     <input type="hidden" name="user_detail" id="user_detail">
                     <div class="row">
                         <div class="col-md-6">
