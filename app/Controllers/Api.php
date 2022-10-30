@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\AduanModel;
 use App\Models\UserModel;
+use App\Entities\User as EntitiesUser;
 
 class Api extends BaseController
 {
@@ -12,6 +13,9 @@ class Api extends BaseController
     protected $um;
     protected $ac;
     protected $uc;
+
+    // -----------
+    protected $attLogin;
 
     public function __construct()
     {
@@ -35,7 +39,91 @@ class Api extends BaseController
         ]);
     }
 
-    // create new aduan
+    public function login()
+    {
+        $auth   = service('authentication');
+
+        $login = $this->request->getPost('login');
+        $password = $this->request->getPost('password');
+        $type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        $this->attLogin = false;
+
+        if ($auth->attempt([$type => $login, 'password' => $password])) {
+            $this->attLogin = true;
+        }
+
+        if ($this->attLogin) {
+            $user = $this->um->where($type, $login)->first();
+            $role = $this->um->getRole($user->id);
+
+            if ($user->active) {
+                return $this->response->setJSON([
+                    'code' => 200,
+                    'success' => true,
+                    'message' => 'Login berhasil',
+                    'data' => [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'email' => $user->email,
+                        'nama' => $user->nama,
+                        'role' => $role->name,
+                        'active' => $user->active,
+                    ],
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'code' => 406,
+                    'success' => false,
+                    'message' => 'Akun anda belum aktif, silahkan hubungi admin.',
+                ]);
+            }
+        } else {
+            return $this->response->setJSON([
+                'code' => 401,
+                'success' => false,
+                'message' => 'Login gagal, nampaknya ada yang salah.',
+            ]);
+        }
+    }
+
+    public function reset_password()
+    {
+        $email = $this->request->getPost('email');
+        $user = $this->um->where('email', $email)->first();
+
+
+        if ($user) {
+            $tanggal_lahir = strtotime($user->tanggal_lahir);
+            $tanggal_lahir = date('dmY', $tanggal_lahir);
+
+            $data = new EntitiesUser([
+                'id' => $user->id,
+                'password' => $tanggal_lahir,
+            ]);
+
+            if ($this->um->save($data)) {
+                return $this->response->setJSON([
+                    'code' => 200,
+                    'success' => true,
+                    'message' => 'Password berhasil direset sesuai dengan format yang ditentukan.',
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'code' => 406,
+                    'success' => false,
+                    'message' => 'Password gagal direset, nampaknya ada yang salah.',
+                ]);
+            }
+        } else {
+            return $this->response->setJSON([
+                'code' => 406,
+                'success' => false,
+                'message' => 'Email tidak terdaftar.',
+            ]);
+        }
+    }
+
     public function aduan_create()
     {
         $bukti = $this->request->getFile('foto_aduan');
@@ -67,12 +155,11 @@ class Api extends BaseController
                 'message' => 'Aduan gagal ditambahkan, nampaknya ada yang salah.',
             ]);
         }
-        
     }
 
-    public function aduan_getall()
+    public function getAllAduanByUserId($user_id)
     {
-        $aduan = $this->ac->getAll();
+        $aduan = $this->am->where('user_id', $user_id)->findAll();
 
         return $this->response->setJSON([
             'code' => 200,
@@ -81,9 +168,19 @@ class Api extends BaseController
         ]);
     }
 
-    public function aduan_getlatest()
+    public function aduan_getall($uid)
     {
-        $aduan = $this->ac->getLatest();
+        $aduan = $this->am->where('user_id', $uid)->findAll();
+        return $this->response->setJSON([
+            'code' => 200,
+            'success' => true,
+            'data' => $aduan,
+        ]);
+    }
+
+    public function aduan_getlatest($uid)
+    {
+        $aduan = $this->am->where('user_id', $uid)->first();
 
         return $this->response->setJSON([
             'code' => 200,
@@ -92,7 +189,7 @@ class Api extends BaseController
         ]);
     }
 
-    public function aduan_getbynum($nomor)
+    public function aduan_getbynomor($nomor)
     {
         $aduan = $this->ac->getByNum($nomor);
 
@@ -103,9 +200,9 @@ class Api extends BaseController
         ]);
     }
 
-    public function aduan_getbyjenis($jenis)
+    public function aduan_getbyjenis($uid, $jenis)
     {
-        $aduan = $this->ac->getByJenis($jenis);
+        $aduan = $this->am->where('user_id', $uid)->where('jenis', $jenis)->findAll();
 
         return $this->response->setJSON([
             'code' => 200,
@@ -114,10 +211,9 @@ class Api extends BaseController
         ]);
     }
 
-    public function aduan_getbystatus($status)
+    public function aduan_getbystatus($uid, $status)
     {
-        $aduan = $this->ac->getByStatus($status);
-
+        $aduan = $this->am->where('user_id', $uid)->where('status', $status)->findAll();
         return $this->response->setJSON([
             'code' => 200,
             'success' => true,
@@ -125,9 +221,9 @@ class Api extends BaseController
         ]);
     }
 
-    public function aduan_getByYear($year)
+    public function aduan_getByYear($uid, $year)
     {
-        $aduan = $this->ac->getByYear($year);
+        $aduan = $this->am->where('user_id', $uid)->where('YEAR(tanggal)', $year)->orderBy('tanggal', 'DESC')->findAll();
 
         return $this->response->setJSON([
             'code' => 200,
@@ -163,7 +259,7 @@ class Api extends BaseController
             'lokasi' => $data['lokasi'],
             'keterangan' => $data['keterangan'],
         ];
-        
+
         if ($this->am->save($ready)) {
             return $this->response->setJSON([
                 'code' => 200,
@@ -202,7 +298,6 @@ class Api extends BaseController
         }
     }
 
-    // delete aduan
     public function aduan_delete($nomor)
     {
         $aduan = $this->am->where('nomor', $nomor)->first();

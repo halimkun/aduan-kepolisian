@@ -41,13 +41,17 @@ $routes->delete('/user/delete/(:num)', 'User::delete/$1');
 $routes->get('/admin/aduan/add', 'Admin::aduan_add');
 
 // Api Endpoints (Aduan)
+$routes->post('/api/login', 'Api::login');
+$routes->post('/api/reset-password', 'Api::reset_password');
+
 $routes->get('/api/aduan', 'Api::aduan');
-$routes->get('/api/aduan/all', 'Api::aduan_getall');
-$routes->get('/api/aduan/new', 'Api::aduan_getlatest');
-$routes->get('/api/aduan/(:num)', 'Api::aduan_getbynum/$1');
-$routes->get('/api/aduan/cat/(:any)', 'Api::aduan_getbyjenis/$1');
-$routes->get('/api/aduan/status/(:any)', 'Api::aduan_getbystatus/$1');
-$routes->get('/api/aduan/year/(:num)', 'Api::aduan_getByYear/$1');
+$routes->get('/api/aduan/(:num)/all', 'Api::aduan_getall/$1');
+$routes->get('/api/aduan/(:num)/new', 'Api::aduan_getlatest/$1');
+$routes->get('/api/aduan/(:num)/cat/(:any)', 'Api::aduan_getbyjenis/$1/$2');
+$routes->get('/api/aduan/(:num)/status/(:any)', 'Api::aduan_getbystatus/$1/$2');
+$routes->get('/api/aduan/(:num)/year/(:num)', 'Api::aduan_getByYear/$1/$2');
+
+$routes->get('/api/aduan/(:num)', 'Api::aduan_getbynomor/$1');
 $routes->get('/api/aduan/chart/year/(:num)', 'Api::aduan_chartYearly/$1');
 
 $routes->post('/api/aduan/create', 'Api::aduan_create');

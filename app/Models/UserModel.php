@@ -80,6 +80,17 @@ class UserModel extends Model
         return $this;
     }
 
+    // get role
+    public function getRole($id)
+    {
+        $builder = $this->db->table('auth_groups_users');
+        $builder->select('auth_groups.name');
+        $builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $builder->where('auth_groups_users.user_id', $id);
+        $query = $builder->get();
+        return $query->getRow();
+    }
+
     /**
      * Clears the group to assign to newly created users.
      *
