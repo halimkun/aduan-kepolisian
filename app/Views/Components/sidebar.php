@@ -15,7 +15,9 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-info"></i> <span>Aduan</span></a>
                 <ul class="dropdown-menu">
                     <li class="<?= makeActiveSidebar3('aduan') ?>"><a class="nav-link" href="<?= base_url('admin/aduan') ?>">Daftar Aduan</a></li>
-                    <li class="<?= makeActiveSidebar3('add') ?>"><a class="nav-link" href="<?= base_url('admin/aduan/add') ?>">Tambah Aduan</a></li>
+                    <?php if (isset($tambah_aduan) && $tambah_aduan) : ?>
+                        <li class="<?= makeActiveSidebar3('add') ?>"><a class="nav-link" href="<?= base_url('admin/aduan/add') ?>">Tambah Aduan</a></li>
+                    <?php endif ?>
                 </ul>
             </li>
             <li class="<?= makeActiveSidebar('user') ?>"><a class="nav-link" href="<?= base_url('admin/user') ?>"><i class="fas fa-users"></i> <span>User</span></a></li>

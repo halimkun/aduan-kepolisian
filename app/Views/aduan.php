@@ -16,11 +16,13 @@
         <div class="card shadow rounded">
             <div class="card-header">
                 <h4>Daftar Aduan</h4>
-                <div class="card-header-action">
-                    <button class="btn btn-sm btn-icon btn-primary shadow-sm" data-toggle="modal" data-target="#tambahAduan">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
+                <?php if ($tambah_aduan) : ?>
+                    <div class="card-header-action">
+                        <button class="btn btn-sm btn-icon btn-primary shadow-sm" data-toggle="modal" data-target="#tambahAduan">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                <?php endif ?>
             </div>
             <div class="card-body">
                 <?php if ($agent->isMobile()) : ?>
@@ -154,7 +156,10 @@
     $.fn.modal.Constructor.prototype._enforceFocus = function() {};
 </script>
 
-<?= $this->include('/Components/modal/tambah_aduan'); ?>
+<?php if (isset($tambah_aduan) && $tambah_aduan) : ?>
+    <?= $this->include('/Components/modal/tambah_aduan'); ?>
+<?php endif ?>
+<!--- Tambah Aduan Model --->
 <?= $this->include('/Components/modal/detail_aduan'); ?>
 <?= $this->include('/Components/modal/edit_status'); ?>
 
@@ -168,18 +173,85 @@
 <script>
     $(document).ready(function() {
         /** data table initialize */
-        var table=$("#tableAduan").DataTable({responsive:!0,dom:"Brtp",buttons:[{extend:"copy",text:"Copy",className:"btn btn-sm btn-icon btn-secondary text-dark shadow-sm",exportOptions:{columns:[1,2,3,4,5,6,7,8]}},{extend:"excel",text:"Excel",className:"btn btn-sm btn-icon btn-secondary text-dark shadow-sm",exportOptions:{columns:[1,2,3,4,5,6,7,8]}},{extend:"print",text:"Print",className:"btn btn-sm btn-icon btn-secondary text-dark shadow-sm",exportOptions:{columns:[1,2,3,4,5,6,7,8]}}]});
+        var table = $("#tableAduan").DataTable({
+            responsive: !0,
+            dom: "Brtp",
+            buttons: [{
+                extend: "copy",
+                text: "Copy",
+                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                }
+            }, {
+                extend: "excel",
+                text: "Excel",
+                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                }
+            }, {
+                extend: "print",
+                text: "Print",
+                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                }
+            }]
+        });
 
-        $("#filterSearch").on("keyup",(function(){table.search(this.value).draw()})),$("#filterStatus").on("change",(function(){table.column(2).search(this.value).draw()})),$("#filterTgl").on("change",(function(){table.column(4).search(this.value).draw()})),$("#filterJenis").on("change",(function(){table.column(5).search(this.value).draw()}));
+        $("#filterSearch").on("keyup", (function() {
+            table.search(this.value).draw()
+        })), $("#filterStatus").on("change", (function() {
+            table.column(2).search(this.value).draw()
+        })), $("#filterTgl").on("change", (function() {
+            table.column(4).search(this.value).draw()
+        })), $("#filterJenis").on("change", (function() {
+            table.column(5).search(this.value).draw()
+        }));
 
         /** get data aduan dan user */
-        async function getAduanData(a){return await $.ajax({url:"<?= base_url('/aduan/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}async function getUserData(a){return await $.ajax({url:"<?= base_url('/user/getById') ?>",type:"POST",data:{id:a},dataType:"JSON"})}
+        async function getAduanData(a) {
+            return await $.ajax({
+                url: "<?= base_url('/aduan/getById') ?>",
+                type: "POST",
+                data: {
+                    id: a
+                },
+                dataType: "JSON"
+            })
+        }
+        async function getUserData(a) {
+            return await $.ajax({
+                url: "<?= base_url('/user/getById') ?>",
+                type: "POST",
+                data: {
+                    id: a
+                },
+                dataType: "JSON"
+            })
+        }
 
         /** hanle create */
-        $(".user_select").on("change",(async function(){var a=$(this).val();if($(".load_user_input").show(),"-"==a)$("#tambahAduan #pekerjaan").val(""),$("#tambahAduan #jenis_kelamin").val(""),$("#tambahAduan #tanggal_lahir").val(""),$("#tambahAduan #alamat").val(""),$(".load_user_input").hide();else{const t=await getUserData(a);setTimeout((()=>{"success" == t.status ? ($("#tambahAduan #pekerjaan").val(t.data.pekerjaan), $("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin), $("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir), $("#tambahAduan #tempat_lahir").val(t.data.tempat_lahir), $("#tambahAduan #agama").val(t.data.agama), $("#tambahAduan #nomor_hp").val(t.data.nomor_hp), $("#tambahAduan #alamat").val(t.data.alamat)) : alert("Gagal mengambil data user"), $(".load_user_input").hide()}),1e3)}}));
+        $(".user_select").on("change", (async function() {
+            var a = $(this).val();
+            if ($(".load_user_input").show(), "-" == a) $("#tambahAduan #pekerjaan").val(""), $("#tambahAduan #jenis_kelamin").val(""), $("#tambahAduan #tanggal_lahir").val(""), $("#tambahAduan #alamat").val(""), $(".load_user_input").hide();
+            else {
+                const t = await getUserData(a);
+                setTimeout((() => {
+                    "success" == t.status ? ($("#tambahAduan #pekerjaan").val(t.data.pekerjaan), $("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin), $("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir), $("#tambahAduan #tempat_lahir").val(t.data.tempat_lahir), $("#tambahAduan #agama").val(t.data.agama), $("#tambahAduan #nomor_hp").val(t.data.nomor_hp), $("#tambahAduan #alamat").val(t.data.alamat)) : alert("Gagal mengambil data user"), $(".load_user_input").hide()
+                }), 1e3)
+            }
+        }));
 
         /** handle update status */
-        $("#tableAduan tbody").on("click","tr td#row_action",(function(){const t=$("#ubahStatusAduan");var a=table.row(this).data(),d=$(this).parent().find("td#row_status").data("stts"),n=$(this).parent().find("td#row_status").data("dt");t.find("#una").empty().append(a[1]),t.find("#status").val(d),t.find("#data").val(n),t.modal("toggle")}));
+        $("#tableAduan tbody").on("click", "tr td#row_action", (function() {
+            const t = $("#ubahStatusAduan");
+            var a = table.row(this).data(),
+                d = $(this).parent().find("td#row_status").data("stts"),
+                n = $(this).parent().find("td#row_status").data("dt");
+            t.find("#una").empty().append(a[1]), t.find("#status").val(d), t.find("#data").val(n), t.modal("toggle")
+        }));
 
         <?php if (!$agent->isMobile()) : ?>
             const modalDetail = $("#detailAduan");
@@ -187,7 +259,7 @@
                 modalDetail.modal('toggle');
 
                 $(".load_data_detail").show();
-                
+
                 modalDetail.find(".dLaporan").empty();
                 modalDetail.find(".dPelapor").empty();
                 modalDetail.find(".judulLaporan").empty()
@@ -210,7 +282,16 @@
                     modalDetail.find(".dLaporan").append(detailLaporan);
                     modalDetail.find(".dPelapor").append(detailPelapor);
 
-                    const me=$(".gallery .gallery-item");me.attr("href",me.data("image")),me.attr("title",me.data("title")),me.parent().hasClass("gallery-md")&&me.css({height:me.parent().data("item-height"),width:me.parent().data("item-height")}),me.css({backgroundImage:'url("'+me.data("image")+'")'}),jQuery().Chocolat&&($(".gallery").Chocolat({className:"gallery",imageSelector:".gallery-item"}));
+                    const me = $(".gallery .gallery-item");
+                    me.attr("href", me.data("image")), me.attr("title", me.data("title")), me.parent().hasClass("gallery-md") && me.css({
+                        height: me.parent().data("item-height"),
+                        width: me.parent().data("item-height")
+                    }), me.css({
+                        backgroundImage: 'url("' + me.data("image") + '")'
+                    }), jQuery().Chocolat && ($(".gallery").Chocolat({
+                        className: "gallery",
+                        imageSelector: ".gallery-item"
+                    }));
 
                     $(".load_data_detail").hide();
                 }, 1000);

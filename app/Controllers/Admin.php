@@ -3,16 +3,22 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use Config\Services;
 
 class Admin extends BaseController
 {
     protected $userModel;
     protected $aduanModel;
 
+    protected $tmbhAduan;
+
     public function __construct()
     {
         $this->userModel = new \App\Models\UserModel();
         $this->aduanModel = new \App\Models\AduanModel();
+
+        $route = Services::routes();
+        $this->tmbhAduan = array_key_exists('admin/aduan/add', $route->getRoutes());
     }
 
     public function index()
@@ -28,6 +34,7 @@ class Admin extends BaseController
             'aduan' => $this->aduanModel->findAll(),
             'aduan_terbaru' => $this->aduanModel->where('DATE(tanggal)', date('Y-m-d'))->findAll(),
             'tahun' => $this->aduanModel->select('YEAR(tanggal) as tahun')->groupBy('YEAR(tanggal)')->orderBy('YEAR(tanggal)', 'DESC')->findAll(),
+            'tambah_aduan' => $this->tmbhAduan
         ]);
     }
 
@@ -37,7 +44,8 @@ class Admin extends BaseController
             'segments' => $this->request->uri->getSegments(),
             'users' => $this->userModel->findAll(),
             'aduan' => $this->aduanModel->orderBy('tanggal', "DESC")->findAll(),
-            'agent' => $this->request->getUserAgent()
+            'agent' => $this->request->getUserAgent(),
+            'tambah_aduan' => $this->tmbhAduan
         ]);
     }
 
@@ -47,7 +55,8 @@ class Admin extends BaseController
             'segments' => $this->request->uri->getSegments(),
             'users' => $this->userModel->findAll(),
             'aduan' => $this->aduanModel->orderBy('tanggal', "DESC")->findAll(),
-            'agent' => $this->request->getUserAgent()
+            'agent' => $this->request->getUserAgent(),
+            'tambah_aduan' => $this->tmbhAduan
         ]);
     }
 
@@ -57,6 +66,7 @@ class Admin extends BaseController
             'title' => 'User',
             'segments' => $this->request->uri->getSegments(),
             'users' => $this->userModel->findAll(),
+            'tambah_aduan' => $this->tmbhAduan
         ];
 
         return view('user', $data);
