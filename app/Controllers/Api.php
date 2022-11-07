@@ -14,6 +14,8 @@ class Api extends BaseController
     protected $ac;
     protected $uc;
 
+    protected $config;
+
     // -----------
     protected $attLogin;
 
@@ -23,6 +25,8 @@ class Api extends BaseController
         $this->um = new UserModel();
         $this->ac = new \App\Controllers\Aduan();
         $this->uc = new \App\Controllers\User();
+
+        $this->config = config('Auth');
     }
 
     public function index()
@@ -83,6 +87,56 @@ class Api extends BaseController
                 'code' => 401,
                 'success' => false,
                 'message' => 'Login gagal, nampaknya ada yang salah.',
+            ]);
+        }
+    }
+
+    public function register()
+    {
+        $data = [
+            'email' => $this->request->getPost('email'),
+            'username' => $this->request->getPost('username'),
+            'nama' => $this->request->getPost('nama'),
+            'tempat_lahir' => $this->request->getPost('tempat_lahir'),
+            'tanggal_lahir' => $this->request->getPost('tanggal_lahir'),
+            'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+            'agama' => $this->request->getPost('agama'),
+            'pekerjaan' => $this->request->getPost('pekerjaan'),
+            'alamat' => $this->request->getPost('alamat'),
+            'nomor_hp' => $this->request->getPost('nomor_hp'),
+
+            'password' => date('dmY', strtotime($this->request->getPost('tanggal_lahir'))),
+            'active' => 1
+        ];
+
+        $tanggal_lahir = strtotime($data['tanggal_lahir']);
+        $tanggal_lahir = date('Y-m-d', $tanggal_lahir);
+
+        $data['tanggal_lahir'] = $tanggal_lahir;
+
+        $checkEmail = $this->um->where('email', $data['email'])->first();
+        $checkUsername = $this->um->where('username', $data['username'])->first();
+
+        if ($checkEmail) {
+            return $this->response->setJSON([
+                'code' => 406,
+                'success' => false,
+                'message' => 'Email sudah terdaftar, silahkan gunakan email lain.',
+            ]);
+        } elseif ($checkUsername) {
+            return $this->response->setJSON([
+                'code' => 406,
+                'success' => false,
+                'message' => 'Username sudah terdaftar, silahkan gunakan username lain.',
+            ]);
+        } else {
+            $user = new EntitiesUser($data);
+            $this->um->withGroup($this->config->defaultUserGroup)->insert($user);
+
+            return $this->response->setJSON([
+                'code' => 200,
+                'success' => true,
+                'message' => 'Pendaftaran berhasil, silahkan login.',
             ]);
         }
     }

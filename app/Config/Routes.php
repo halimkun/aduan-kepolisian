@@ -90,10 +90,11 @@ $routes->group('api', function ($api) {
     $api->get('aduan/(:num)', 'Api::aduan_getbynomor/$1');
     $api->get('aduan/chart/year/(:num)', 'Api::aduan_chartYearly/$1');
     
-    $api->post('aduan/create', 'Api::aduan_create');
     $api->post('login', 'Api::login');
-    $api->post('reset-password', 'Api::reset_password');
+    $api->post('register', 'Api::register');
+    $api->post('aduan/create', 'Api::aduan_create');
     $api->post('aduan/update', 'Api::aduan_update');
+    $api->post('reset-password', 'Api::reset_password');
 
     $api->put('aduan/status/update', 'Api::aduan_updatestts');
     
