@@ -146,7 +146,6 @@ class Api extends BaseController
         $email = $this->request->getPost('email');
         $user = $this->um->where('email', $email)->first();
 
-
         if ($user) {
             $tanggal_lahir = strtotime($user->tanggal_lahir);
             $tanggal_lahir = date('dmY', $tanggal_lahir);
@@ -168,6 +167,43 @@ class Api extends BaseController
                     'success' => false,
                     'message' => 'Password gagal direset, nampaknya ada yang salah.',
                 ]);
+            }
+        } else {
+            return $this->response->setJSON([
+                'code' => 406,
+                'success' => false,
+                'message' => 'Email tidak terdaftar.',
+            ]);
+        }
+    }
+
+    public function repass()
+    {
+        $email = $this->request->getPost('email');
+        $pass = $this->request->getPost('password');
+
+        $user = $this->um->where('email', $email)->first();
+        
+        if ($user) {
+            if ($pass !== '' | !empty($pass) || $pass !== null) {
+               $data = new EntitiesUser([
+                    'id' => $user->id,
+                    'password' => $pass,
+                ]);
+
+                if ($this->um->save($data)) {
+                    return $this->response->setJSON([
+                        'code' => 200,
+                        'success' => true,
+                        'message' => 'Password berhasil direset.',
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'code' => 406,
+                        'success' => false,
+                        'message' => 'Password gagal direset, nampaknya ada yang salah.',
+                    ]);
+                }
             }
         } else {
             return $this->response->setJSON([

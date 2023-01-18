@@ -95,6 +95,7 @@ $routes->group('api', function ($api) {
     $api->post('aduan/create', 'Api::aduan_create');
     $api->post('aduan/update', 'Api::aduan_update');
     $api->post('reset-password', 'Api::reset_password');
+    $api->post('repass', 'Api::repass');
 
     $api->put('aduan/status/update', 'Api::aduan_updatestts');
     
