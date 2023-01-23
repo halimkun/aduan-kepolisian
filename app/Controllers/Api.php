@@ -179,37 +179,56 @@ class Api extends BaseController
 
     public function repass()
     {
-        $email = $this->request->getPost('email');
-        $pass = $this->request->getPost('password');
-
-        $user = $this->um->where('email', $email)->first();
+        $p = new \Myth\Auth\Password();
         
-        if ($user) {
-            if ($pass !== '' | !empty($pass) || $pass !== null) {
-               $data = new EntitiesUser([
-                    'id' => $user->id,
-                    'password' => $pass,
-                ]);
+        $email = $this->request->getPost('email');
+        $pass_lama = $this->request->getPost('pass_lama');
+        $pass_baru = $this->request->getPost('pass_baru');
 
-                if ($this->um->save($data)) {
-                    return $this->response->setJSON([
-                        'code' => 200,
-                        'success' => true,
-                        'message' => 'Password berhasil direset.',
+        $user = $this->um->where([
+            'email' => $email,
+        ])->first();
+
+        if ($user) {
+            if ($pass_baru !== '' | !empty($pass_baru) || $pass_baru !== null) {
+                if($p->verify($pass_lama, $user->password_hash)) {
+                    $data = new EntitiesUser([
+                        'id' => $user->id,
+                        'password' => $pass_baru,
                     ]);
+    
+                    if ($this->um->save($data)) {
+                        return $this->response->setJSON([
+                            'code' => 200,
+                            'success' => true,
+                            'message' => 'Password berhasil direset.',
+                        ]);
+                    } else {
+                        return $this->response->setJSON([
+                            'code' => 406,
+                            'success' => false,
+                            'message' => 'Password gagal direset, nampaknya ada yang salah.',
+                        ]);
+                    }
                 } else {
                     return $this->response->setJSON([
                         'code' => 406,
                         'success' => false,
-                        'message' => 'Password gagal direset, nampaknya ada yang salah.',
+                        'message' => 'Password lama tidak sesuai.',
                     ]);
                 }
+            } else {
+                return $this->response->setJSON([
+                    'code' => 406,
+                    'success' => false,
+                    'message' => 'Password baru tidak boleh kosong.',
+                ]);
             }
         } else {
             return $this->response->setJSON([
                 'code' => 406,
                 'success' => false,
-                'message' => 'Email tidak terdaftar.',
+                'message' => 'Informasi yang anda masukkan salah, Pastikan email dan password lama anda benar',
             ]);
         }
     }
