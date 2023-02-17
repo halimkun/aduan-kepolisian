@@ -14,7 +14,7 @@
     <?= $this->include('Components/top_script'); ?>
 </head>
 
-<body onresize="location.reload();">
+<body class="theme-<?= userColor() ?>">
     <?= $this->include('Components/settings') ;?>
     <div id="app">
         <div class="main-wrapper">

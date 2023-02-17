@@ -18,7 +18,7 @@
                 <h4>Daftar Aduan</h4>
                 <?php if ($tambah_aduan) : ?>
                     <div class="card-header-action">
-                        <button class="btn btn-sm btn-icon btn-primary shadow-sm" data-toggle="modal" data-target="#tambahAduan">
+                        <button class="btn btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-toggle="modal" data-target="#tambahAduan">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -27,7 +27,7 @@
             <div class="card-body">
                 <?php if ($agent->isMobile()) : ?>
                     <div class="text-right">
-                        <button class="btn btn-primary btn-sm mb-3 shadow-sm" type="button" data-toggle="collapse" data-target="#colFilter" aria-expanded="false" aria-controls="colFilter">
+                        <button class="btn btn-<?= userColor() ?> btn-sm mb-3 shadow-sm" type="button" data-toggle="collapse" data-target="#colFilter" aria-expanded="false" aria-controls="colFilter">
                             <i class="fa fa-filter mr-2"></i>Filter
                         </button>
                     </div>
@@ -101,7 +101,7 @@
                                 <td id="row_lokasi"><?= $item->lokasi ?></td>
                                 <td id="row_keterangan"><?= $item->keterangan ?></td>
                                 <td id="row_action">
-                                    <button class="btn btn-update-status btn-sm btn-icon btn-primary shadow-sm" data-item="<?= $item->id ?>" title="Update Status Aduan">
+                                    <button class="btn btn-update-status btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-item="<?= $item->id ?>" title="Update Status Aduan">
                                         <i class="fas fa-tag"></i>
                                     </button>
                                 </td>

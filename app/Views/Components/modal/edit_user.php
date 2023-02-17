@@ -77,7 +77,7 @@
                         <textarea name="alamat" id="alamat" class="form-control" style="height: 136px;"></textarea>
                     </div>
                     <div class="float-right">
-                        <button type="submit" class="btn btn-primary shadow-sm">SIMPAN</button>
+                        <button type="submit" class="btn btn-<?= userColor() ?> shadow-sm">SIMPAN</button>
                     </div>
                 </form>
             </div>

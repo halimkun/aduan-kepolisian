@@ -53,7 +53,7 @@
             </div>
 
             <div class="card card-statistic-2">
-                <div class="card-icon bg-primary">
+                <div class="card-icon bg-<?= userColor() ?>">
                     <i class="far fa-user"></i>
                 </div>
                 <div class="card-wrap">

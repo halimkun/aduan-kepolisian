@@ -21,7 +21,7 @@
                     <input type="hidden" id="np" name="np" value="">
                     <div class="float-right">
                         <button type="button" class="btn btn-secondary text-dark shadow-sm" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary shadow-sm">Yakin</button>
+                        <button type="submit" class="btn btn-<?= userColor() ?> shadow-sm">Yakin</button>
                     </div>
                 </form>
             </div>

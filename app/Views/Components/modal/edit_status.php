@@ -25,7 +25,7 @@
                         </select>
                     </div>
                     <div class="float-right">
-                        <button type="submit" class="btn btn-primary btn-sm btn-icon shadow-sm"><i class="fa fa-save mr-2"></i>SIMPAN</button>
+                        <button type="submit" class="btn btn-<?= userColor() ?> btn-sm btn-icon shadow-sm"><i class="fa fa-save mr-2"></i>SIMPAN</button>
                     </div>
                 </form>
             </div>

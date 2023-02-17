@@ -111,7 +111,7 @@
                 </div>
             </div>
             <div class="float-right">
-                <button type="submit" class="btn btn-primary shadow"><i class="fa fa-save"></i> SIMPAN</button>
+                <button type="submit" class="btn btn-<?= userColor() ?> shadow"><i class="fa fa-save"></i> SIMPAN</button>
             </div>
         </form>
     </div>
