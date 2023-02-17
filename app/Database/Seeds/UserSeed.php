@@ -11,6 +11,7 @@ class UserSeed extends Seeder
     {
         $this->db->table('auth_groups')->insertBatch([
             [ "name"        => 'admin', "description" => 'site administration'],
+            [ "name"        => 'petugas', "description" => 'petugas pelayanan'],
             [ "name"        => 'pengguna', "description" => 'general user'],
         ]);
         

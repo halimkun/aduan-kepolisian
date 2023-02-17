@@ -17,7 +17,7 @@
             <div class="card-header">
                 <h4>Data Pengguna</h4>
                 <div class="card-header-action">
-                    <button class="btn btn-primary shadow-sm" data-toggle="modal" data-target="#tambahPengguna">
+                    <button class="btn btn-<?= userColor() ?> shadow-sm" data-toggle="modal" data-target="#tambahPengguna">
                         <i class="fas fa-plus"></i>
                         Pengguna
                     </button>
@@ -34,6 +34,9 @@
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Username</th>
+                                    <?php if (in_array('admin', user()->getRoles())) : ?>
+                                        <th><i class="fa fa-user-cog"></i></th>
+                                    <?php endif ?>
                                     <th><i class="fa fa-cogs"></i></th>
                                 </tr>
                             </thead>
@@ -44,9 +47,15 @@
                                     <tr>
                                         <td><?= $i++ ?></td>
                                         <td><?= badgeGen(end($roles)) ?></td>
-                                        <td><?= $user->nama ?></td>
+                                        <td><img src="/assets/img/avatar/avatar-1.png" alt="profile" height="20" width="20" class="img-fluid rounded-circle mr-2"><?= $user->nama ?></td>
                                         <td><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
                                         <td><?= $user->username ?></td>
+                                        <?php if (in_array('admin', user()->getRoles())) : ?>
+                                            <!-- TRUE -->
+                                            <td>
+                                                <button class="btn btn-light shadow-sm btn-sm text-dark btn-roles" data-user="<?= $user->id ?>" data-toggle="modal" data-target="#gantiRoles" title="Ubag Group Pengguna" <?= end($roles) !== 'admin' ? '' : 'disabled' ?>><i class="fa fa-list"></i></button>
+                                            </td>
+                                        <?php endif ?>
                                         <td>
                                             <button class="btn btn-sm btn-info shadow-sm btn-edit" title="edit user" data-user="<?= $user->id ?>" data-toggle="modal" data-target="#editPengguna">
                                                 <i class="fa fa-pen"></i>
@@ -56,11 +65,25 @@
                                                 <i class="fa fa-key"></i>
                                             </button>
 
-                                            <?php if (!in_array('admin', $roles)) : ?>
-                                                <button class="btn btn-sm btn-danger shadow-sm" title="hapus data user" data-confirm="Woops...|Apakah anda yakin akan menghapus data <b><?= $user->nama ?></b>" data-confirm-yes="$.ajax({ url: '/user/delete/<?= $user->id ?>', type: 'DELETE', data: {'id' : <?= $user->id ?>}, success: function(result) { window.location.href='/admin/user'; } });">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            <?php endif ?>
+                                            <?php 
+                                                if (in_array('admin', user()->getRoles())) {
+                                                    if (in_array('admin', $roles)) {
+                                                        $deldis = 'disabled';
+                                                    } else {
+                                                        $deldis = '';
+                                                    }
+                                                } elseif (in_array('petugas', user()->getRoles())) {
+                                                    if (in_array('admin', $roles) || in_array('petugas', $roles)) {
+                                                        $deldis = 'disabled';
+                                                    } else {
+                                                        $deldis = '';
+                                                    }
+                                                }
+                                            ?>
+
+                                            <button <?= $deldis ?> class="btn btn-sm btn-danger shadow-sm" title="hapus data user" data-confirm="Woops...|Apakah anda yakin akan menghapus data <b><?= $user->nama ?></b>" data-confirm-yes="$.ajax({ url: '/user/delete/<?= $user->id ?>', type: 'DELETE', data: {'id' : <?= $user->id ?>}, success: function(result) { window.location.href='/admin/user'; } });">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
@@ -76,6 +99,7 @@
 <?= $this->include('Components/modal/tambah_user'); ?>
 <?= $this->include('Components/modal/edit_user'); ?>
 <?= $this->include('Components/modal/ubah_password'); ?>
+<?= $this->include('Components/modal/ubah_group'); ?>
 
 <!-- bootstrap modal modalUserInfo -->
 <div class="modal fade" id="modalUserInfo" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modalUserInfoTitle" aria-hidden="true">
@@ -128,16 +152,57 @@
     // ready
     $(document).ready(function() {
         const jqv_rules = {
-            nama:{required:true,minlength:5,myfield:true},
-            username:{required:true,minlength:5,myfield:true},
-            email:{required:true,email:true},
-            nomorHp:{required:true,number:true,minlength:10,maxlength:13,myfield:true},
-            tempatLahir:{required:true,minlength:5,myfield:true},
-            tglLahir:{required:true,date:true,myfield:true},
-            pekerjaan:{required:true,minlength:5,myfield:true},
-            agama:{required:true,myfield:true,selectEq:'-'},
-            jenis_kelamin:{required:true,myfield:true,selectEq:'-'},
-            alamat:{required:true,minlength:10,myfield:true},
+            nama: {
+                required: true,
+                minlength: 5,
+                myfield: true
+            },
+            username: {
+                required: true,
+                minlength: 5,
+                myfield: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            nomorHp: {
+                required: true,
+                number: true,
+                minlength: 10,
+                maxlength: 13,
+                myfield: true
+            },
+            tempatLahir: {
+                required: true,
+                minlength: 5,
+                myfield: true
+            },
+            tglLahir: {
+                required: true,
+                date: true,
+                myfield: true
+            },
+            pekerjaan: {
+                required: true,
+                minlength: 5,
+                myfield: true
+            },
+            agama: {
+                required: true,
+                myfield: true,
+                selectEq: '-'
+            },
+            jenis_kelamin: {
+                required: true,
+                myfield: true,
+                selectEq: '-'
+            },
+            alamat: {
+                required: true,
+                minlength: 10,
+                myfield: true
+            },
         };
 
         $('#tableUser').DataTable({
@@ -160,9 +225,29 @@
             return arg !== value;
         }, `this field not valid`);
 
-        $('#formTambahUser').validate({ rules: jqv_rules});
-        $('#formEditUser').validate({ rules: jqv_rules});
+        $('#formTambahUser').validate({
+            rules: jqv_rules
+        });
+        $('#formEditUser').validate({
+            rules: jqv_rules
+        });
 
+        var selectRoleRules = {
+            rules: {
+                role: {
+                    required: true,
+                    selectEq: '-'
+                }
+            },
+            messages: {
+                role: {
+                    required: 'this field is required',
+                    selectEq: 'this field not valid'
+                }
+            }
+        };
+
+        $('#fgrole').validate(selectRoleRules);
 
         $('.btn-edit-p').each(function() {
             $(this).on('click', function() {
@@ -174,6 +259,25 @@
                 $('#ubahPassword #ud').val(user);
                 $('#ubahPassword #np').val(fd[2] + fd[1] + fd[0]);
                 $('#ubahPassword #namaUser').append(nama);
+            });
+        });
+
+        $('.btn-roles').each(function() {
+            $(this).on('click', function() {
+                $.ajax({
+                    url: '<?= base_url('user/getById') ?>',
+                    type: 'POST',
+                    data: {
+                        id: $(this).data('user'),
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == 'success') {
+                            console.log(result.data.id);
+                            $('#fgrole #udetail').val(result.data.id);
+                        }
+                    }
+                })
             });
         });
 
