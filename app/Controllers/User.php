@@ -21,6 +21,11 @@ class User extends BaseController
         return redirect()->to(base_url('/admin/user'));
     }
 
+    public function profile()
+    {
+        echo "profile";
+    }
+
     public function getById()
     {
         if ($this->request->getMethod() !== 'post') {
@@ -90,6 +95,42 @@ class User extends BaseController
                 session()->setFlashdata('error', 'Data gagal diupdate');
                 return redirect()->to(base_url('admin/user'));
             }
+        } else {
+            return redirect()->to(base_url('/admin/user'));
+        }
+    }
+
+    public function updateRoles()
+    {
+        if ($this->request->getMethod() == 'post') {
+            $groupModel = new \Myth\Auth\Models\GroupModel();
+
+            $data = [
+                'id' => $this->request->getPost('user_detail'),
+                'role' => $this->request->getPost('role'),
+            ];
+
+            $idGroup = $groupModel->where('name', $data['role'])->first();
+            // idGroup not empty
+            if ($idGroup) {
+               $idGroup = $idGroup->id;
+               if ($groupModel->removeUserFromAllGroups($data['id'])) {
+                   if ($groupModel->addUserToGroup($data['id'], $idGroup)) {
+                        session()->setFlashdata('success', 'Data berhasil diupdate');
+                        return redirect()->to(base_url('admin/user'));
+                   } else {
+                        session()->setFlashdata('error', 'Data gagal diupdate');
+                        return redirect()->to(base_url('admin/user'));
+                   }
+               } else {
+                    session()->setFlashdata('error', 'Data gagal diupdate');
+                    return redirect()->to(base_url('admin/user'));
+               }
+            } else {
+                session()->setFlashdata('error', 'Data gagal diupdate');
+                return redirect()->to(base_url('admin/user'));
+            }
+                
         } else {
             return redirect()->to(base_url('/admin/user'));
         }

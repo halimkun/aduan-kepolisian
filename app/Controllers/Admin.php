@@ -38,6 +38,18 @@ class Admin extends BaseController
         ]);
     }
 
+    public function profile()
+    {
+        return view('profile', [
+            'segments' => $this->request->uri->getSegments(),
+            'pengguna' => $this->userModel->withGroup("pengguna")->findAll(),
+            'aduan' => $this->aduanModel->findAll(),
+            'aduan_terbaru' => $this->aduanModel->where('DATE(tanggal)', date('Y-m-d'))->findAll(),
+            'tahun' => $this->aduanModel->select('YEAR(tanggal) as tahun')->groupBy('YEAR(tanggal)')->orderBy('YEAR(tanggal)', 'DESC')->findAll(),
+            'tambah_aduan' => $this->tmbhAduan
+        ]);
+    }
+
     public function aduan()
     {
         return view('aduan', [

@@ -42,19 +42,20 @@ $routes->get('/home', 'Home::index');
 $routes->get('/home/user', 'Home::user');
 
 // Group Admin Routes
-$routes->group('admin', ['filter' => 'role:admin'], function ($adm) {
+$routes->group('admin', ['filter' => 'role:admin,petugas'], function ($adm) {
     $adm->add('/', 'Admin::index');
     $adm->add('index', 'Admin::index');
     $adm->add('home', 'Admin::home');
+    $adm->add('profile', 'Admin::profile');
 
     $adm->add('aduan', 'Admin::aduan');
     $adm->add('user', 'Admin::user');
-    // $adm->add('user_show', 'Admin::user_show'); // <-- show json user data
-    // $adm->add('aduan/add', 'Admin::aduan_add'); // <-- Tambah Aduan
+    $adm->add('user_show', 'Admin::user_show'); // <-- show json user data
+    $adm->add('aduan/add', 'Admin::aduan_add'); // <-- Tambah Aduan
 });
 
 // Group User Routes
-$routes->group('user', ['filter' => 'role:admin'], function ($usr) {
+$routes->group('user', ['filter' => 'role:admin,petugas'], function ($usr) {
     $usr->add('/', 'User::index');
     $usr->add('index', 'User::index');
     $usr->add('home', 'User::index');
@@ -64,10 +65,11 @@ $routes->group('user', ['filter' => 'role:admin'], function ($usr) {
     $usr->add('update', 'User::update');
     $usr->add('getById', 'User::getById');
     $usr->add('updatePass', 'User::updatePass');
+    $usr->add('updateRoles', 'User::updateRoles');
 });
 
 // group aduan routes
-$routes->group('aduan', ['filter' => 'role:admin'], function ($aduan) {
+$routes->group('aduan', ['filter' => 'role:admin,petugas'], function ($aduan) {
     $aduan->add('/', 'Aduan::index');
     $aduan->add('home', 'Aduan::index');
     $aduan->add('index', 'Aduan::index');
