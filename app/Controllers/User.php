@@ -82,6 +82,7 @@ class User extends BaseController
                 'id' => $this->request->getPost('user_detail'),
                 'nama' => $this->request->getPost('nama'),
                 'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+                'tempat_lahir' => $this->request->getPost('tempatLahir'),
                 'tanggal_lahir' => $this->request->getPost('tglLahir'),
                 'pekerjaan' => $this->request->getPost('pekerjaan'),
                 'alamat' => $this->request->getPost('alamat'),
@@ -111,7 +112,6 @@ class User extends BaseController
             ];
 
             $idGroup = $groupModel->where('name', $data['role'])->first();
-            // idGroup not empty
             if ($idGroup) {
                $idGroup = $idGroup->id;
                if ($groupModel->removeUserFromAllGroups($data['id'])) {
@@ -152,6 +152,27 @@ class User extends BaseController
             }
         } else {
             return redirect()->to(base_url('/admin/user'));
+        }
+    }
+
+    // custom password
+    public function customPass()
+    {
+        if ($this->request->getMethod() == 'post') {
+            $data = new EntitiesUser([
+                'id' => $this->request->getPost('user_detail'),
+                'password' => $this->request->getPost('password'),
+            ]);
+
+            if ($this->user->save($data)) {
+                session()->setFlashdata('success', 'Data berhasil diupdate');
+                return redirect()->to(base_url('admin/profile'));
+            } else {
+                session()->setFlashdata('error', 'Data gagal diupdate');
+                return redirect()->to(base_url('admin/profile'));
+            }
+        } else {
+            return redirect()->to(base_url('/admin/profile'));
         }
     }
 

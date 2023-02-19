@@ -201,7 +201,7 @@
             alamat: {
                 required: true,
                 minlength: 10,
-                myfield: true
+                mym: true
             },
         };
 
@@ -220,6 +220,11 @@
         $.validator.addMethod("myfield", function(value, element) {
             return this.optional(element) || /^[a-z0-9\-\s]+$/i.test(value);
         }, "Username must contain only letters, numbers, or dashes.");
+
+        // valdator add method only letter small and capital, number, dash, space, dot, comma, and underscore, semicolon, colon, slash, backslash, aspos, quote, and bracket
+        $.validator.addMethod('mym', function (val, ele) {
+            return this.optional(ele) || /^[a-z0-9\-\s\.\,\_\;\:\?\/\\\|\[\]\{\}\`\~\!\@\#\$\%\^\&\*\(\)\+\=\']{1,}$/i.test(val);
+        }, 'this field not valid');
 
         $.validator.addMethod("selectEq", function(value, element, arg) {
             return arg !== value;
