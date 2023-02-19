@@ -11,6 +11,7 @@ class Admin extends BaseController
     protected $aduanModel;
 
     protected $tmbhAduan;
+    protected $informasi;
 
     public function __construct()
     {
@@ -19,6 +20,7 @@ class Admin extends BaseController
 
         $route = Services::routes();
         $this->tmbhAduan = array_key_exists('admin/aduan/add', $route->getRoutes());
+        $this->informasi = array_key_exists('admin/informasi', $route->getRoutes());
     }
 
     public function index()
@@ -34,7 +36,8 @@ class Admin extends BaseController
             'aduan' => $this->aduanModel->findAll(),
             'aduan_terbaru' => $this->aduanModel->where('DATE(tanggal)', date('Y-m-d'))->findAll(),
             'tahun' => $this->aduanModel->select('YEAR(tanggal) as tahun')->groupBy('YEAR(tanggal)')->orderBy('YEAR(tanggal)', 'DESC')->findAll(),
-            'tambah_aduan' => $this->tmbhAduan
+            'tambah_aduan' => $this->tmbhAduan,
+            'informasi' => $this->informasi,
         ]);
     }
 
@@ -42,11 +45,14 @@ class Admin extends BaseController
     {
         return view('profile', [
             'segments' => $this->request->uri->getSegments(),
-            'pengguna' => $this->userModel->withGroup("pengguna")->findAll(),
-            'aduan' => $this->aduanModel->findAll(),
-            'aduan_terbaru' => $this->aduanModel->where('DATE(tanggal)', date('Y-m-d'))->findAll(),
-            'tahun' => $this->aduanModel->select('YEAR(tanggal) as tahun')->groupBy('YEAR(tanggal)')->orderBy('YEAR(tanggal)', 'DESC')->findAll(),
-            'tambah_aduan' => $this->tmbhAduan
+            'me' => $this->userModel->find(user_id()),
+            
+            'aduanku' => $this->aduanModel->where('user_id', user_id())->findAll(),
+            'aduanku_terbaru' => $this->aduanModel->where(['user_id' => user_id()])->orderBy('tanggal', 'DESC')->findAll(3),
+            'aduan_terbaru' => $this->aduanModel->where(['DATE(tanggal)' => date('Y-m-d'), 'user_id' => user_id()])->findAll(),
+            
+            'tambah_aduan' => $this->tmbhAduan,
+            'informasi' => $this->informasi,
         ]);
     }
 
@@ -57,7 +63,8 @@ class Admin extends BaseController
             'users' => $this->userModel->findAll(),
             'aduan' => $this->aduanModel->orderBy('tanggal', "DESC")->findAll(),
             'agent' => $this->request->getUserAgent(),
-            'tambah_aduan' => $this->tmbhAduan
+            'tambah_aduan' => $this->tmbhAduan,
+            'informasi' => $this->informasi,
         ]);
     }
 
@@ -68,7 +75,8 @@ class Admin extends BaseController
             'users' => $this->userModel->findAll(),
             'aduan' => $this->aduanModel->orderBy('tanggal', "DESC")->findAll(),
             'agent' => $this->request->getUserAgent(),
-            'tambah_aduan' => $this->tmbhAduan
+            'tambah_aduan' => $this->tmbhAduan,
+            'informasi' => $this->informasi,
         ]);
     }
 
@@ -78,7 +86,8 @@ class Admin extends BaseController
             'title' => 'User',
             'segments' => $this->request->uri->getSegments(),
             'users' => $this->userModel->findAll(),
-            'tambah_aduan' => $this->tmbhAduan
+            'tambah_aduan' => $this->tmbhAduan,
+            'informasi' => $this->informasi,
         ];
 
         return view('user', $data);

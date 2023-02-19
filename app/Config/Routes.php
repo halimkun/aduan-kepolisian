@@ -65,6 +65,7 @@ $routes->group('user', ['filter' => 'role:admin,petugas'], function ($usr) {
     $usr->add('update', 'User::update');
     $usr->add('getById', 'User::getById');
     $usr->add('updatePass', 'User::updatePass');
+    $usr->add('customPass', 'User::customPass');
     $usr->add('updateRoles', 'User::updateRoles');
 });
 
