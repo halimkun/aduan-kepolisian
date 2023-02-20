@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="<?= base_url('assets/modules/fontawesome/css/all.min.css') ?>">
 </head>
 
 <body>
@@ -18,12 +19,24 @@
             <p class="text-gray-500">Kami ada untuk membantu anda sekarang!</p>
 
             <div class="mt-10 flex gap-3">
-                <a href="<?= base_url('home/user') ?>" class="py-2 px-8 bg-[#6777ef] rounded-lg shadow-xl shadow-[#6777ef3d] hover:scale-110 hover:rounded-sm duration-300 text-white">
-                    User
-                </a>
-                <a href="<?= base_url('admin') ?>" class="py-2 px-8 bg-white rounded-lg shadow-xl hover:scale-110 hover:rounded-sm duration-300 text-[#333]">
-                    Admin
-                </a>
+                <?php if (logged_in()) : ?>
+                    <?php if (in_array('admin', user()->getRoles()) ||  in_array('petugas', user()->getRoles())) : ?>
+                        <a href="/admin/" class="bg-indigo-600 text-white font-bold rounded shadow px-8 py-3 hover:bg-indigo-500">
+                            <i class="fa fa-chart-line mr-2"></i> Dashboard
+                        </a>
+                    <?php else : ?>
+                        <a href="/warga/" class="bg-indigo-600 text-white font-bold rounded shadow px-8 py-3 hover:bg-indigo-500">
+                            <i class="fa fa-chart-line mr-2"></i> Dashboard
+                        </a>
+                    <?php endif ?>
+                    <a href="/logout/" class="bg-red-500 text-white font-bold rounded shadow px-8 py-3 hover:bg-red-600">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                    </a>
+                <?php else : ?>
+                    <a href="/login" class="bg-indigo-600 text-white font-bold rounded shadow px-8 py-3 hover:bg-indigo-500">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Log In
+                    </a>
+                <?php endif ?>
             </div>
         </div>
     </div>

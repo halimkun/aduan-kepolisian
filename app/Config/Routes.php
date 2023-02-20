@@ -80,6 +80,19 @@ $routes->group('aduan', ['filter' => 'role:admin,petugas'], function ($aduan) {
     $aduan->add('update_stts', 'Aduan::update_stts');
 });
 
+$routes->group('warga', ['filter' => 'role:pengguna'], function ($wrg) {
+    $wrg->add('/', 'Warga::index');
+    $wrg->add('index', 'Warga::index');
+    $wrg->add('home', 'Warga::index');
+    $wrg->add('profile', 'Warga::profile');
+    $wrg->add('aduan', 'Warga::aduan');
+    $wrg->add('aduan/add', 'Warga::aduan_add');
+    $wrg->add('aduan/store', 'Warga::aduan_store');
+    $wrg->add('aduan/getById', 'Warga::aduan_getById');
+    $wrg->add('aduan/update', 'Warga::aduan_update');
+    $wrg->add('aduan/delete', 'Warga::aduan_delete');
+});
+
 // Group Api Routes
 $routes->group('api', function ($api) {
     $api->add('/', 'Api::aduan');

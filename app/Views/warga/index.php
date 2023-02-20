@@ -1,0 +1,4 @@
+<?= $this->extend('layouts'); ?>
+<?= $this->section('content'); ?>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ratione exercitationem porro fugiat minus ipsa error quidem aliquid modi, ducimus cupiditate animi architecto facilis mollitia. Rem voluptatum a omnis commodi earum. Tempora numquam nobis accusantium enim placeat vitae voluptas velit ratione molestiae reprehenderit error, tempore fugiat est voluptate. Quo totam fugiat obcaecati placeat eos, autem atque. Repellat saepe nesciunt doloremque fugit quod! Sequi ullam harum esse nisi natus sapiente? Obcaecati itaque quae cupiditate quisquam mollitia iusto, dolorum aliquam provident odio placeat, saepe, veritatis velit officia. Eaque commodi ipsam enim porro provident libero distinctio delectus numquam! Dolorem reprehenderit commodi ipsam veniam!
+<?= $this->endSection(); ?>
