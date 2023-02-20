@@ -169,32 +169,43 @@
 
 <script>
     $(document).ready(function() {
-        /** data table initialize */
         var table = $("#tableAduan").DataTable({
-            responsive: !0,
-            dom: "Brtp",
-            buttons: [{
-                extend: "copy",
-                text: "Copy",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+            "responsive": !0,
+            "pageLength": 25,
+            "dom": 'Brtip',
+            "buttons": [{
+                    extend: 'excelHtml5',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-file-csv"></i> CSV',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-file-pdf"></i> PDF',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                    }
+                },
+                {
+                    extend: 'print',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-print"></i> Print',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                    }
                 }
-            }, {
-                extend: "excel",
-                text: "Excel",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
-                }
-            }, {
-                extend: "print",
-                text: "Print",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
-                }
-            }]
+            ]
         });
 
         $("#filterSearch").on("keyup", (function() {

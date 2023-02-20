@@ -24,6 +24,40 @@
                 </div>
             </div>
             <div class="card-body">
+                <!-- select group user -->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label for="tampilkan">Tampilkan</label>
+                                <select name="tampilkan" class="custom-select" id="tampilkan">
+                                    <option value="5">5</option>
+                                    <option selected value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label for="filterGroup">Group</label>
+                                <select name="filterGroup" class="custom-select" id="filterGroup">
+                                    <option value="">Semua</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="petugas">Petugas</option>
+                                    <option value="pengguna">Pengguna</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label for="filterSearch">Search</label>
+                                <input type="text" name="filterSearch" id="filterSearch" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <div class="table-responsive">
                         <table class="table" id="tableUser">
@@ -65,20 +99,20 @@
                                                 <i class="fa fa-key"></i>
                                             </button>
 
-                                            <?php 
-                                                if (in_array('admin', user()->getRoles())) {
-                                                    if (in_array('admin', $roles)) {
-                                                        $deldis = 'disabled';
-                                                    } else {
-                                                        $deldis = '';
-                                                    }
-                                                } elseif (in_array('petugas', user()->getRoles())) {
-                                                    if (in_array('admin', $roles) || in_array('petugas', $roles)) {
-                                                        $deldis = 'disabled';
-                                                    } else {
-                                                        $deldis = '';
-                                                    }
+                                            <?php
+                                            if (in_array('admin', user()->getRoles())) {
+                                                if (in_array('admin', $roles)) {
+                                                    $deldis = 'disabled';
+                                                } else {
+                                                    $deldis = '';
                                                 }
+                                            } elseif (in_array('petugas', user()->getRoles())) {
+                                                if (in_array('admin', $roles) || in_array('petugas', $roles)) {
+                                                    $deldis = 'disabled';
+                                                } else {
+                                                    $deldis = '';
+                                                }
+                                            }
                                             ?>
 
                                             <button <?= $deldis ?> class="btn btn-sm btn-danger shadow-sm" title="hapus data user" data-confirm="Woops...|Apakah anda yakin akan menghapus data <b><?= $user->nama ?></b>" data-confirm-yes="$.ajax({ url: '/user/delete/<?= $user->id ?>', type: 'DELETE', data: {'id' : <?= $user->id ?>}, success: function(result) { window.location.href='/admin/user'; } });">
@@ -151,6 +185,56 @@
 <script>
     // ready
     $(document).ready(function() {
+        $('#tableUser').DataTable({
+            "responsive": !0,
+            "pageLength": 10,
+            "dom": 'rtip',
+        });
+
+        $("#tableUser tbody").on('click', '.btn-edit', function() {
+            $.ajax({
+                url: '<?= base_url('user/getById') ?>',
+                type: 'POST',
+                data: {
+                    id: $(this).data('user'),
+                },
+                dataType: 'json',
+                success: function(result) {
+                    console.log(result);
+                    if (result.status == 'success') {
+                        $('#editPengguna #user_detail').val(result.data.id);
+                        $('#editPengguna #nama').val(result.data.nama);
+                        $('#editPengguna #tglLahir').val(result.data.tanggal_lahir);
+                        $('#editPengguna #pekerjaan').val(result.data.pekerjaan);
+                        $('#editPengguna #username').val(result.data.username);
+                        $('#editPengguna #email').val(result.data.email);
+                        $('#editPengguna #alamat').val(result.data.alamat);
+                        $('#editPengguna #jenis_kelamin').val(result.data.jenis_kelamin)
+                        $('#editPengguna #nomorHp').val(result.data.nomor_hp)
+                        $('#editPengguna #tempat_lahir').val(result.data.tempat_lahir)
+                        $('#editPengguna #agama').val(result.data.agama)
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            });
+        });
+
+        // #tampilkan onChange, change table page length
+        $('#tampilkan').on('change', function() {
+            $('#tableUser').DataTable().page.len($(this).val()).draw();
+        });
+
+        // filterGroup onChange, change table only show group
+        $('#filterGroup').on('change', function() {
+            $('#tableUser').DataTable().column(1).search($(this).val()).draw();
+        });
+
+        // filterSearch onKeyup, change table only show search
+        $('#filterSearch').on('keyup', function() {
+            $('#tableUser').DataTable().search($(this).val()).draw();
+        });
+
         const jqv_rules = {
             nama: {
                 required: true,
@@ -205,13 +289,6 @@
             },
         };
 
-        $('#tableUser').DataTable({
-            'columnDefs': [{
-                targets: [0, 5],
-                sortable: false
-            }]
-        });
-
         jQuery.validator.setDefaults({
             errorClass: "is-invalid text-danger",
             validClass: "is-valid",
@@ -222,7 +299,7 @@
         }, "Username must contain only letters, numbers, or dashes.");
 
         // valdator add method only letter small and capital, number, dash, space, dot, comma, and underscore, semicolon, colon, slash, backslash, aspos, quote, and bracket
-        $.validator.addMethod('mym', function (val, ele) {
+        $.validator.addMethod('mym', function(val, ele) {
             return this.optional(ele) || /^[a-z0-9\-\s\.\,\_\;\:\?\/\\\|\[\]\{\}\`\~\!\@\#\$\%\^\&\*\(\)\+\=\']{1,}$/i.test(val);
         }, 'this field not valid');
 
@@ -286,36 +363,7 @@
             });
         });
 
-        $(".btn-edit").each(function() {
-            $(this).on("click", function() {
-                $.ajax({
-                    url: '<?= base_url('user/getById') ?>',
-                    type: 'POST',
-                    data: {
-                        id: $(this).data('user'),
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        console.log(result);
-                        if (result.status == 'success') {
-                            $('#editPengguna #user_detail').val(result.data.id);
-                            $('#editPengguna #nama').val(result.data.nama);
-                            $('#editPengguna #tglLahir').val(result.data.tanggal_lahir);
-                            $('#editPengguna #pekerjaan').val(result.data.pekerjaan);
-                            $('#editPengguna #username').val(result.data.username);
-                            $('#editPengguna #email').val(result.data.email);
-                            $('#editPengguna #alamat').val(result.data.alamat);
-                            $('#editPengguna #jenis_kelamin').val(result.data.jenis_kelamin)
-                            $('#editPengguna #nomorHp').val(result.data.nomor_hp)
-                            $('#editPengguna #tempat_lahir').val(result.data.tempat_lahir)
-                            $('#editPengguna #agama').val(result.data.agama)
-                        } else {
-                            alert(result.message);
-                        }
-                    }
-                });
-            });
-        });
+
 
     });
 </script>

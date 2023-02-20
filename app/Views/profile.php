@@ -131,17 +131,11 @@
 
 <?= $this->section('topLibrary'); ?>
 <!-- CSS Libraies -->
-<link rel="stylesheet" href="<?= base_url('assets/modules/datatables/datatables.min.css') ?>">
-<link rel="stylesheet" href="<?= base_url('assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') ?>">
-<link rel="stylesheet" href="<?= base_url('assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/modules/select2/css/select2.min.css') ?>">
 <?= $this->endSection(); ?>
 
 <?= $this->section('bottomLibrary'); ?>
 <!-- JS Libraies -->
-<script src="<?= base_url('assets/modules/datatables/datatables.min.js') ?>"></script>
-<script src="<?= base_url('assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') ?>"></script>
-<script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/select2/js/select2.full.min.js') ?>"></script>
 <!-- validation -->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
