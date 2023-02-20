@@ -9,8 +9,8 @@ class Home extends BaseController
         return view('index');
     }
 
-    public function user()
-    {
-        return view('user_home');
-    }
+    // public function user()
+    // {
+    //     return view('user_home');
+    // }
 }
