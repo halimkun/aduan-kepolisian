@@ -34,7 +34,7 @@ class AduanSeed extends Seeder
             $ad = [
                 'user_id' => $ids,
                 'nomor' => $fake->unique()->randomNumber(8),
-                'status' => $fake->randomElement(['belum diproses', 'dalam diproses', 'selesai', 'dibatalkan']),
+                'status' => $fake->randomElement(['belum diproses', 'dalam proses', 'selesai', 'dibatalkan']),
                 'tanggal' => $fake->dateTimeBetween('-5 month', 'now')->format('Y-m-d H:i:s'),
                 'jenis' => $fake->randomElement($jenis),
                 'judul' => $fake->sentence(6),
