@@ -14,7 +14,7 @@
 
 <section class="section">
     <div class="section-header">
-        <h1>Profile Page</h1>
+        <h1 class="text-<?= userColor() ?>">Profile Page</h1>
     </div>
 
     <?php $r = user()->getRoles();
@@ -81,7 +81,7 @@
                 <div class="dropdown-divider"></div>
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="h3 mb-0 pb-0">Aduan Terakhir</div>
+                        <div class="h5 text-<?= userColor() ?> mb-0 pb-0">Aduan Terakhir</div>
                         <div class="text-sm mb-3">
                             berikut adalah aduan terakhir yang anda buat
                         </div>

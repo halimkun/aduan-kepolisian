@@ -2,7 +2,7 @@
 <?= $this->section('content'); ?>
 <section class="section">
     <div class="section-header">
-        <h1>Aduan</h1>
+        <h1 class="text-<?= userColor() ?>">Aduan</h1>
         <div class="section-header-breadcrumb">
             <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modalAduanInfo">
                 <i class="fa fa-info-circle"></i>
@@ -15,7 +15,7 @@
     <div class="section-body">
         <div class="card shadow rounded">
             <div class="card-header">
-                <h4>Daftar Aduan</h4>
+                <h4 class="text-<?= userColor() ?>">Daftar Aduan</h4>
                 <?php if ($tambah_aduan) : ?>
                     <div class="card-header-action">
                         <button class="btn btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-toggle="modal" data-target="#tambahAduan">

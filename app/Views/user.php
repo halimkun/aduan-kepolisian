@@ -2,7 +2,7 @@
 <?= $this->section('content'); ?>
 <section class="section user-page">
     <div class="section-header">
-        <h1>Pengguna</h1>
+        <h1 class="text-<?= userColor() ?>">Pengguna</h1>
         <div class="section-header-breadcrumb">
             <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modalUserInfo">
                 <i class="fa fa-info-circle"></i>
@@ -15,7 +15,7 @@
     <div class="section-body">
         <div class="card shadow-sm rounded">
             <div class="card-header">
-                <h4>Data Pengguna</h4>
+                <h4 class="text-<?= userColor() ?>">Data Pengguna</h4>
                 <div class="card-header-action">
                     <button class="btn btn-<?= userColor() ?> shadow-sm" data-toggle="modal" data-target="#tambahPengguna">
                         <i class="fas fa-plus"></i>

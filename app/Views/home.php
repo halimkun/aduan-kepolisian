@@ -2,28 +2,11 @@
 <?= $this->section('content'); ?>
 <section class="section">
     <div class="section-header">
-        <h1>Dashboard</h1>
+        <h1 class="text-<?= userColor() ?>">Dashboard</h1>
     </div>
 
     <div class="row">
-        <div class="col-lg-8 col-md-12 col-12 col-sm-12 order-md-2 order-sm-2 order-xs-2 order-lg-1">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Statistik Bulanan</h4>
-                    <div class="card-header-action">
-                        <select name="tahun" id="tahun" class="custom-select">
-                            <?php foreach ($tahun as $t) : ?>
-                                <option value="<?= $t->tahun ?>"><?= $t->tahun ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <canvas id="statistikBulanan"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-12 col-sm-12 order-md-1 order-sm-1 order-xs-1 order-lg-2">
+        <div class="col-md-6 col-sm-12 order-md-1 order-sm-1 order-xs-1 order-lg-2">
             <div class="card card-statistic-2" data-toggle='tooltip' title="hari ini">
                 <div class="card-icon bg-warning">
                     <i class="far fa-newspaper"></i>
@@ -37,21 +20,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card card-statistic-2">
-                <div class="card-icon bg-success">
-                    <i class="fas fa-clipboard-list"></i>
-                </div>
-                <div class="card-wrap">
-                    <div class="card-header">
-                        <h4>Total Aduan</h4>
-                    </div>
-                    <div class="card-body">
-                        <?= count($aduan) ?>
-                    </div>
-                </div>
-            </div>
-
+        </div>
+        <div class="col-md-6 col-sm-12 order-md-1 order-sm-1 order-xs-1 order-lg-2">
             <div class="card card-statistic-2">
                 <div class="card-icon bg-<?= userColor() ?>">
                     <i class="far fa-user"></i>
@@ -67,9 +37,94 @@
             </div>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-lg-8 col-md-12 col-12 col-sm-12 order-md-2 order-sm-2 order-xs-2 order-lg-1"></div>
-        <div class="col-lg-4 col-md-12 col-sm-12 order-md-1 order-sm-1 order-xs-1 order-lg-2"></div>
+        <div class="col-lg-8 col-md-12 col-12 col-sm-12 order-2 order-md-2 order-lg-1">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-<?= userColor() ?>">Statistik Bulanan</h4>
+                    <div class="card-header-action">
+                        <select name="tahun" id="tahun" class="custom-select">
+                            <?php foreach ($tahun as $t) : ?>
+                                <option value="<?= $t->tahun ?>"><?= $t->tahun ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="statistikBulanan"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 order-1 order-md-1 order-lg-2">
+            <div class="card card-statistic-2">
+                <div class="card-icon bg-success">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="card-wrap">
+                    <div class="card-header">
+                        <h4>Total Aduan</h4>
+                    </div>
+                    <div class="card-body">
+                        <?= count($aduan) ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card card-body card-success">
+                        <?php $as = [] ?>
+                        <?php foreach ($aduan as $a) : ?>
+                            <?php if ($a->status == 'selesai') : ?>
+                                <?php $as[] = $a->status ?>
+                            <?php endif ?>
+                        <?php endforeach ?>
+
+                        <div class="text-center mb-3 capitalize">Selesai</div>
+                        <h3 class="text-center"><?= count($as) ?></h3>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-body card-info">
+                        <?php $as = [] ?>
+                        <?php foreach ($aduan as $a) : ?>
+                            <?php if ($a->status == 'dalam proses') : ?>
+                                <?php $as[] = $a->status ?>
+                            <?php endif ?>
+                        <?php endforeach ?>
+
+                        <div class="text-center mb-3">Dalam Proses</div>
+                        <h3 class="text-center"><?= count($as) ?></h3>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-body card-warning">
+                        <?php $as = [] ?>
+                        <?php foreach ($aduan as $a) : ?>
+                            <?php if ($a->status == 'belum diproses') : ?>
+                                <?php $as[] = $a->status ?>
+                            <?php endif ?>
+                        <?php endforeach ?>
+
+                        <div class="text-center mb-3 capitalize">Belum Diproses</div>
+                        <h3 class="text-center"><?= count($as) ?></h3>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-body card-danger">
+                        <?php $as = [] ?>
+                        <?php foreach ($aduan as $a) : ?>
+                            <?php if ($a->status == 'dibatalkan') : ?>
+                                <?php $as[] = $a->status ?>
+                            <?php endif ?>
+                        <?php endforeach ?>
+
+                        <div class="text-center mb-3 capitalize">Dibatalkan</div>
+                        <h3 class="text-center"><?= count($as) ?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <?= $this->endSection(); ?>
@@ -96,10 +151,10 @@
                 datasets: [{
                     data: [],
                     label: 'Aduan',
-                    borderColor: '#6777ef',
-                    backgroundColor: '#6777ef',
+                    borderColor: '<?= userColorHex() ?>',
+                    backgroundColor: '#fff',
                     pointBackgroundColor: '#fff',
-                    pointBorderColor: '#6777ef',
+                    pointBorderColor: '<?= userColorHex() ?>',
                     hoverRadius: 10,
                     borderWidth: 3,
                     lineTension: 0,
