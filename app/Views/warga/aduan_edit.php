@@ -108,7 +108,16 @@
                     <input type="file" class="form-control" id="foto_aduan" name="foto_aduan">
                 </div>
 
-                <img src="<?= base_url('foto_kejadian/' . $aduan->foto) ?>" width="250px" class="img-fluid fotoKejadian">
+                <?php 
+                    // if $aduan->foto is url
+                    if (filter_var($aduan->foto, FILTER_VALIDATE_URL)) {
+                        $foto = $aduan->foto;
+                    } else {
+                        $foto = base_url('foto_kejadian/' . $aduan->foto);
+                    }
+                ?>
+
+                <img src="<?= $foto ?>" width="250px" class="img-fluid fotoKejadian">
             </div>
             <div class="float-right">
                 <button type="submit" class="btn btn-<?= userColor() ?> shadow"><i class="fa fa-save"></i> SIMPAN</button>
