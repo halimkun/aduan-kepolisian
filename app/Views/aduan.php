@@ -132,9 +132,6 @@
                     <li class="font-weight-bold">
                         Aduan hanya bisa <span class="text-info">diubah statusnya saja</span>.
                     </li>
-                    <li class="font-weight-bold">
-                        Bila ada informasi yang perlu diubah, bisa dilakukan pembatalan dan menambahkan keterangan dibatalkan.
-                    </li>
                 </ul>
             </div>
         </div>

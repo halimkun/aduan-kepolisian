@@ -2,7 +2,7 @@
 <?= $this->section('content'); ?>
 <section class="section">
     <div class="section-header">
-        <h1>Daftar Aduan Saya</h1>
+        <h1 class="text-<?= userColor() ?>">Daftar Aduan Saya</h1>
         <div class="section-header-breadcrumb">
             <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modalAduanInfo">
                 <i class="fa fa-info-circle"></i>
@@ -15,14 +15,7 @@
     <div class="section-body">
         <div class="card shadow rounded">
             <div class="card-header">
-                <h4>Daftar Aduan</h4>
-                <?php if ($tambah_aduan) : ?>
-                    <div class="card-header-action">
-                        <button class="btn btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-toggle="modal" data-target="#tambahAduan">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                <?php endif ?>
+                <h4 class="text-<?= userColor() ?>">Daftar Aduan</h4>
             </div>
             <div class="card-body">
                 <?php if ($agent->isMobile()) : ?>
@@ -43,7 +36,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="filterStatus">Status</label>
-                            <select name="filterStatus" id="filterStatus" class="form-control">
+                            <select name="filterStatus" id="filterStatus" class="custom-select">
                                 <option value="">Semua Status</option>
                                 <option value="belum diproses">Belum Diproses</option>
                                 <option value="dalam proses">Dalam Proses</option>
@@ -55,7 +48,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="filterJenis">Jenis</label>
-                            <select class="form-control" id="filterJenis">
+                            <select class="custom-select" id="filterJenis">
                                 <option value="">Semua Jenis Aduan</option>
                                 <option value="kehilangan">Kehilangan</option>
                                 <option value="pencurian">Pencurian</option>
@@ -72,7 +65,7 @@
                     </div>
                 </div>
 
-                <table class="table table-hover" id="tableAduan">
+                <table class="table table-hover" id="tableAduanWarga">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -83,6 +76,7 @@
                             <th>Aduan</th>
                             <th>Lokasi</th>
                             <th>Keterangan</th>
+                            <th width="50"><i class="fa fa-cogs"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,6 +91,10 @@
                                 <td id="row_judul"><?= $item->judul ?></td>
                                 <td id="row_lokasi"><?= $item->lokasi ?></td>
                                 <td id="row_keterangan"><?= $item->keterangan ?></td>
+                                <td id="row_manipulate_data">
+                                    <button <?= $item->status == 'selesai' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-info btn-aduan-edit" data-nomor="<?= $item->nomor ?>"><i class="fa fa-pen"></i></button>
+                                    <button <?= $item->status == 'selesai' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-danger btn-aduan-delete" data-nomor="<?= $item->nomor ?>" data-tanggal="<?= $item->tanggal ?>" data-judul="<?= $item->judul ?>"><i class="fa fa-trash"></i></button>
+                                </td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
@@ -124,10 +122,48 @@
                     <li class="font-weight-bold">
                         Aduan hanya bisa <span class="text-info">diubah statusnya saja</span>.
                     </li>
-                    <li class="font-weight-bold">
-                        Bila ada informasi yang perlu diubah, bisa dilakukan pembatalan dan menambahkan keterangan dibatalkan.
-                    </li>
                 </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal aduan delete -->
+<div class="modal fade" id="modalAduanDelete" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modalAduanDeleteTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAduanDeleteTitle">Perhatian !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6>
+                    Apakah anda yakin ingin menghapus aduan berikut ?
+                </h6>
+                <hr>
+
+                <div class="mb-3">
+                    <label for="aduanNomor">Nomor aduan</label>
+                    <input type="text" class="form-control" readonly name="aduanNomor" id="aduanNomor">
+                </div>
+                <div class="mb-3">
+                    <label for="aduanJudul">Judul aduan</label>
+                    <input type="text" class="form-control" readonly name="aduanJudul" id="aduanJudul">
+                </div>
+                <div class="mb-3">
+                    <label for="aduanTanggal">Tanggal aduan</label>
+                    <input type="datetime" class="form-control" readonly name="aduanTanggal" id="aduanTanggal">
+                </div>
+
+                <p class="text-danger mt-3">
+                    <i class="fa fa-exclamation-triangle mr-1"></i> Aduan yang sudah dihapus tidak dapat dikembalikan lagi.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn shadow text-dark btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn shadow btn-danger" id="btnAduanDelete">Hapus</button>
             </div>
         </div>
     </div>
@@ -157,134 +193,132 @@
 <script src="<?= base_url('assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/chocolat/js/jquery.chocolat.min.js') ?>"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     $(document).ready(function() {
-        /** data table initialize */
-        var table = $("#tableAduan").DataTable({
-            responsive: !0,
-            dom: "Brtp",
-            buttons: [{
-                extend: "copy",
-                text: "Copy",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+        // tableAduanWarga
+        var tableAduanWarga = $('#tableAduanWarga').DataTable({
+            "responsive": !0,
+            "pageLength": 25,
+            "dom": 'Brtip',
+            "buttons": [{
+                    extend: 'excelHtml5',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    exportOptions: {
+                        columns: [1, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-file-csv"></i> CSV',
+                    exportOptions: {
+                        columns: [1, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-file-pdf"></i> PDF',
+                    exportOptions: {
+                        columns: [1, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    extend: 'print',
+                    className: 'btn btn-sm btn-<?= userColor() ?> shadow',
+                    text: '<i class="fas fa-print"></i> Print',
+                    exportOptions: {
+                        columns: [1, 3, 4, 5, 6, 7]
+                    }
                 }
-            }, {
-                extend: "excel",
-                text: "Excel",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
-                }
-            }, {
-                extend: "print",
-                text: "Print",
-                className: "btn btn-sm btn-icon btn-secondary text-dark shadow-sm",
-                exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
-                }
-            }]
+            ]
         });
 
-        $("#filterSearch").on("keyup", (function() {
-            table.search(this.value).draw()
-        })), $("#filterStatus").on("change", (function() {
-            table.column(2).search(this.value).draw()
-        })), $("#filterTgl").on("change", (function() {
-            table.column(3).search(this.value).draw()
-        })), $("#filterJenis").on("change", (function() {
-            table.column(4).search(this.value).draw()
-        }));
+        // filterSearch on keyup
+        $('#filterSearch').on('keyup', function() {
+            tableAduanWarga.search(this.value).draw();
+        });
 
-        /** get data aduan dan user */
-        async function getAduanData(a) {
-            return await $.ajax({
-                url: "<?= base_url('/aduan/getById') ?>",
-                type: "POST",
+        // filterStatus on change
+        $('#filterStatus').on('change', function() {
+            tableAduanWarga.column(2).search(this.value).draw();
+        });
+
+        // filterJenis
+        $('#filterJenis').on('change', function() {
+            tableAduanWarga.column(4).search(this.value).draw();
+        });
+
+        // filterTgl
+        $('#filterTgl').on('change', function() {
+            tableAduanWarga.column(3).search(this.value).draw();
+        });
+
+        // btn-aduan-edit on click redirect to edit aduan
+        $('#tableAduanWarga tbody').on('click', '.btn-aduan-edit', function() {
+            var nomor = $(this).data('nomor');
+            window.location.href = '<?= base_url('warga/aduan') ?>/' + nomor;
+        });
+
+        // btn-aduan-delete on click show modal delete
+        $('#tableAduanWarga tbody').on('click', '.btn-aduan-delete', function() {
+            var nomor = $(this).data('nomor');
+            var tanggal = $(this).data('tanggal');
+            console.log(tanggal);
+            var judul = $(this).data('judul');
+            $('#aduanNomor').val(nomor);
+            $('#aduanTanggal').val(tanggal);
+            $('#aduanJudul').val(judul);
+            $('#modalAduanDelete').modal('show');
+        });
+
+        // btnAduanDelete on click delete aduan
+        $('#btnAduanDelete').on('click', function() {
+            var nomor = $('#aduanNomor').val();
+            $.ajax({
+                url: '<?= base_url('warga/aduan/delete') ?>',
+                type: 'POST',
                 data: {
-                    id: a
+                    nomor: nomor
                 },
-                dataType: "JSON"
-            })
-        }
-        async function getUserData(a) {
-            return await $.ajax({
-                url: "<?= base_url('/user/getById') ?>",
-                type: "POST",
-                data: {
-                    id: a
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: data.message,
+                            showConfirmButton: true,
+                            timer: 3000
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '<?= base_url('warga/aduan') ?>';
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: data.message,
+                            showConfirmButton: true,
+                            timer: 3000
+                        });
+                    }
                 },
-                dataType: "JSON"
-            })
-        }
-
-        /** hanle create */
-        $(".user_select").on("change", (async function() {
-            var a = $(this).val();
-            if ($(".load_user_input").show(), "-" == a) $("#tambahAduan #pekerjaan").val(""), $("#tambahAduan #jenis_kelamin").val(""), $("#tambahAduan #tanggal_lahir").val(""), $("#tambahAduan #alamat").val(""), $(".load_user_input").hide();
-            else {
-                const t = await getUserData(a);
-                setTimeout((() => {
-                    "success" == t.status ? ($("#tambahAduan #pekerjaan").val(t.data.pekerjaan), $("#tambahAduan #jenis_kelamin").val(t.data.jenis_kelamin), $("#tambahAduan #tanggal_lahir").val(t.data.tanggal_lahir), $("#tambahAduan #tempat_lahir").val(t.data.tempat_lahir), $("#tambahAduan #agama").val(t.data.agama), $("#tambahAduan #nomor_hp").val(t.data.nomor_hp), $("#tambahAduan #alamat").val(t.data.alamat)) : alert("Gagal mengambil data user"), $(".load_user_input").hide()
-                }), 1e3)
-            }
-        }));
-
-        /** handle update status */
-        $("#tableAduan tbody").on("click", "tr td#row_action", (function() {
-            const t = $("#ubahStatusAduan");
-            var a = table.row(this).data(),
-                d = $(this).parent().find("td#row_status").data("stts"),
-                n = $(this).parent().find("td#row_status").data("dt");
-            t.find("#una").empty().append(a[1]), t.find("#status").val(d), t.find("#data").val(n), t.modal("toggle")
-        }));
-
-        <?php if (!$agent->isMobile()) : ?>
-            const modalDetail = $("#detailAduan");
-            $('#tableAduan tbody').on('click', 'tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan', function() {
-                modalDetail.modal('toggle');
-
-                $(".load_data_detail").show();
-
-                modalDetail.find(".dLaporan").empty();
-                modalDetail.find(".dPelapor").empty();
-                modalDetail.find(".judulLaporan").empty()
-
-                setTimeout(async () => {
-                    var data = table.row(this).data();
-                    const o = await getUserData($(this).parent().data('u'));
-                    const i = await getAduanData($(this).parent().data('i'));
-
-                    modalDetail.find(".judulLaporan").empty().append(i.data.judul + " ( " + i.data.nomor + " ) ");
-
-                    const detailPelapor = `
-                        <div class="mb-3"> <h5>Detail Pelapor</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nama</b></td><td style="width:30px;">:</td><td>${o.data.nama}</td></tr><tr><td style="width:40%;"><b>Tempat Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tempat_lahir}</td></tr><tr><td style="width:40%;"><b>Tanggal Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tanggal_lahir}</td></tr><tr><td style="width:40%;"><b>Jenis Kelamin</b></td><td style="width:30px;">:</td><td>${o.data.jenis_kelamin}</td></tr><tr><td style="width:40%;"><b>Agama</b></td><td style="width:30px;">:</td><td>${o.data.agama}</td></tr><tr><td style="width:40%;"><b>Pekerjaan</b></td><td style="width:30px;">:</td><td>${o.data.pekerjaan}</td></tr><tr><td style="width:40%;"><b>Nomor HP</b></td><td style="width:30px;">:</td><td><a href='tlp:${o.data.nomor_hp}'>${o.data.nomor_hp}</a></td></tr><tr><td style="width:40%;"><b>Email</b></td><td style="width:30px;">:</td><td><a href='mailto:${o.data.email}'>${o.data.email}</a></td></tr><tr><td style="width:40%;"><b>Alamat</b></td><td style="width:30px;">:</td><td>${o.data.alamat}</td></tr></table> </div>
-                    `;
-
-                    const detailLaporan = `
-                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="/foto_kejadian/${i.data.foto}" data-title="${i.data.judul}"></div></div></div>
-                    `;
-
-                    modalDetail.find(".dLaporan").append(detailLaporan);
-                    modalDetail.find(".dPelapor").append(detailPelapor);
-
-                    const me = $(".gallery .gallery-item");
-                    me.attr("href", me.data("image")), me.attr("title", me.data("title")), me.parent().hasClass("gallery-md") && me.css({
-                        height: me.parent().data("item-height"),
-                        width: me.parent().data("item-height")
-                    }), me.css({
-                        backgroundImage: 'url("' + me.data("image") + '")'
-                    }), jQuery().Chocolat && ($(".gallery").Chocolat({
-                        className: "gallery",
-                        imageSelector: ".gallery-item"
-                    }));
-
-                    $(".load_data_detail").hide();
-                }, 1000);
+                error: function(data) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan, silahkan coba lagi',
+                        showConfirmButton: true,
+                        timer: 3000
+                    });
+                }
             });
-        <?php endif; ?>
+        });
     });
 </script>
 <?= $this->endSection(); ?>

@@ -84,11 +84,16 @@ $routes->group('warga', ['filter' => 'role:pengguna'], function ($wrg) {
     $wrg->add('/', 'Warga::index');
     $wrg->add('index', 'Warga::index');
     $wrg->add('home', 'Warga::index');
+    $wrg->add('pass/update', 'Warga::updatePass');
+    
+
     $wrg->add('profile', 'Warga::profile');
+    $wrg->add('profile/update', 'Warga::profile_update');
+    
     $wrg->add('aduan', 'Warga::aduan');
     $wrg->add('aduan/add', 'Warga::aduan_add');
     $wrg->add('aduan/store', 'Warga::aduan_store');
-    $wrg->add('aduan/getById', 'Warga::aduan_getById');
+    $wrg->add('aduan/(:num)', 'Warga::aduan_edit/$1');
     $wrg->add('aduan/update', 'Warga::aduan_update');
     $wrg->add('aduan/delete', 'Warga::aduan_delete');
 });

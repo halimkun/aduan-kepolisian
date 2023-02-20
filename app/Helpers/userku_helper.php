@@ -26,3 +26,25 @@ function userColor()
         return '';
     }
 }
+
+
+// user themes hex color
+function userColorHex()
+{
+    if (logged_in()) {
+        $role = user()->getRoles();
+        if (in_array('admin', $role)) { 
+            $c = '#007bff';
+        } else if (in_array('petugas', $role)) {
+            $c = '#17a2b8';
+        } else if (in_array('pengguna', $role)) {
+            $c = '#28a745';
+        } else {
+            $c = '#dc3545';
+        }
+
+        return $c;
+    } else {
+        return '';
+    }
+}

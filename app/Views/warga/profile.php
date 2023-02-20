@@ -14,11 +14,13 @@
 
 <section class="section">
     <div class="section-header">
-        <h1>Profile Page</h1>
+        <h1 class="text-<?= userColor() ?>">Profile Page</h1>
     </div>
 
     <?php $r = user()->getRoles();
     $d = date_create($me->tanggal_lahir) ?>
+
+    <?= $this->include('Components/flash_message'); ?>
 
     <div class="card card-body">
         <div class="row">
@@ -81,14 +83,14 @@
                 <div class="dropdown-divider"></div>
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="h3 mb-0 pb-0">Aduan Terakhir</div>
+                        <div class="h5 text-<?= userColor() ?> mb-0 pb-0">Aduan Terakhir</div>
                         <div class="text-sm mb-3">
                             berikut adalah aduan terakhir yang anda buat
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="d-flex justify-content-end">
-                            <a href="<?= base_url('aduan') ?>" class="btn btn-sm shadow btn-<?= userColor() ?>">Lihat Semua</a>
+                            <a href="<?= base_url('warga/aduan') ?>" class="btn btn-sm shadow btn-<?= userColor() ?>">Lihat Semua</a>
                         </div>
                     </div>
                 </div>
@@ -135,7 +137,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('/warga/update') ?>" method="post" id="formEditUser" autocomplete="off">
+                <form action="<?= base_url('/warga/profile/update') ?>" method="post" id="formEditUser" autocomplete="off">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -222,9 +224,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('/warga/change_pass') ?>" id="formEditPassword" method="post" autocomplete="off">
-                    <input type="hidden" id="ud" name="user_detail" value="">
-                    <!-- input password & confirmation password -->
+                <form action="<?= base_url('/warga/pass/update') ?>" id="formEditPassword" method="post" autocomplete="off">
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" name="password" id="password" class="form-control">

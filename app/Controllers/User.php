@@ -81,12 +81,14 @@ class User extends BaseController
             $data = [
                 'id' => $this->request->getPost('user_detail'),
                 'nama' => $this->request->getPost('nama'),
-                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+                'email' => $this->request->getPost('email'),
+                'nomor_hp' => $this->request->getPost('nomorHp'),
                 'tempat_lahir' => $this->request->getPost('tempatLahir'),
                 'tanggal_lahir' => $this->request->getPost('tglLahir'),
                 'pekerjaan' => $this->request->getPost('pekerjaan'),
+                'agama' => $this->request->getPost('agama'),
+                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
                 'alamat' => $this->request->getPost('alamat'),
-                'email' => $this->request->getPost('email'),
             ];
 
             if ($this->user->save($data)) {

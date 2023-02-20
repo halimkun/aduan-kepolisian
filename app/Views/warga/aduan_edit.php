@@ -6,7 +6,9 @@
     </div>
 
     <div class="card card-body" id="tambahAduan">
-        <form action="<?= base_url('warga/aduan/store') ?>" method="post" id="fAddAduan" enctype="multipart/form-data">
+        <form action="<?= base_url('warga/aduan/update') ?>" method="post" id="fAddAduan" enctype="multipart/form-data">
+            <input type="hidden" name="nomor_aduan" id="nomor" value="<?= end($segments) ?>">
+            <input type="hidden" name="foto" id="nomor" value="<?= $aduan->foto ?>">
             <div class="mb-3">
                 <h6 class="font-weight-bold text-<?= userColor() ?>">Data Pelapor</h6>
                 <div class="dropdown-divider"></div>
@@ -74,36 +76,39 @@
                             <label for="jenis_aduan">Jenis Aduan</label>
                             <select class="custom-select" id="jenis_aduan" name="jenis_aduan">
                                 <option value="-">Pilih Jenis Aduan</option>
-                                <option value="kehilangan">Kehilangan</option>
-                                <option value="pencurian">Pencurian</option>
-                                <option value="kejadian">Kejadian</option>
-                                <option value="kecelakaan">Kecelakaan</option>
+                                <option <?= $aduan->jenis == 'kehilangan' ? 'selected' : '' ?> value="kehilangan">Kehilangan</option>
+                                <option <?= $aduan->jenis == 'pencurian' ? 'selected' : '' ?> value="pencurian">Pencurian</option>
+                                <option <?= $aduan->jenis == 'kejadian' ? 'selected' : '' ?> value="kejadian">Kejadian</option>
+                                <option <?= $aduan->jenis == 'kecelakaan' ? 'selected' : '' ?> value="kecelakaan">Kecelakaan</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_kejadian">Waktu Kejadian</label>
-                            <input type="datetime-local" class="form-control" id="tanggal_kejadian" name="tanggal_kejadian">
+                            <input type="datetime-local" class="form-control" id="tanggal_kejadian" value="<?= $aduan->tanggal ?>" name="tanggal_kejadian">
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="judul">Judul</label>
-                    <input type="text" class="form-control" id="judul" placeholder="kejadian apa yang terjadi" name="judul">
+                    <input type="text" class="form-control" id="judul" placeholder="kejadian apa yang terjadi" value="<?= $aduan->judul ?>" name="judul">
                 </div>
                 <div class="form-group">
                     <label for="keterangan">Keterangan</label>
-                    <textarea class="form-control" id="keterangan" name="keterangan" style="height: 100px;" placeholder="Jelaskan mengenai hal yang dilaporkan"></textarea>
+                    <textarea class="form-control" id="keterangan" name="keterangan" style="height: 100px;" placeholder="Jelaskan mengenai hal yang dilaporkan"><?= $aduan->keterangan ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="lokasi">Lokasi Kejadian</label>
-                    <textarea class="form-control" id="lokasi" name="lokasi" style="height: 100px;" placeholder="Tuliskan detail lokasi kejadian"></textarea>
+                    <textarea class="form-control" id="lokasi" name="lokasi" style="height: 100px;" placeholder="Tuliskan detail lokasi kejadian"><?= $aduan->lokasi ?></textarea>
                 </div>
+
                 <div class="form-group">
                     <label for="foto_aduan">Foto Aduan</label>
                     <input type="file" class="form-control" id="foto_aduan" name="foto_aduan">
                 </div>
+
+                <img src="<?= base_url('foto_kejadian/' . $aduan->foto) ?>" width="250px" class="img-fluid fotoKejadian">
             </div>
             <div class="float-right">
                 <button type="submit" class="btn btn-<?= userColor() ?> shadow"><i class="fa fa-save"></i> SIMPAN</button>
@@ -122,6 +127,8 @@
         border-color: red !important;
     }
 </style>
+
+<link rel="stylesheet" href="http://localhost:8080/assets/modules/chocolat/css/chocolat.css">
 <?= $this->endSection(); ?>
 
 
@@ -130,6 +137,7 @@
 <!-- validation -->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+<script src="http://localhost:8080/assets/modules/chocolat/js/jquery.chocolat.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -164,15 +172,17 @@
             lokasi: {
                 required: true,
                 mym: true
-            },
-            foto_aduan: {
-                required: true
             }
         };
 
         // fAddAduan validation
         $('#fAddAduan').validate({
             rules: fAddAfuan_rules
+        });
+
+        // fotoKejadian on click chocolat
+        $('.fotoKejadian').on('click', function() {
+            $('.fotoKejadian').Chocolat();
         });
     });
 </script>
