@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <div class="card card-body card-success">
                             <?php $as = [] ?>
                             <?php foreach ($aduan as $a) : ?>
@@ -48,11 +48,11 @@
                                 <?php endif ?>
                             <?php endforeach ?>
 
-                            <div class="text-center mb-3 capitalize">Selesai Diproses</div>
+                            <div class="text-center mb-3 capitalize">Selesai</div>
                             <h3 class="text-center"><?= count($as) ?></h3>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <div class="card card-body card-info">
                             <?php $as = [] ?>
                             <?php foreach ($aduan as $a) : ?>
@@ -65,7 +65,7 @@
                             <h3 class="text-center"><?= count($as) ?></h3>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <div class="card card-body card-warning">
                             <?php $as = [] ?>
                             <?php foreach ($aduan as $a) : ?>
@@ -78,7 +78,7 @@
                             <h3 class="text-center"><?= count($as) ?></h3>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <div class="card card-body card-danger">
                             <?php $as = [] ?>
                             <?php foreach ($aduan as $a) : ?>
