@@ -252,10 +252,9 @@
             },
             nomorHp: {
                 required: true,
-                number: true,
                 minlength: 10,
                 maxlength: 13,
-                myfield: true
+                mp: true
             },
             tempatLahir: {
                 required: true,
@@ -293,6 +292,11 @@
             errorClass: "is-invalid text-danger",
             validClass: "is-valid",
         });
+
+        // validator add method allow only number, dash, space, and plus
+        $.validator.addMethod('mp', function(val, ele) {
+            return this.optional(ele) || /^[0-9\-\s\+]{1,}$/i.test(val);
+        }, 'this field not valid');
 
         $.validator.addMethod("myfield", function(value, element) {
             return this.optional(element) || /^[a-z0-9\-\s]+$/i.test(value);

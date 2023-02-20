@@ -29,7 +29,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nomorHp" class="form-label">Nomor HP</label>
-                                <input type="number" name="nomorHp" id="nomorHp" placeholder="08xxxxxxxxxx" class="form-control">
+                                <input type="text" name="nomorHp" id="nomorHp" placeholder="08xxxxxxxxxx" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="tempatLahir" class="form-label">Tempat Lahir</label>
