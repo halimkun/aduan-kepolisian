@@ -14,6 +14,8 @@ class Warga extends BaseController
     protected $userModel;
     protected $aduanModel;
 
+    protected $profileLengkap;
+
     public function __construct()
     {
         $this->userModel = new \App\Models\UserModel();
@@ -22,6 +24,8 @@ class Warga extends BaseController
         $route = Services::routes();
         $this->tmbhAduan = array_key_exists('admin/aduan/add', $route->getRoutes());
         $this->informasi = array_key_exists('admin/informasi', $route->getRoutes());
+
+        $this->profileLengkap = $this->userModel->isProfileComplete(user_id());
     }
 
     public function index()
@@ -31,6 +35,7 @@ class Warga extends BaseController
 
             'aduan' => $this->aduanModel->where('user_id', user_id())->orderBy('tanggal', "DESC")->findAll(),
             'tahun' => $this->aduanModel->select('YEAR(tanggal) as tahun')->where('user_id', user_id())->groupBy('YEAR(tanggal)')->orderBy('YEAR(tanggal)', 'DESC')->findAll(),
+            'profile_lengkap' => $this->profileLengkap,
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
@@ -44,6 +49,7 @@ class Warga extends BaseController
             'agent' => $this->request->getUserAgent(),
 
             'aduan' => $this->aduanModel->where('user_id', user_id())->orderBy('tanggal', "DESC")->findAll(),
+            'profile_lengkap' => $this->profileLengkap,
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
@@ -57,6 +63,7 @@ class Warga extends BaseController
             'agent' => $this->request->getUserAgent(),
 
             'aduan' => $this->aduanModel->where('user_id', user_id())->orderBy('tanggal', "DESC")->findAll(),
+            'profile_lengkap' => $this->profileLengkap,
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
@@ -65,6 +72,13 @@ class Warga extends BaseController
 
     public function aduan_store()
     {
+
+        // if profile belum lengkap
+        if (!$this->profileLengkap) {
+            session()->setFlashdata('error', 'Profile belum lengkap, silahkan lengkapi profile terlebih dahulu.');
+            return redirect()->to(base_url('warga/aduan'));
+        }
+
         $bukti = $this->request->getFile('foto_aduan');
         $bukti_file_name = $bukti->getRandomName();
 
@@ -92,7 +106,13 @@ class Warga extends BaseController
     }
 
     public function aduan_edit($num)
-    {
+    {   
+        // if profile belum lengkap
+        if (!$this->profileLengkap) {
+            session()->setFlashdata('error', 'Profile belum lengkap, silahkan lengkapi profile terlebih dahulu.');
+            return redirect()->to(base_url('warga/aduan'));
+        }
+
         $ad = $this->aduanModel->where(['user_id' => user_id(), 'nomor' => $num])->first();
         if (!$ad) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -111,6 +131,13 @@ class Warga extends BaseController
 
     public function aduan_update()
     {
+
+        // if profile belum lengkap
+        if (!$this->profileLengkap) {
+            session()->setFlashdata('error', 'Profile belum lengkap, silahkan lengkapi profile terlebih dahulu.');
+            return redirect()->to(base_url('warga/aduan'));
+        }
+
         $foto = $this->request->getFile('foto_aduan');
         if ($foto->getError() == 4) {
             $bukti_file_name = $this->request->getPost('foto');
@@ -147,6 +174,13 @@ class Warga extends BaseController
 
     public function aduan_delete()
     {
+
+        // if profile belum lengkap
+        if (!$this->profileLengkap) {
+            session()->setFlashdata('error', 'Profile belum lengkap, silahkan lengkapi profile terlebih dahulu.');
+            return redirect()->to(base_url('warga/aduan'));
+        }
+
         // get post nomor
         $nomor = $this->request->getPost('nomor');
         $id = $this->aduanModel->select('id')->where('nomor', $nomor)->first();
@@ -175,6 +209,7 @@ class Warga extends BaseController
             'aduanku' => $this->aduanModel->where('user_id', user_id())->findAll(),
             'aduanku_terbaru' => $this->aduanModel->where(['user_id' => user_id()])->orderBy('tanggal', 'DESC')->findAll(3),
             'aduan_terbaru' => $this->aduanModel->where(['DATE(tanggal)' => date('Y-m-d'), 'user_id' => user_id()])->findAll(),
+            'profile_lengkap' => $this->profileLengkap,
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,

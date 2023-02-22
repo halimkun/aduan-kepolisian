@@ -6,6 +6,13 @@
     </div>
 
     <div class="section-body">
+
+        <?php if (!$profile_lengkap) : ?>
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-info mr-1"></i> Silahkan <a href="/warga/profile"><u>lengkapi profil</u></a> anda terlebih dahulu untuk dapat menggunakan fitur yang ada.
+            </div>
+        <?php endif ?>
+
         <div class="row">
             <div class="col-lg-8 col-md-12 col-12 col-sm-12 order-md-2 order-sm-2 order-xs-2 order-lg-1">
                 <div class="card">

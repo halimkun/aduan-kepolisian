@@ -19,7 +19,7 @@ class UserModel extends Model
     protected $allowedFields  = [
         'email', 'username', 'password_hash', 'reset_hash', 'reset_at', 'reset_expires', 'activate_hash',
         'status', 'status_message', 'active', 'force_pass_reset', 'permissions', 'deleted_at',
-        'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'nomor_hp', 'pekerjaan', 'alamat', 
+        'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'nomor_hp', 'pekerjaan', 'alamat',
     ];
     protected $useTimestamps   = true;
     protected $validationRules = [
@@ -132,5 +132,19 @@ class UserModel extends Model
             'username' => $faker->userName,
             'password' => bin2hex(random_bytes(16)),
         ]);
+    }
+
+    /**
+     * Check complete data user profile 
+     */
+
+    public function isProfileComplete($id)
+    {
+        $user = $this->find($id);
+        if ($user->nama == null || $user->jenis_kelamin == null || $user->tempat_lahir == null || $user->tanggal_lahir == null || $user->agama == null || $user->nomor_hp == null || $user->pekerjaan == null || $user->alamat == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -17,109 +17,120 @@
         <h1 class="text-<?= userColor() ?>">Profile Page</h1>
     </div>
 
-    <?php $r = user()->getRoles();
-    $d = date_create($me->tanggal_lahir) ?>
+    <?php
+    $r = user()->getRoles();
+    $profile_lengkap ? $d = date_create($me->tanggal_lahir) : $d = null;
+    ?>
 
     <?= $this->include('Components/flash_message'); ?>
 
-    <div class="card card-body">
-        <div class="row">
-            <div class="col-md-4 py-5 px-3 d-flex align-items-center justify-content-center flex-column">
-                <img src="<?= base_url('/assets/img/avatar/avatar-1.png') ?>" alt="" class="w-50 rounded-circle">
-                <span class="h3 my-3" title="username"><?= $me->username ?></span>
-                <div class="card bg-dark card-statistic-2 mt-2">
-                    <div class="card-icon bg-<?= userColor() ?>">
-                        <i class="fas fa-clipboard-list"></i>
-                    </div>
-                    <div class="card-wrap">
-                        <div class="card-header">
-                            <h4>Total Aduan</h4>
-                        </div>
-                        <div class="card-body">
-                            <?= count($aduanku) ?>
-                        </div>
-                    </div>
-                </div>
+    <div class="section-body">
+
+        <?php if (!$profile_lengkap) : ?>
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-info mr-1"></i> Silahkan <a href="#" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#editPengguna"><u>lengkapi profil</u></a> anda terlebih dahulu untuk dapat menggunakan fitur yang ada.
             </div>
-            <div class="col-md-8 py-5 px-3 d-flex justify-content-center flex-column">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="d-flex alilgn-items-center">
-                            <span class="h3"><?= $me->nama ?></span>
-                            <span class="pl-1">
-                                <div style="border-radius: 100px; scale: 75%;" title="group <?= end($r) ?>" class="px-3 py-1 bg-<?= userColor() ?>"><strong><?= end($r) ?></strong></div>
-                            </span>
+        <?php endif; ?>
+
+        <div class="card card-body">
+            <div class="row">
+                <div class="col-md-4 py-5 px-3 d-flex align-items-center justify-content-center flex-column">
+                    <img src="<?= base_url('/assets/img/avatar/avatar-1.png') ?>" alt="" class="w-50 rounded-circle">
+                    <span class="h3 my-3" title="username"><?= $me->username ?></span>
+                    <div class="card bg-dark card-statistic-2 mt-2">
+                        <div class="card-icon bg-<?= userColor() ?>">
+                            <i class="fas fa-clipboard-list"></i>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="d-flex justify-content-end" style="gap: 5px">
-                            <button class="btn btn-sm shadow d-none d-md-block btn-edit btn-<?= userColor() ?>" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#editPengguna"><i class="fa fa-pen"></i></button>
-                            <button class="btn btn-sm btn-warning shadow-sm d-none d-md-block btn-edit-p" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#ubahCPassword" title="ubah password user">
-                                <i class="fa fa-key"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="h6"><?= $me->email ?></div>
-                        <div class="h6"><?= $me->nomor_hp ?></div>
-                        <div class="h6"><?= $me->tempat_lahir ?>, <span title="tanggal lahir"><?= date_format($d, "d F Y") ?></span></div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="h6"><?= $me->agama ?></div>
-                        <div class="h6"><?= $me->pekerjaan ?></div>
-                        <div class="h6"><?= $me->jenis_kelamin ?></div>
-                    </div>
-                </div>
-                <div class="px-4 py-2 bg-dark d-flex align-items-center rounded">
-                    <div class="mb-0 pb-0 text-sm"><?= $me->alamat ?></div>
-                </div>
-                <!-- button full width -->
-                <div class="d-flex justify-content-center my-3 gap-3 d-block d-md-none" style="gap:10px">
-                    <button class="btn btn-sm shadow btn-<?= userColor() ?> btn-edit" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#editPengguna"><i class="fa fa-pen"></i> Edit Profile</button>
-                    <button class="btn btn-sm btn-edit-p shadow btn-warning" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#ubahCPassword"><i class="fa fa-key"></i> Ubah Password</button>
-                </div>
-                <div class="dropdown-divider"></div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="h5 text-<?= userColor() ?> mb-0 pb-0">Aduan Terakhir</div>
-                        <div class="text-sm mb-3">
-                            berikut adalah aduan terakhir yang anda buat
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="d-flex justify-content-end">
-                            <a href="<?= base_url('warga/aduan') ?>" class="btn btn-sm shadow btn-<?= userColor() ?>">Lihat Semua</a>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Aduan</h4>
+                            </div>
+                            <div class="card-body">
+                                <?= count($aduanku) ?>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive mt-1">
-                    <table class="table table-striped table-hover table-sm">
-                        <thead class="bg-dark">
-                            <tr>
-                                <th>No. </th>
-                                <th width="10"></th>
-                                <th>Jenis</th>
-                                <th>Judul</th>
-                                <th>Tanggal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $i = 1;
-                            foreach ($aduanku_terbaru as $a) : ?>
+                <div class="col-md-8 py-5 px-3 d-flex justify-content-center flex-column">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="d-flex alilgn-items-center">
+                                <span class="h3"><?= $me->nama ?></span>
+                                <span class="pl-1">
+                                    <div style="border-radius: 100px; scale: 75%;" title="group <?= end($r) ?>" class="px-3 py-1 bg-<?= userColor() ?>"><strong><?= end($r) ?></strong></div>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-end" style="gap: 5px">
+                                <button class="btn btn-sm shadow d-none d-md-block btn-edit btn-<?= userColor() ?>" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#editPengguna"><i class="fa fa-pen"></i></button>
+                                <button class="btn btn-sm btn-warning shadow-sm d-none d-md-block btn-edit-p" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#ubahCPassword" title="ubah password user">
+                                    <i class="fa fa-key"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="h6"><?= $me->email ?></div>
+                            <div class="h6"><?= $me->nomor_hp ?></div>
+                            <div class="h6"><?= $me->tempat_lahir ?>, <span title="tanggal lahir"><?= $d == null ? '' : date_format($d, "d F Y") ?></span></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="h6"><?= $me->agama ?></div>
+                            <div class="h6"><?= $me->pekerjaan ?></div>
+                            <div class="h6"><?= $me->jenis_kelamin ?></div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2 bg-dark d-flex align-items-center rounded">
+                        <div class="mb-0 pb-0 text-sm"><?= $me->alamat ?></div>
+                    </div>
+                    <!-- button full width -->
+                    <div class="d-flex justify-content-center my-3 gap-3 d-block d-md-none" style="gap:10px">
+                        <button class="btn btn-sm shadow btn-<?= userColor() ?> btn-edit" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#editPengguna"><i class="fa fa-pen"></i> Edit Profile</button>
+                        <button class="btn btn-sm btn-edit-p shadow btn-warning" data-user="<?= user_id() ?>" data-toggle="modal" data-target="#ubahCPassword"><i class="fa fa-key"></i> Ubah Password</button>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="h5 text-<?= userColor() ?> mb-0 pb-0">Aduan Terakhir</div>
+                            <div class="text-sm mb-3">
+                                berikut adalah aduan terakhir yang anda buat
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-end">
+                                <a href="<?= base_url('warga/aduan') ?>" class="btn btn-sm shadow btn-<?= userColor() ?>">Lihat Semua</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive mt-1">
+                        <table class="table table-striped table-hover table-sm">
+                            <thead class="bg-dark">
                                 <tr>
-                                    <td><?= $i++ ?></td>
-                                    <td>
-                                        <?= badgeStatusGen($a->status) ?>
-                                    </td>
-                                    <td><?= $a->jenis ?></td>
-                                    <td><?= $a->judul ?></td>
-                                    <td><?= $a->tanggal ?></td>
+                                    <th>No. </th>
+                                    <th width="10"></th>
+                                    <th>Jenis</th>
+                                    <th>Judul</th>
+                                    <th>Tanggal</th>
                                 </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php $i = 1;
+                                foreach ($aduanku_terbaru as $a) : ?>
+                                    <tr>
+                                        <td><?= $i++ ?></td>
+                                        <td>
+                                            <?= badgeStatusGen($a->status) ?>
+                                        </td>
+                                        <td><?= $a->jenis ?></td>
+                                        <td><?= $a->judul ?></td>
+                                        <td><?= $a->tanggal ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

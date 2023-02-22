@@ -18,7 +18,7 @@
             <h1 class="text-4xl font-bold">Aduan Kepolisian</h1>
             <p class="text-gray-500">Kami ada untuk membantu anda sekarang!</p>
 
-            <div class="mt-10 flex gap-3">
+            <div class="mt-10 flex <?= !logged_in() ? 'flex-col' : 'flex-row gap-3' ?>">
                 <?php if (logged_in()) : ?>
                     <?php if (in_array('admin', user()->getRoles()) ||  in_array('petugas', user()->getRoles())) : ?>
                         <a href="/admin/" class="bg-indigo-600 text-white font-bold rounded shadow px-8 py-3 hover:bg-indigo-500">
@@ -36,6 +36,11 @@
                     <a href="/login" class="bg-indigo-600 text-white font-bold rounded shadow px-8 py-3 hover:bg-indigo-500">
                         <i class="fas fa-sign-in-alt mr-2"></i> Log In
                     </a>
+                    <?php if ($config->allowRegistration) : ?>
+                        <div class="mt-3 text-gray-500 text-sm">
+                            Don't have an account? <a class="text-indigo-600" href="<?= url_to('register') ?>">Create One</a>
+                        </div>
+                    <?php endif; ?>
                 <?php endif ?>
             </div>
         </div>
