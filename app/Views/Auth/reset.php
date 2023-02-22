@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="row d-flex justify-content-center align-items-center" style="height: 100vh;">
-        <div class="col-sm-6 offset-sm-3">
+        <div class="col-sm-6">
             <div class="card">
                 <h2 class="card-header"><?= lang('Auth.resetYourPassword') ?></h2>
                 <div class="card-body">
