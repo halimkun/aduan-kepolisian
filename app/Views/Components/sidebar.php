@@ -11,10 +11,10 @@
     ?>
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="<?= base_url('/admin') ?>">Aduan Kepolision</a>
+            <a href="<?= base_url('/admin') ?>">POLSEK BOJONG</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">AK</a>
+            <a href="index.html">PB</a>
         </div>
 
         <ul class="sidebar-menu">

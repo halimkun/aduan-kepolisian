@@ -7,17 +7,10 @@
         </ul>
     </div>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+        <li class="dropdown"><a href="#" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="<?= base_url('/assets/img/avatar/avatar-1.png') ?>" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block" style="text-transform: capitalize;">Hi, <b><?= user()->username ?></b></div>
+                <div class="d-sm-none d-lg-inline-block" style="text-transform: capitalize;">Selamat datang, <b><?= user()->username ?></b></div>
             </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-title">GOD BLESS YOU</div>
-                <div class="dropdown-divider"></div>
-                <a href="<?= base_url('/logout') ?>" class="dropdown-item has-icon text-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
         </li>
     </ul>
 </nav>
