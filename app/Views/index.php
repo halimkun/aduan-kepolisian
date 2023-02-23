@@ -12,11 +12,10 @@
     <div class="w-auto w-auto md:w-[100vw] md:h-[100vh] flex flex-col lg:flex-row">
         <div class="w-full h-full flex items-center justify-center flex-col">
             <img src="<?= base_url('/assets/img/illustrator/Paper map-rafiki.svg') ?>" alt="report image" class="w-[90%] lg:w-[75%] 2xl:w-[60%]">
-            <small><a href="https://storyset.com/location" class="text-gray-400">Location illustrations by Storyset</a></small>
         </div>
         <div class="w-full h-full my-8 md:my-0 text-center flex items-center justify-center lg:items-start 2xl:items-center flex-col px-10 xl:px-20 2xl:px-40">
             <h1 class="text-4xl font-bold">SISTEM PELAPORAN KEJADIAN</h1>
-            <p class="text-gray-500">POLSEK BOJONG</p>
+            <p class="text-gray-800">POLSEK BOJONG</p>
 
             <div class="mt-10 flex <?= !logged_in() ? 'flex-col' : 'flex-row gap-3' ?>">
                 <?php if (logged_in()) : ?>
