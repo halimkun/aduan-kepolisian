@@ -15,8 +15,8 @@
             <small><a href="https://storyset.com/location" class="text-gray-400">Location illustrations by Storyset</a></small>
         </div>
         <div class="w-full h-full my-8 md:my-0 text-center flex items-center justify-center lg:items-start 2xl:items-center flex-col px-10 xl:px-20 2xl:px-40">
-            <h1 class="text-4xl font-bold">Aduan Kepolisian</h1>
-            <p class="text-gray-500">Kami ada untuk membantu anda sekarang!</p>
+            <h1 class="text-4xl font-bold">SISTEM PELAPORAN KEJADIAN</h1>
+            <p class="text-gray-500">POLSEK BOJONG</p>
 
             <div class="mt-10 flex <?= !logged_in() ? 'flex-col' : 'flex-row gap-3' ?>">
                 <?php if (logged_in()) : ?>
