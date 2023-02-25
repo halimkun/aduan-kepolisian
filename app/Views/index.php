@@ -5,17 +5,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="stylesheet" href="<?= base_url('assets/modules/fontawesome/css/all.min.css') ?>">
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="<?= base_url('assets/fav/favicon.ico') ?>" type="image/x-icon">
+    <link rel="icon" href="<?= base_url('assets/fav/favicon.ico') ?>" type="image/x-icon">
+
+    <!-- PWA Start -->
+    <meta name="Description" content="Manajemen surat yang lebih efisien dan mudah untuk permintaan surat ke Balai Desa." />
+    <meta name="theme-color" content="#414f57" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Nama Situs" />
+
+    <meta name="msapplication-TileImage" content="/assets/fav/android-chrome-512x512.png" />
+    <meta name="msapplication-TileColor" content="#000000" />
+
+    <link rel="apple-touch-icon" href="/assets/fav/apple-touch-icon.png" />
+    <!-- PWA End -->
+
+    <script>
+        if (navigator.serviceWorker) {
+            navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                console.log('ServiceWorker registration successful with scope:', registration.scope);
+            }).catch(function(error) {
+                console.log('ServiceWorker registration failed:', errror);
+            });
+        }
+    </script>
 </head>
 
 <body>
-    <div class="w-auto w-auto md:w-[100vw] md:h-[100vh] flex flex-col lg:flex-row">
-        <div class="w-full h-full flex items-center justify-center flex-col">
-            <img src="<?= base_url('/assets/img/illustrator/R.jpg') ?>" alt="report image" class="w-[90%] lg:w-[75%] 2xl:w-[60%]">
+    <div class="w-[100vw] h-[100vh] flex flex-col items-center justify-center lg:flex-row">
+        <div class="w-full h-full flex items-center justify-end md:justify-center flex-col">
+            <img src="<?= base_url('/assets/img/illustrator/R.jpg') ?>" alt="report image" class="w-[70%] lg:w-[75%] 2xl:w-[60%]">
         </div>
-        <div class="w-full h-full my-8 md:my-0 text-center flex items-center justify-center lg:items-start 2xl:items-center flex-col px-10 xl:px-20 2xl:px-40">
+        <div class="w-full h-full my-8 md:my-0 text-center flex items-center justify-start md:justify-center lg:items-start 2xl:items-center flex-col px-10 xl:px-20 2xl:px-40">
             <h1 class="text-4xl font-bold">Sistem Pelaporan Kejadian</h1>
-            <h1 class="text-4xl">di Polsek Bojong</h1>
+            <h1 class="text-2xl">Polsek Bojong</h1>
             <div class="mt-10 flex <?= !logged_in() ? 'flex-col' : 'flex-row gap-3' ?>">
                 <?php if (logged_in()) : ?>
                     <?php if (in_array('admin', user()->getRoles()) ||  in_array('petugas', user()->getRoles())) : ?>
