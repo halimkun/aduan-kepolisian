@@ -20,7 +20,7 @@
     <meta name="apple-mobile-web-app-title" content="Laporan Kepolisian" />
 
     <meta name="msapplication-TileImage" content="/assets/fav/android-chrome-512x512.png" />
-    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
 
     <link rel="apple-touch-icon" href="/assets/fav/apple-touch-icon.png" />
 
