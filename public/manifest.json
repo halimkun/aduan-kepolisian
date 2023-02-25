@@ -1,11 +1,15 @@
 {
-    "name": "Surat Gate",
-    "short_name": "Surat Gate",
-    "description": "Manajemen surat yang lebih efisien dan mudah untuk permintaan surat ke Balai Desa Anda.",
-    "start_url": "/",
-    "background_color": "#3395d6",
-    "theme_color": "#3395d6",
+    "name": "Laporan Kepolisian",
+    "short_name": "Laporan Kepolisian",
+    "description": "Laporan Kepolisian Online, yang mempermudah masyarakat untuk melaporkan kejadian kejadian yang terjadi di sekitar mereka.",
+    
+    "background_color": "#6366F1",
+    "theme_color": "#6366F1",
+    
     "display": "standalone",
+    
+    "start_url": "/",
+    
     "icons": [
         {
             "src": "/assets/fav/android-chrome-192x192.png",

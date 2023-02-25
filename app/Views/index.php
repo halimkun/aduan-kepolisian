@@ -13,11 +13,11 @@
     <link rel="icon" href="<?= base_url('assets/fav/favicon.ico') ?>" type="image/x-icon">
 
     <!-- PWA Start -->
-    <meta name="Description" content="Manajemen surat yang lebih efisien dan mudah untuk permintaan surat ke Balai Desa." />
-    <meta name="theme-color" content="#414f57" />
+    <meta name="theme-color" content="#6366F1" />
+    <meta name="Description" content="mempermudah penggunaan untuk membuat laporan kepolisian" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Nama Situs" />
+    <meta name="apple-mobile-web-app-title" content="Laporan Kepolisian" />
 
     <meta name="msapplication-TileImage" content="/assets/fav/android-chrome-512x512.png" />
     <meta name="msapplication-TileColor" content="#000000" />
