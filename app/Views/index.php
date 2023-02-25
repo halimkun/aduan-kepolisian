@@ -23,6 +23,9 @@
     <meta name="msapplication-TileColor" content="#000000" />
 
     <link rel="apple-touch-icon" href="/assets/fav/apple-touch-icon.png" />
+
+    <!-- manifest -->
+    <link rel="manifest" href="/manifest.json" />
     <!-- PWA End -->
 
     <script>
