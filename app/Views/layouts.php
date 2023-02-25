@@ -10,12 +10,32 @@
     <link rel="shortcut icon" href="<?= base_url('assets/fav/favicon.ico') ?>" type="image/x-icon">
     <link rel="icon" href="<?= base_url('assets/fav/favicon.ico') ?>" type="image/x-icon">
 
+    <style>
+        .error {
+            color: red !important;
+        }
+
+        input.error {
+            border: 1px solid red !important;
+        }
+
+        /* input has error class active or focus */
+        input.error:focus {
+            border: 1px solid red !important;
+        }
+
+        input.error:focus {
+            border: 1px solid red !important;
+        }
+    </style>
+
     <!-- Top Script -->
     <?= $this->include('Components/top_script'); ?>
+
 </head>
 
 <body class="theme-<?= userColor() ?>">
-    <?= $this->include('Components/settings') ;?>
+    <?= $this->include('Components/settings'); ?>
     <div id="app">
         <div class="main-wrapper">
             <!-- Navbar -->

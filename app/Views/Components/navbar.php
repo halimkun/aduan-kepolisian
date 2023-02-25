@@ -7,7 +7,7 @@
         </ul>
     </div>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown"><a href="#" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+        <li><a href="#" class="nav-link nav-link-lg nav-link-user">
                 <img alt="image" src="<?= base_url('/assets/img/avatar/avatar-1.png') ?>" class="rounded-circle mr-1">
                 <div class="d-sm-none d-lg-inline-block" style="text-transform: capitalize;">Selamat datang, <b><?= user()->username ?></b></div>
             </a>

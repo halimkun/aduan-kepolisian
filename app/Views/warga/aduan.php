@@ -98,8 +98,8 @@
                                     <td id="row_lokasi"><?= $item->lokasi ?></td>
                                     <td id="row_keterangan"><?= $item->keterangan ?></td>
                                     <td id="row_manipulate_data">
-                                        <button <?= $item->status == 'selesai' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-info btn-aduan-edit" data-nomor="<?= $item->nomor ?>"><i class="fa fa-pen"></i></button>
-                                        <button <?= $item->status == 'selesai' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-danger btn-aduan-delete" data-nomor="<?= $item->nomor ?>" data-tanggal="<?= $item->tanggal ?>" data-judul="<?= $item->judul ?>"><i class="fa fa-trash"></i></button>
+                                        <button <?= $item->status == 'selesai' || $item->status == 'dibatalkan' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-info btn-aduan-edit" data-nomor="<?= $item->nomor ?>"><i class="fa fa-pen"></i></button>
+                                        <button <?= $item->status == 'selesai' || $item->status == 'dibatalkan' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-danger btn-aduan-delete" data-nomor="<?= $item->nomor ?>" data-tanggal="<?= $item->tanggal ?>" data-judul="<?= $item->judul ?>"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
