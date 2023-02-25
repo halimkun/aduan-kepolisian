@@ -38,7 +38,7 @@
                                 <?php if ($config->activeResetter) : ?>
                                     <div class="float-right">
                                         <a href="<?= url_to('forgot') ?>" class="text-small">
-                                            Forgot Password?
+                                            Lupa password?
                                         </a>
                                     </div>
                                 <?php endif; ?>
@@ -68,7 +68,7 @@
             </div>
             <?php if ($config->allowRegistration) : ?>
                 <div class="mt-3 text-muted text-center">
-                    Don't have an account? <a href="<?= url_to('register') ?>">Create One</a>
+                    Belum punya akun? <a href="<?= url_to('register') ?>">Daftar</a>
                 </div>
             <?php endif; ?>
             <div class="simple-footer">
