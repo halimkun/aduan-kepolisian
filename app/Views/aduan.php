@@ -101,7 +101,7 @@
                                 <td id="row_lokasi"><?= $item->lokasi ?></td>
                                 <td id="row_keterangan"><?= $item->keterangan ?></td>
                                 <td id="row_action">
-                                    <button class="btn btn-update-status btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-item="<?= $item->id ?>" title="Update Status Aduan">
+                                    <button class="btn btn-update-status btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-stts='<?= $item->status ?>' data-item="<?= $item->id ?>" title="Update Status Aduan">
                                         <i class="fas fa-tag"></i>
                                     </button>
                                 </td>
@@ -240,7 +240,7 @@
             })
         }
 
-        /** hanle create */
+        /** handle create */
         $(".user_select").on("change", (async function() {
             var a = $(this).val();
             if ($(".load_user_input").show(), "-" == a) $("#tambahAduan #pekerjaan").val(""), $("#tambahAduan #jenis_kelamin").val(""), $("#tambahAduan #tanggal_lahir").val(""), $("#tambahAduan #alamat").val(""), $(".load_user_input").hide();
@@ -253,65 +253,68 @@
         }));
 
         /** handle update status */
-        $("#tableAduan tbody").on("click", "tr td#row_action", (function() {
+        $("#tableAduan tbody").on("click", ".btn-update-status", (function() {
             const t = $("#ubahStatusAduan");
-            var a = table.row(this).data(),
-                d = $(this).parent().find("td#row_status").data("stts"),
-                n = $(this).parent().find("td#row_status").data("dt");
-            t.find("#una").empty().append(a[1]), t.find("#status").val(d), t.find("#data").val(n), t.modal("toggle")
+            const status = $(this).data('stts');
+            const item = $(this).data('item');
+            t.find("#data").val(item), t.find("#status").val(status), t.modal("toggle")
         }));
 
         <?php if (!$agent->isMobile()) : ?>
-            const modalDetail = $("#detailAduan");
-            $('#tableAduan tbody').on('click', 'tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan', function() {
-                modalDetail.modal('toggle');
+            const selector = "tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan";
+        <?php else: ?>
+            const selector = "tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan";
+        <?php endif; ?>
 
-                $(".load_data_detail").show();
+        const modalDetail = $("#detailAduan");
+        $('#tableAduan tbody').on('click', selector, function() {
+            modalDetail.modal('toggle');
 
-                modalDetail.find(".dLaporan").empty();
-                modalDetail.find(".dPelapor").empty();
-                modalDetail.find(".judulLaporan").empty()
+            $(".load_data_detail").show();
 
-                setTimeout(async () => {
-                    var data = table.row(this).data();
-                    const o = await getUserData($(this).parent().data('u'));
-                    const i = await getAduanData($(this).parent().data('i'));
+            modalDetail.find(".dLaporan").empty();
+            modalDetail.find(".dPelapor").empty();
+            modalDetail.find(".judulLaporan").empty()
 
-                    modalDetail.find(".judulLaporan").empty().append(i.data.judul + " ( " + i.data.nomor + " ) ");
+            setTimeout(async () => {
+                var data = table.row(this).data();
+                const o = await getUserData($(this).parent().data('u'));
+                const i = await getAduanData($(this).parent().data('i'));
 
-                    const detailPelapor = `
+                modalDetail.find(".judulLaporan").empty().append(i.data.judul);
+
+                const detailPelapor = `
                         <div class="mb-3"> <h5>Detail Pelapor</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nama</b></td><td style="width:30px;">:</td><td>${o.data.nama}</td></tr><tr><td style="width:40%;"><b>Tempat Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tempat_lahir}</td></tr><tr><td style="width:40%;"><b>Tanggal Lahir</b></td><td style="width:30px;">:</td><td>${o.data.tanggal_lahir}</td></tr><tr><td style="width:40%;"><b>Jenis Kelamin</b></td><td style="width:30px;">:</td><td>${o.data.jenis_kelamin}</td></tr><tr><td style="width:40%;"><b>Agama</b></td><td style="width:30px;">:</td><td>${o.data.agama}</td></tr><tr><td style="width:40%;"><b>Pekerjaan</b></td><td style="width:30px;">:</td><td>${o.data.pekerjaan}</td></tr><tr><td style="width:40%;"><b>Nomor HP</b></td><td style="width:30px;">:</td><td><a href='tlp:${o.data.nomor_hp}'>${o.data.nomor_hp}</a></td></tr><tr><td style="width:40%;"><b>Email</b></td><td style="width:30px;">:</td><td><a href='mailto:${o.data.email}'>${o.data.email}</a></td></tr><tr><td style="width:40%;"><b>Alamat</b></td><td style="width:30px;">:</td><td>${o.data.alamat}</td></tr></table> </div>
                     `;
 
-                    // if i.data.foto is url http or https
-                    if (i.data.foto.match(/^(http|https):\/\//)) {
-                        var foto = i.data.foto;
-                    } else {
-                        var foto = '/foto_kejadian/' + i.data.foto;
-                    }
+                // if i.data.foto is url http or https
+                if (i.data.foto.match(/^(http|https):\/\//)) {
+                    var foto = i.data.foto;
+                } else {
+                    var foto = '/foto_kejadian/' + i.data.foto;
+                }
 
-                    const detailLaporan = `
+                const detailLaporan = `
                         <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="${foto}" data-title="${i.data.judul}"></div></div></div>
                     `;
 
-                    modalDetail.find(".dLaporan").append(detailLaporan);
-                    modalDetail.find(".dPelapor").append(detailPelapor);
+                modalDetail.find(".dLaporan").append(detailLaporan);
+                modalDetail.find(".dPelapor").append(detailPelapor);
 
-                    const me = $(".gallery .gallery-item");
-                    me.attr("href", me.data("image")), me.attr("title", me.data("title")), me.parent().hasClass("gallery-md") && me.css({
-                        height: me.parent().data("item-height"),
-                        width: me.parent().data("item-height")
-                    }), me.css({
-                        backgroundImage: 'url("' + me.data("image") + '")'
-                    }), jQuery().Chocolat && ($(".gallery").Chocolat({
-                        className: "gallery",
-                        imageSelector: ".gallery-item"
-                    }));
+                const me = $(".gallery .gallery-item");
+                me.attr("href", me.data("image")), me.attr("title", me.data("title")), me.parent().hasClass("gallery-md") && me.css({
+                    height: me.parent().data("item-height"),
+                    width: me.parent().data("item-height")
+                }), me.css({
+                    backgroundImage: 'url("' + me.data("image") + '")'
+                }), jQuery().Chocolat && ($(".gallery").Chocolat({
+                    className: "gallery",
+                    imageSelector: ".gallery-item"
+                }));
 
-                    $(".load_data_detail").hide();
-                }, 1000);
-            });
-        <?php endif; ?>
+                $(".load_data_detail").hide();
+            }, 1000);
+        });
     });
 </script>
 <?= $this->endSection(); ?>

@@ -58,73 +58,69 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <div class="table-responsive">
-                        <table class="table" id="tableUser">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Groups</th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>Username</th>
-                                    <?php if (in_array('admin', user()->getRoles())) : ?>
-                                        <th><i class="fa fa-user-cog"></i></th>
-                                    <?php endif ?>
-                                    <th><i class="fa fa-cogs"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1 ?>
-                                <?php foreach ($users as $user) : ?>
-                                    <?php $roles = $user->getRoles() ?>
-                                    <tr>
-                                        <td><?= $i++ ?></td>
-                                        <td><?= badgeGen(end($roles)) ?></td>
-                                        <td><img src="/assets/img/avatar/avatar-1.png" alt="profile" height="20" width="20" class="img-fluid rounded-circle mr-2"><?= $user->nama ?></td>
-                                        <td><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
-                                        <td><?= $user->username ?></td>
-                                        <?php if (in_array('admin', user()->getRoles())) : ?>
-                                            <!-- TRUE -->
-                                            <td>
-                                                <button class="btn btn-light shadow-sm btn-sm text-dark btn-roles" data-user="<?= $user->id ?>" data-toggle="modal" data-target="#gantiRoles" title="Ubag Group Pengguna" <?= end($roles) !== 'admin' ? '' : 'disabled' ?>><i class="fa fa-list"></i></button>
-                                            </td>
-                                        <?php endif ?>
-                                        <td>
-                                            <button class="btn btn-sm btn-info shadow-sm btn-edit" title="edit user" data-user="<?= $user->id ?>" data-toggle="modal" data-target="#editPengguna">
-                                                <i class="fa fa-pen"></i>
-                                            </button>
+                <table class="table" id="tableUser">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Username</th>
+                            <th>Groups</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <?php if (in_array('admin', user()->getRoles())) : ?>
+                                <th><i class="fa fa-user-cog"></i></th>
+                            <?php endif ?>
+                            <th><i class="fa fa-cogs"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1 ?>
+                        <?php foreach ($users as $user) : ?>
+                            <?php $roles = $user->getRoles() ?>
+                            <tr>
+                                <td><?= $i++ ?></td>
+                                <td><?= $user->username ?></td>
+                                <td><?= badgeGen(end($roles)) ?></td>
+                                <td><img src="/assets/img/avatar/avatar-1.png" alt="profile" height="20" width="20" class="img-fluid rounded-circle mr-2"><?= $user->nama ?></td>
+                                <td><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
+                                <?php if (in_array('admin', user()->getRoles())) : ?>
+                                    <!-- TRUE -->
+                                    <td>
+                                        <button class="btn btn-light shadow-sm btn-sm text-dark btn-roles" data-user="<?= $user->id ?>" data-toggle="modal" data-target="#gantiRoles" title="Ubag Group Pengguna" <?= end($roles) !== 'admin' ? '' : 'disabled' ?>><i class="fa fa-list"></i></button>
+                                    </td>
+                                <?php endif ?>
+                                <td>
+                                    <button class="btn btn-sm btn-info shadow-sm btn-edit" title="edit user" data-user="<?= $user->id ?>" data-toggle="modal" data-target="#editPengguna">
+                                        <i class="fa fa-pen"></i>
+                                    </button>
 
-                                            <button class="btn btn-sm btn-warning shadow-sm btn-edit-p" data-nama="<?= $user->nama ?>" data-user="<?= $user->id ?>" data-tgl="<?= $user->tanggal_lahir ?>" data-toggle="modal" data-target="#ubahPassword" title="ubah password user">
-                                                <i class="fa fa-key"></i>
-                                            </button>
+                                    <button class="btn btn-sm btn-warning shadow-sm btn-edit-p" data-nama="<?= $user->nama ?>" data-user="<?= $user->id ?>" data-tgl="<?= $user->tanggal_lahir ?>" data-toggle="modal" data-target="#ubahPassword" title="ubah password user">
+                                        <i class="fa fa-key"></i>
+                                    </button>
 
-                                            <?php
-                                            if (in_array('admin', user()->getRoles())) {
-                                                if (in_array('admin', $roles)) {
-                                                    $deldis = 'disabled';
-                                                } else {
-                                                    $deldis = '';
-                                                }
-                                            } elseif (in_array('petugas', user()->getRoles())) {
-                                                if (in_array('admin', $roles) || in_array('petugas', $roles)) {
-                                                    $deldis = 'disabled';
-                                                } else {
-                                                    $deldis = '';
-                                                }
-                                            }
-                                            ?>
+                                    <?php
+                                    if (in_array('admin', user()->getRoles())) {
+                                        if (in_array('admin', $roles)) {
+                                            $deldis = 'disabled';
+                                        } else {
+                                            $deldis = '';
+                                        }
+                                    } elseif (in_array('petugas', user()->getRoles())) {
+                                        if (in_array('admin', $roles) || in_array('petugas', $roles)) {
+                                            $deldis = 'disabled';
+                                        } else {
+                                            $deldis = '';
+                                        }
+                                    }
+                                    ?>
 
-                                            <button <?= $deldis ?> class="btn btn-sm btn-danger shadow-sm" title="hapus data user" data-confirm="Woops...|Apakah anda yakin akan menghapus data <b><?= $user->nama ?></b>" data-confirm-yes="$.ajax({ url: '/user/delete/<?= $user->id ?>', type: 'DELETE', data: {'id' : <?= $user->id ?>}, success: function(result) { window.location.href='/admin/user'; } });">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                    <button <?= $deldis ?> class="btn btn-sm btn-danger shadow-sm" title="hapus data user" data-confirm="Woops...|Apakah anda yakin akan menghapus data <b><?= $user->nama ?></b>" data-confirm-yes="$.ajax({ url: '/user/delete/<?= $user->id ?>', type: 'DELETE', data: {'id' : <?= $user->id ?>}, success: function(result) { window.location.href='/admin/user'; } });">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -188,7 +184,7 @@
         $('#tableUser').DataTable({
             "responsive": !0,
             "pageLength": 10,
-            "dom": 'rtip',
+            "dom": 'rtp',
         });
 
         $("#tableUser tbody").on('click', '.btn-edit', function() {
@@ -227,7 +223,7 @@
 
         // filterGroup onChange, change table only show group
         $('#filterGroup').on('change', function() {
-            $('#tableUser').DataTable().column(1).search($(this).val()).draw();
+            $('#tableUser').DataTable().column(2).search($(this).val()).draw();
         });
 
         // filterSearch onKeyup, change table only show search
