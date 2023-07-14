@@ -14,3 +14,5 @@ aduan kepolisian adalah aplikasi yang digunakan untuk melaporkan kejadian kepoli
 
 ## Contributing
 to contribute to this project, please fork this repository and create a pull request. if you find a bug or want to request a feature, please create an issue.
+
+---
