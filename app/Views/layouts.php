@@ -64,7 +64,7 @@
 
 </head>
 
-<body class="theme-<?= userColor() ?>">
+<body class="theme-<?= userColor() ?>" style="overflow: normal !important;">
     <?= $this->include('Components/settings'); ?>
     <div id="app">
         <div class="main-wrapper">
