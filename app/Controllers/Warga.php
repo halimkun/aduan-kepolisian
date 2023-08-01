@@ -160,7 +160,10 @@ class Warga extends BaseController
         
         if ($this->aduanModel->update($id->id, $data)) {
             if ($foto->getError() == 0) {
-                unlink('foto_kejadian/' . $this->request->getPost('foto'));
+                // if file exist unlink
+                if (file_exists('foto_kejadian/' . $this->request->getPost('foto'))) {
+                    unlink('foto_kejadian/' . $this->request->getPost('foto'));
+                }
                 $foto->move('foto_kejadian', $bukti_file_name);
             }
 
