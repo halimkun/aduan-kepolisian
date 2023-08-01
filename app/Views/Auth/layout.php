@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/components.css') ?>">
 </head>
 
-<body>
+<>
     <div id="app">
         <section class="section">
             <?= $this->renderSection('main') ;?>
