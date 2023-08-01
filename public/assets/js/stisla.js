@@ -264,7 +264,7 @@
       chat.onShow.call(this, append_element);
   }
 
-  $("body").niceScroll();
+  // $("body").niceScroll();
   $('.selectric').on("selectric-open",function (event, element, selectric) {
     $(selectric.elements.itemsScroll).niceScroll();
   })
