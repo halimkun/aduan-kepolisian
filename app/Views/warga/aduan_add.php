@@ -80,10 +80,9 @@
                                     <label for="jenis_aduan">Jenis Aduan</label>
                                     <select class="custom-select" id="jenis_aduan" name="jenis_aduan">
                                         <option value="-">Pilih Jenis Aduan</option>
-                                        <option value="kehilangan">Kehilangan</option>
-                                        <option value="pencurian">Pencurian</option>
-                                        <option value="kejadian">Kejadian</option>
-                                        <option value="kecelakaan">Kecelakaan</option>
+                                        <?php foreach ($jenis as $ja) : ?>
+                                            <option value="<?= $ja->id_jenis ?>"><?= $ja->jenis_aduan ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>

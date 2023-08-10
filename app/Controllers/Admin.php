@@ -9,6 +9,8 @@ class Admin extends BaseController
 {
     protected $userModel;
     protected $aduanModel;
+    protected $statusModel;
+    protected $jenisModel;
 
     protected $tmbhAduan;
     protected $informasi;
@@ -17,6 +19,8 @@ class Admin extends BaseController
     {
         $this->userModel = new \App\Models\UserModel();
         $this->aduanModel = new \App\Models\AduanModel();
+        $this->jenisModel = new \App\Models\JenisModel();
+        $this->statusModel = new \App\Models\StatusModel(); 
 
         $route = Services::routes();
         $this->tmbhAduan = array_key_exists('admin/aduan/add', $route->getRoutes());
@@ -65,6 +69,8 @@ class Admin extends BaseController
             'agent' => $this->request->getUserAgent(),
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
+            'jenis' => $this->jenisModel->findAll(),
+            'status' => $this->statusModel->findAll(),
         ]);
     }
 
@@ -77,6 +83,54 @@ class Admin extends BaseController
             'agent' => $this->request->getUserAgent(),
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
+            'jenis' => $this->jenisModel->findAll(),
+            'status' => $this->statusModel->findAll(),
+        ]);
+    }
+
+    function status_jenis() {
+        // is get
+        if ($this->request->getMethod() == 'delete') {
+            $id = $this->request->getVar('id');
+            $table = $this->request->getVar('table');
+
+            if ($table == 'status') {
+                $this->statusModel->delete($id);
+            } else if ($table == 'jenis') {
+                $this->jenisModel->delete($id);
+            } else {
+                session()->setFlashdata('error', 'Tidak dapat menghapus data ' . $table . '!');
+                return redirect()->to(base_url('admin/status-jenis'));
+            }
+
+            session()->setFlashdata('success', 'Berhasil menghapus data ' . $table . '!');
+            return redirect()->to(base_url('admin/status-jenis'));
+        }
+
+        // is post
+        if ($this->request->getMethod() == 'post') {
+            $table = $this->request->getVar('table');
+            $data = $this->request->getVar('data');
+
+            if ($table == 'status') {
+                $this->statusModel->insert(['status_aduan' => $data]);
+            } else if ($table == 'jenis') {
+                $this->jenisModel->insert(['jenis_aduan' => $data]);
+            } else {
+                session()->setFlashdata('error', 'Tidak dapat menambah data ' . $table . '!');
+                return redirect()->to(base_url('admin/status-jenis'));
+            }
+
+            session()->setFlashdata('success', 'Berhasil menambah data ' . $table . '!');
+            return redirect()->to(base_url('admin/status-jenis'));
+        }
+
+        return view('status_jenis', [
+            "title"     => "Status & Jenis",
+            "segments"  => $this->request->uri->getSegments(),
+            'agent'     => $this->request->getUserAgent(),
+            "status"    => $this->statusModel->findAll(),
+            "jenis"     => $this->jenisModel->findAll(),
         ]);
     }
 

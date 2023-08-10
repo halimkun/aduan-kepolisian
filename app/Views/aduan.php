@@ -83,7 +83,7 @@
                             <th>Jenis</th>
                             <th>Aduan</th>
                             <th>Lokasi</th>
-                            <th>kronologi</th>
+                            <th class="d-none">kronologi</th>
                             <th><i class="fa fa-cog"></i></th>
                         </tr>
                     </thead>
@@ -93,13 +93,13 @@
                             <tr data-u="<?= $item->user_id ?>" data-i="<?= $item->id ?>">
                                 <td id="row_nomor"><?= $i++ ?></td>
                                 <td id="row_nomor_aduan"><kbd><?= $item->nomor ?></kbd></td>
-                                <td id="row_status" data-dt='<?= $item->id ?>' data-stts='<?= $item->status ?>'><?= badgeStatusGen($item->status) ?></td>
+                                <td id="row_status" data-dt='<?= $item->id ?>' data-stts='<?= $item->status ?>'><?= badgeStatusGen(getStatusAduan($item->status)->status_aduan) ?></td>
                                 <td id="row_pelapor"><?= getUserName($item->user_id) ?></td>
-                                <td id="row_tanggal"><abbr title="Tanggal Kejadian"><?= $item->tanggal ?></abbr></td>
-                                <td id="row_jenis"><b><u><?= $item->jenis ?></u></b></td>
+                                <td id="row_tanggal"><abbr title="Tanggal Kejadian"><?= date_format(date_create($item->tanggal), "D, d F Y") ?></abbr></td>
+                                <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis)->jenis_aduan ?></u></b></td>
                                 <td id="row_judul"><?= $item->judul ?></td>
                                 <td id="row_lokasi"><?= $item->lokasi ?></td>
-                                <td id="row_kronologi"><?= $item->keterangan ?></td>
+                                <td id="row_kronologi" class="d-none"><?= $item->keterangan ?></td>
                                 <td id="row_action">
                                     <button class="btn btn-update-status btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-stts='<?= $item->status ?>' data-item="<?= $item->id ?>" title="Update Status Aduan">
                                         <i class="fas fa-tag"></i>
@@ -259,11 +259,12 @@
             const item = $(this).data('item');
             t.find("#data").val(item), t.find("#status").val(status), t.modal("toggle")
         }));
-
+        
+        var selector = "";
         <?php if (!$agent->isMobile()) : ?>
-            const selector = "tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
+            selector = "tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
         <?php else: ?>
-            const selector = "tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
+            selector = "tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
         <?php endif; ?>
 
         const modalDetail = $("#detailAduan");
@@ -281,6 +282,8 @@
                 const o = await getUserData($(this).parent().data('u'));
                 const i = await getAduanData($(this).parent().data('i'));
 
+                console.log(i);
+
                 modalDetail.find(".judulLaporan").empty().append(i.data.judul);
 
                 const detailPelapor = `
@@ -295,7 +298,7 @@
                 }
 
                 const detailLaporan = `
-                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>kronologi</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="${foto}" data-title="${i.data.judul}"></div></div></div>
+                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status_aduan}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis_aduan}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>kronologi</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="${foto}" data-title="${i.data.judul}"></div></div></div>
                     `;
 
                 modalDetail.find(".dLaporan").append(detailLaporan);

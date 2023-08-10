@@ -18,10 +18,9 @@
                         <div class="form-label">Pilih Status</div>
                         <select name="status" id="status" class="form-control">
                             <option value="-">Pilih Status</option>
-                            <option value="belum diproses">Belum Diproses</option>
-                            <option value="dalam proses">Dalam Proses</option>
-                            <option value="selesai">Selesai</option>
-                            <option value="dibatalkan">Dibatalkan</option>
+                            <?php foreach ($status as $s) : ?>
+                                <option value="<?= $s->id_status ?>"><?= $s->status_aduan ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
                     <div class="float-right">

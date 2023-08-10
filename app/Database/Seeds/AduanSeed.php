@@ -21,26 +21,52 @@ class AduanSeed extends Seeder
         }
 
         // Jenis Aduan --------------------------------------
+        $jenisModel = new \App\Models\JenisModel();
         $jenis = [
             'pencurian', 'tindak kriminal', 'kekerasan', 'kehilangan',
             'kecelakaan lalu lintas', 'tindak kriminal di internet'
         ];
 
-        // Aduan --------------------------------------
-        // // create 10 aduan in month october - now and random user
+        foreach ($jenis as $jns) {
+            $jenisModel->insert(['jenis_aduan' => $jns]);
+        }
 
-        for ($i = 0; $i < $fake->numberBetween(20, 48); $i++) {
-            $ids = $fake->randomElement($pengguna);
+        // Status Aduan --------------------------------------
+        $statusModel = new \App\Models\StatusModel();
+        $status = [
+            'belum diproses', 'dalam proses', 'selesai', 'dibatalkan', 'peninjauan lokasi',
+        ];
+
+        foreach ($status as $sts) {
+            $statusModel->insert(['status_aduan' => $sts]);
+        }
+
+        // id jenis aduan
+        $idj = [];
+        foreach ($jenisModel->findAll() as $jns) {
+            $idj[] = $jns->id_jenis;
+        }
+
+        // id status aduan
+        $ids = [];
+        foreach ($statusModel->findAll() as $sts) {
+            $ids[] = $sts->id_status;
+        }
+
+        // Aduan --------------------------------------
+        for ($i = 0; $i < $fake->numberBetween(144, 174); $i++) {
+            $thisMonth = date('m');
+            
             $ad = [
-                'user_id' => $ids,
+                'user_id' => $fake->randomElement($pengguna),
                 'nomor' => $fake->unique()->randomNumber(8),
-                'status' => $fake->randomElement(['belum diproses', 'dalam proses', 'selesai', 'dibatalkan']),
-                'tanggal' => $fake->dateTimeBetween('-5 month', 'now')->format('Y-m-d H:i:s'),
-                'jenis' => $fake->randomElement($jenis),
+                'status' => $fake->randomElement($ids),
+                'tanggal' => $fake->dateTimeBetween((-$thisMonth + 1)." month", 'now')->format('Y-m-d H:i:s'),
+                'jenis' => $fake->randomElement($idj),
                 'judul' => $fake->sentence(6),
                 'lokasi' => $fake->address,
                 'keterangan' => $fake->paragraph(3),
-                'foto' => $fake->imageUrl(640, 480, 'animals', true, 'Faker'),
+                'foto' => $fake->imageUrl(640, 480, 'Aduan', false),
             ];
 
             $this->db->table('aduan')->insert($ad);

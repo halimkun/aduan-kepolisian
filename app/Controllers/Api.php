@@ -241,7 +241,7 @@ class Api extends BaseController
         $data = [
             'user_id' => $this->request->getPost('users'),
             'nomor' => rand(10000000, 99999999),
-            'status' => 'belum diproses',
+            'status' => 1,
             'tanggal' => $this->request->getPost('tanggal_kejadian'),
             'jenis' => $this->request->getPost('jenis_aduan'),
             'judul' => $this->request->getPost('judul'),

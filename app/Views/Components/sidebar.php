@@ -27,9 +27,16 @@
             <li class="<?= makeActiveSidebar3('aduan') ?>">
                 <a class="nav-link" href="<?= base_url($url . '/aduan') ?>"><i class="fa fa-info"></i><span>Daftar Aduan</span></a>
             </li>
+
             <?php if (in_array('petugas', $roleLogin) || in_array('pengguna', $roleLogin) && isset($tambah_aduan) && $tambah_aduan) : ?>
                 <li class="<?= makeActiveSidebar3('add') ?>">
                     <a class="nav-link" href="<?= base_url($url . '/aduan/add') ?>"><i class="fa fa-plus"></i><span>Tambah Aduan</span></a>
+                </li>
+            <?php endif ?>
+
+            <?php if (in_array('admin', $roleLogin) || in_array('petugas', $roleLogin)) : ?>
+                <li class="<?= makeActiveSidebar3('status-jenis') ?>">
+                    <a class="nav-link" href="<?= base_url($url . '/status-jenis') ?>"><i class="fas fa-tag"></i><span>Status & Jenis</span></a>
                 </li>
             <?php endif ?>
 

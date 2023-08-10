@@ -56,10 +56,9 @@
                                 <label for="filterJenis">Jenis</label>
                                 <select class="custom-select" id="filterJenis">
                                     <option value="">Semua Jenis Aduan</option>
-                                    <option value="kehilangan">Kehilangan</option>
-                                    <option value="pencurian">Pencurian</option>
-                                    <option value="kejadian">Kejadian</option>
-                                    <option value="kecelakaan">Kecelakaan</option>
+                                    <?php foreach ($jenis as $item) : ?>
+                                        <option value="<?= $item->id_jenis?>"><?= $item->jenis_aduan ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                         </div>
@@ -91,15 +90,15 @@
                                 <tr data-u="<?= $item->user_id ?>" data-i="<?= $item->id ?>">
                                     <td id="row_nomor"><?= $i++ ?></td>
                                     <td id="row_nomor_aduan"><kbd><?= $item->nomor ?></kbd></td>
-                                    <td id="row_status" data-dt='<?= $item->id ?>' data-stts='<?= $item->status ?>'><?= badgeStatusGen($item->status) ?></td>
+                                    <td id="row_status" data-dt='<?= $item->id ?>' data-stts='<?= getStatusAduan($item->status)->status_aduan ?>'><?= badgeStatusGen(getStatusAduan($item->status)->status_aduan) ?></td>
                                     <td id="row_tanggal"><abbr title="Tanggal Kejadian"><?= $item->tanggal ?></abbr></td>
-                                    <td id="row_jenis"><b><u><?= $item->jenis ?></u></b></td>
+                                    <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis)->jenis_aduan ?></u></b></td>
                                     <td id="row_judul"><?= $item->judul ?></td>
                                     <td id="row_lokasi"><?= $item->lokasi ?></td>
                                     <td id="row_kronologi"><?= $item->keterangan ?></td>
                                     <td id="row_manipulate_data">
-                                        <button <?= $item->status == 'selesai' || $item->status == 'dibatalkan' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-info btn-aduan-edit" data-nomor="<?= $item->nomor ?>"><i class="fa fa-pen"></i></button>
-                                        <button <?= $item->status == 'selesai' || $item->status == 'dibatalkan' || $item->status == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-danger btn-aduan-delete" data-nomor="<?= $item->nomor ?>" data-tanggal="<?= $item->tanggal ?>" data-judul="<?= $item->judul ?>"><i class="fa fa-trash"></i></button>
+                                        <button <?= getStatusAduan($item->status)->status_aduan == 'selesai' || getStatusAduan($item->status)->status_aduan == 'dibatalkan' || getStatusAduan($item->status)->status_aduan == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-info btn-aduan-edit" data-nomor="<?= $item->nomor ?>"><i class="fa fa-pen"></i></button>
+                                        <button <?= getStatusAduan($item->status)->status_aduan == 'selesai' || getStatusAduan($item->status)->status_aduan == 'dibatalkan' || getStatusAduan($item->status)->status_aduan == 'dalam proses' ? 'disabled' : '' ?> class="btn btn-sm shadow btn-danger btn-aduan-delete" data-nomor="<?= $item->nomor ?>" data-tanggal="<?= $item->tanggal ?>" data-judul="<?= $item->judul ?>"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                             <?php endforeach ?>

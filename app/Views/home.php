@@ -75,8 +75,8 @@
                     <div class="card card-body card-success">
                         <?php $as = [] ?>
                         <?php foreach ($aduan as $a) : ?>
-                            <?php if ($a->status == 'selesai') : ?>
-                                <?php $as[] = $a->status ?>
+                            <?php if (getStatusAduan($a->status)->status_aduan == 'selesai') : ?>
+                                <?php $as[] = getStatusAduan($a->status)->status_aduan ?>
                             <?php endif ?>
                         <?php endforeach ?>
 
@@ -88,8 +88,8 @@
                     <div class="card card-body card-info">
                         <?php $as = [] ?>
                         <?php foreach ($aduan as $a) : ?>
-                            <?php if ($a->status == 'dalam proses') : ?>
-                                <?php $as[] = $a->status ?>
+                            <?php if (getStatusAduan($a->status)->status_aduan == 'dalam proses') : ?>
+                                <?php $as[] = getStatusAduan($a->status)->status_aduan ?>
                             <?php endif ?>
                         <?php endforeach ?>
 
@@ -101,8 +101,8 @@
                     <div class="card card-body card-warning">
                         <?php $as = [] ?>
                         <?php foreach ($aduan as $a) : ?>
-                            <?php if ($a->status == 'belum diproses') : ?>
-                                <?php $as[] = $a->status ?>
+                            <?php if (getStatusAduan($a->status)->status_aduan == 'belum diproses') : ?>
+                                <?php $as[] = getStatusAduan($a->status)->status_aduan ?>
                             <?php endif ?>
                         <?php endforeach ?>
 
@@ -114,8 +114,8 @@
                     <div class="card card-body card-danger">
                         <?php $as = [] ?>
                         <?php foreach ($aduan as $a) : ?>
-                            <?php if ($a->status == 'dibatalkan') : ?>
-                                <?php $as[] = $a->status ?>
+                            <?php if (getStatusAduan($a->status)->status_aduan == 'dibatalkan') : ?>
+                                <?php $as[] = getStatusAduan($a->status)->status_aduan ?>
                             <?php endif ?>
                         <?php endforeach ?>
 

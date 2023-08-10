@@ -1,4 +1,6 @@
 <?php
+setlocale(LC_ALL, 'id_ID');
+date_default_timezone_set('Asia/Jakarta');
 
 // Check PHP version.
 $minPhpVersion = '7.4'; // If you update this, don't forget to update `spark`.

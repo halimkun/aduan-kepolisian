@@ -26,7 +26,7 @@ class Aduan extends BaseController
         $data = [
             'user_id' => $this->request->getPost('users'),
             'nomor' => rand(10000000, 99999999),
-            'status' => 'belum diproses',
+            'status' => 1,
             'tanggal' => $this->request->getPost('tanggal_kejadian'),
             'jenis' => $this->request->getPost('jenis_aduan'),
             'judul' => $this->request->getPost('judul'),
@@ -70,11 +70,19 @@ class Aduan extends BaseController
             return redirect()->to(base_url('/admin/aduan'));
         } else {
             $id = $this->request->getVar('id');
+            $data = $this->aduan
+                ->select([
+                    'aduan.id', 'aduan.user_id', 'aduan.nomor', 'aduan.status', 'aduan.tanggal', 'aduan.jenis', 'aduan.judul', 'aduan.lokasi', 'aduan.keterangan', 'aduan.foto',
+                    'jenis_aduan.jenis_aduan', 'jenis_aduan.id_jenis',
+                    'status_aduan.status_aduan', 'status_aduan.id_status'
+                ])
+                ->join('jenis_aduan', 'jenis_aduan.id_jenis = aduan.jenis')
+                ->join('status_aduan', 'status_aduan.id_status = aduan.status')
+                ->find($id);
 
-            if ($this->aduan->find($id) !== null) {
-                return $this->response->setJSON(['status' => 'success', 'data' => $this->aduan->select([
-                    'nomor', 'status', 'tanggal', 'jenis', 'judul', 'lokasi', 'keterangan', 'foto'
-                ])->find($id)]);
+
+            if ($data !== null) {
+                return $this->response->setJSON(['status' => 'success', 'data' => $data]);
             } else {
                 return $this->response->setJSON(['status' => 'error', 'message' => 'Data not found']);
             }

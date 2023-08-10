@@ -48,6 +48,10 @@ $routes->group('admin', ['filter' => 'role:admin,petugas'], function ($adm) {
     $adm->add('home', 'Admin::home');
     $adm->add('profile', 'Admin::profile');
 
+    $adm->get('status-jenis', 'Admin::status_jenis');
+    $adm->post('status-jenis', 'Admin::status_jenis');
+    $adm->delete('status-jenis', 'Admin::status_jenis');
+
     $adm->add('aduan', 'Admin::aduan');
     $adm->add('user', 'Admin::user');
     $adm->add('user_show', 'Admin::user_show'); // <-- show json user data

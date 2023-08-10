@@ -10,6 +10,8 @@ class Warga extends BaseController
 {
     protected $tmbhAduan;
     protected $informasi;
+    protected $jenisModel;
+    protected $statusModel;
 
     protected $userModel;
     protected $aduanModel;
@@ -20,6 +22,9 @@ class Warga extends BaseController
     {
         $this->userModel = new \App\Models\UserModel();
         $this->aduanModel = new \App\Models\AduanModel();
+
+        $this->jenisModel = new \App\Models\JenisModel();
+        $this->statusModel = new \App\Models\StatusModel();
 
         $route = Services::routes();
         $this->tmbhAduan = array_key_exists('admin/aduan/add', $route->getRoutes());
@@ -39,6 +44,9 @@ class Warga extends BaseController
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
+
+            'jenis' => $this->jenisModel->findAll(),
+            'status' => $this->statusModel->findAll(),
         ]);
     }
 
@@ -53,6 +61,9 @@ class Warga extends BaseController
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
+
+            'jenis' => $this->jenisModel->findAll(),
+            'status' => $this->statusModel->findAll(),
         ]);
     }
 
@@ -67,6 +78,9 @@ class Warga extends BaseController
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
+
+            'jenis' => $this->jenisModel->findAll(),    
+            'status' => $this->statusModel->findAll(),
         ]);
     }
 
@@ -85,7 +99,7 @@ class Warga extends BaseController
         $data = [
             'user_id' => user_id(),
             'nomor' => rand(10000000, 99999999),
-            'status' => 'belum diproses',
+            'status' => 1,
             'tanggal' => $this->request->getPost('tanggal_kejadian'),
             'jenis' => $this->request->getPost('jenis_aduan'),
             'judul' => $this->request->getPost('judul'),
@@ -126,6 +140,8 @@ class Warga extends BaseController
 
             'tambah_aduan' => $this->tmbhAduan,
             'informasi' => $this->informasi,
+
+            'jenis' => $this->jenisModel->findAll(),
         ]);
     }
 

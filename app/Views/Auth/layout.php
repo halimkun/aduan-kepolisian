@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/components.css') ?>">
 </head>
 
-<>
     <div id="app">
         <section class="section">
             <?= $this->renderSection('main') ;?>

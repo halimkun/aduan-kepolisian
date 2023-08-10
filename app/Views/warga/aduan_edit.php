@@ -76,10 +76,9 @@
                             <label for="jenis_aduan">Jenis Aduan</label>
                             <select class="custom-select" id="jenis_aduan" name="jenis_aduan">
                                 <option value="-">Pilih Jenis Aduan</option>
-                                <option <?= $aduan->jenis == 'kehilangan' ? 'selected' : '' ?> value="kehilangan">Kehilangan</option>
-                                <option <?= $aduan->jenis == 'pencurian' ? 'selected' : '' ?> value="pencurian">Pencurian</option>
-                                <option <?= $aduan->jenis == 'kejadian' ? 'selected' : '' ?> value="kejadian">Kejadian</option>
-                                <option <?= $aduan->jenis == 'kecelakaan' ? 'selected' : '' ?> value="kecelakaan">Kecelakaan</option>
+                                <?php foreach ($jenis as $ja) : ?>
+                                    <option value="<?= $ja->id_jenis ?>" <?= $aduan->jenis == $ja->id_jenis ? 'selected' : '' ?>><?= $ja->jenis_aduan ?></option>
+                                <?php endforeach ?>
                             </select>
                         </div>
                     </div>
