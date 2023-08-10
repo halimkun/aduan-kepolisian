@@ -83,7 +83,8 @@ $persentase = round(abs(count($aduan) / count($aduanBulanLalu)) * 100, 2);
             <h5 class="judul_surat m-0"><b>KEPOLISIAN NEGARA REPUBLIK INDONESIA</b></h5>
             <h5 class="judul_surat m-0"><b>DAERAH JAWA TENGAH</b></h5>
             <h5 class="judul_surat m-0"><b>RESOR PEKALONGAN</b></h5>
-            <p><u>Klairan, Kaibahan, Kec. Kesesi, Kabupaten Pekalongan, Jawa Tengah 51162</u></p>
+            <h5 class="judul_surat m-0"><b>SEKTOR BOJONG</b></h5>
+            <p><u>Kedoyo, Bojong Minggir, Kec. Bojong, Kabupaten Pekalongan, Jawa Tengah 51156</u></p>
         </div>
 
         <div class="text-left mb-4">
@@ -159,10 +160,10 @@ $persentase = round(abs(count($aduan) / count($aduanBulanLalu)) * 100, 2);
             <div class="text-center">
                 <p>
                     Pekalongan, <?= date('j F Y') ?><br>
-                    Kepala Kepolisian Sektor Kesesi
+                    Kepala Kepolisian Sektor Bojong
                 </p>
 
-                <p style="margin-top: 100px;"><strong>AKP Suryono, SH</strong></p>
+                <p style="margin-top: 100px;"><strong>AKP SUHADI, S.H</strong></p>
             </div>
         </div>
     </section>
@@ -175,7 +176,8 @@ $persentase = round(abs(count($aduan) / count($aduanBulanLalu)) * 100, 2);
             <h6 class="judul_surat m-0"><b>KEPOLISIAN NEGARA REPUBLIK INDONESIA</b></h6>
             <h6 class="judul_surat m-0"><b>DAERAH JAWA TENGAH</b></h6>
             <h6 class="judul_surat m-0"><b>RESOR PEKALONGAN</b></h6>
-            <p><u>Klairan, Kaibahan, Kec. Kesesi, Kabupaten Pekalongan, Jawa Tengah 51162</u></p>
+            <h6 class="judul_surat m-0"><b>SEKTOR BOJONG</b></h6>
+            <p><u>Kedoyo, Bojong Minggir, Kec. Bojong, Kabupaten Pekalongan, Jawa Tengah 51156</u></p>
         </div>
 
         <div class="text-center">

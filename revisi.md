@@ -16,3 +16,6 @@ perubahan keterangan tidak bisa sampai pada perubahan di database, karena hal te
 Keterangan dalam status tidak perlu di tambahkan, karena bisa diwakilkan langsung oleh statusnya. misal status dalam proses, maka status tersebut dapat diwakilkan dengan peninjauan ke lokasi. sehingga tidak perlu menambahkan keterangan pada status. keterangan pada status hanya akan mempersulit penggunaan aplikasi, karena dalam satu status memungkinkan untuk memiliki banyak keterangan. sehingga akan membingungkan pengguna dalam memilih keterangan yang sesuai dengan statusnya. 
 
 misalnya dalam status dalam proses, terdapat keterangan peninjauan ke lokasi, menindak lanjuti, dan lain-lain. jadi keterangan pada status tidak perlu ditambahkan, karena dapat diwakilkan langsung oleh statusnya.
+
+# 8 
+terkenda masalah pada penggunaan gps, sehingga belum dapat diimplementasikan pada aplikasi. untuk sementara fitur ini belum dapa
