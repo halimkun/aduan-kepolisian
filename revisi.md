@@ -1,8 +1,8 @@
 [x] 1. ganti keterangan mjd kronologi kejadian (bagian form tambah aduan)
 [x] 2. jenis aduan sesuai wawancara (penipuan, perampokan, penganiayaan, pencurian, pemerasan, judi, kecelakaan)
-[ ] 3. tambahkan tanggal periodik untuk daftar laporan (ben iso cetak laporan dari tgl 1-20 juli)
-[ ] 4. tambahkan kop kepolisian
-[ ] 5. tambahkan yg mengetahui di dalam cetak laporan
+[x] 3. tambahkan tanggal periodik untuk daftar laporan (ben iso cetak laporan dari tgl 1-20 juli)
+[x] 4. tambahkan kop kepolisian
+[x] 5. tambahkan yg mengetahui di dalam cetak laporan
 [x] 6. tambahkan keterangan pd status misal status dalam proses(ket : peninjauan ke lokasi)
 [x] 7. admin tambahkan tabel jenis aduan supaya bisa menambahkan jenis aduan melalui gui
 [ ] 8. tambahkan gps

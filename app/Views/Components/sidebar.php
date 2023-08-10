@@ -40,6 +40,13 @@
                 </li>
             <?php endif ?>
 
+            <li class="menu-header">Data</li>
+            <?php if (in_array('admin', $roleLogin) || in_array('petugas', $roleLogin)) : ?>
+                <li class="<?= makeActiveSidebar3('laporan') ?>">
+                    <a class="nav-link" href="<?= base_url($url . '/laporan') ?>"><i class="fa fa-scroll"></i><span>Laporan</span></a>
+                </li>
+            <?php endif ?>
+
             <?php if (isset($informasi) && $informasi) : ?>
                 <li class="menu-header">Informasi</li>
                 <li class="<?= makeActiveSidebar3('informasi') ?>">
