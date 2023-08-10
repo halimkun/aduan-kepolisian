@@ -98,8 +98,8 @@
                     <input type="text" class="form-control" id="judul" placeholder="kejadian apa yang terjadi" name="judul">
                 </div>
                 <div class="form-group">
-                    <label for="keterangan">Keterangan</label>
-                    <textarea class="form-control" id="keterangan" name="keterangan" style="height: 100px;" placeholder="Jelaskan mengenai hal yang dilaporkan"></textarea>
+                    <label for="kronologi">kronologi</label>
+                    <textarea class="form-control" id="kronologi" name="keterangan" style="height: 100px;" placeholder="Jelaskan mengenai hal yang dilaporkan"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="lokasi">Lokasi Kejadian</label>

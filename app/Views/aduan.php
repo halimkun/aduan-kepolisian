@@ -83,7 +83,7 @@
                             <th>Jenis</th>
                             <th>Aduan</th>
                             <th>Lokasi</th>
-                            <th>Keterangan</th>
+                            <th>kronologi</th>
                             <th><i class="fa fa-cog"></i></th>
                         </tr>
                     </thead>
@@ -99,7 +99,7 @@
                                 <td id="row_jenis"><b><u><?= $item->jenis ?></u></b></td>
                                 <td id="row_judul"><?= $item->judul ?></td>
                                 <td id="row_lokasi"><?= $item->lokasi ?></td>
-                                <td id="row_keterangan"><?= $item->keterangan ?></td>
+                                <td id="row_kronologi"><?= $item->keterangan ?></td>
                                 <td id="row_action">
                                     <button class="btn btn-update-status btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-stts='<?= $item->status ?>' data-item="<?= $item->id ?>" title="Update Status Aduan">
                                         <i class="fas fa-tag"></i>
@@ -261,9 +261,9 @@
         }));
 
         <?php if (!$agent->isMobile()) : ?>
-            const selector = "tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan";
+            const selector = "tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
         <?php else: ?>
-            const selector = "tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_keterangan";
+            const selector = "tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
         <?php endif; ?>
 
         const modalDetail = $("#detailAduan");
@@ -295,7 +295,7 @@
                 }
 
                 const detailLaporan = `
-                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>Keterangan</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="${foto}" data-title="${i.data.judul}"></div></div></div>
+                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>kronologi</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="${foto}" data-title="${i.data.judul}"></div></div></div>
                     `;
 
                 modalDetail.find(".dLaporan").append(detailLaporan);
