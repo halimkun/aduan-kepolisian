@@ -44,10 +44,9 @@
                                 <label for="filterStatus">Status</label>
                                 <select name="filterStatus" id="filterStatus" class="custom-select">
                                     <option value="">Semua Status</option>
-                                    <option value="belum diproses">Belum Diproses</option>
-                                    <option value="dalam proses">Dalam Proses</option>
-                                    <option value="selesai">Selesai</option>
-                                    <option value="dibatalkan">Dibatalkan</option>
+                                    <?php foreach ($status as $item) : ?>
+                                        <option value="<?= $item->status_aduan ?>"><?= $item->status_aduan ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                         </div>
@@ -57,7 +56,7 @@
                                 <select class="custom-select" id="filterJenis">
                                     <option value="">Semua Jenis Aduan</option>
                                     <?php foreach ($jenis as $item) : ?>
-                                        <option value="<?= $item->id_jenis?>"><?= $item->jenis_aduan ?></option>
+                                        <option value="<?= $item->jenis_aduan?>"><?= $item->jenis_aduan ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
