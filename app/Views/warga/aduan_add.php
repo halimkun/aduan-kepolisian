@@ -102,7 +102,14 @@
                             <textarea class="form-control" id="kronologi" name="keterangan" style="height: 100px;" placeholder="Jelaskan mengenai hal yang dilaporkan"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="lokasi">Lokasi Kejadian</label>
+                            <label for="latlang">Lokasi</label>
+                            <button class="btn btn-sm mx-3 shadow btn-<?= userColor() ?>" data-toggle="modal" data-target="#modalSelectLocation">
+                                <i class="fa fa-map-marker-alt px-3"></i>
+                            </button>
+                            <input type="text" class="form-control " id="latlang" placeholder="kejadian apa yang terjadi" readonly required name="latlang">
+                        </div>
+                        <div class="form-group">
+                            <label for="lokasi">Detail Lokasi Kejadian</label>
                             <textarea class="form-control" id="lokasi" name="lokasi" style="height: 100px;" placeholder="Tuliskan detail lokasi kejadian"></textarea>
                         </div>
                         <div class="form-group">
@@ -116,6 +123,30 @@
                 </form>
             </div>
         <?php endif; ?>
+    </div>
+</div>
+
+<!-- modalSelectLocation -->
+<div class="modal fade" id="modalSelectLocation" tabindex="-1" role="dialog" aria-labelledby="modalSelectLocationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSelectLocationLabel">Pilih Lokasi Kejadian</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearMarker()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0 m-0">
+                <div class="p-3">
+                    <input type="text" class="form-control" id="latlang" placeholder="kejadian apa yang terjadi" readonly name="latlang">
+                </div>
+                <div id="map" class="map" style="width:100%; height: 450px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary shadow" data-dismiss="modal" onclick="clearMarker()">Batal</button>
+                <button type="button" class="btn btn-<?= userColor() ?> shadow" data-dismiss="modal" onclick="setLatLang()">Pilih</button>
+            </div>
+        </div>
     </div>
 </div>
 <?= $this->endSection(); ?>
@@ -138,6 +169,7 @@
     <!-- validation -->
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.5.0/build/ol.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -182,6 +214,111 @@
             $('#fAddAduan').validate({
                 rules: fAddAfuan_rules
             });
+
+            var map = null;
+
+            function initMap() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var latitude = position.coords.latitude;
+                        var longitude = position.coords.longitude;
+
+                        var myLatlng = new ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857');
+
+                        // modalSelectLocation latlang
+                        $('#modalSelectLocation #latlang').val(latitude + ', ' + longitude);
+
+                        map = new ol.Map({
+                            target: 'map',
+                            layers: [
+                                new ol.layer.Tile({
+                                    source: new ol.source.OSM()
+                                })
+                            ],
+                            view: new ol.View({
+                                center: myLatlng,
+                                zoom: 15
+                            })
+                        });
+
+                        var marker = new ol.Feature({
+                            geometry: new ol.geom.Point(
+                                myLatlng
+                            ),
+                        });
+
+                        var iconStyle = new ol.style.Style({
+                            image: new ol.style.Icon({
+                                anchor: [0.5, 1],
+                                scale: 0.03,
+                                src: 'https://www.iconarchive.com/download/i103443/paomedia/small-n-flat/map-marker.1024.png',
+                            }),
+                        });
+
+                        marker.setStyle(iconStyle);
+
+                        var vectorSource = new ol.source.Vector({
+                            features: [marker]
+                        });
+
+                        var markerVectorLayer = new ol.layer.Vector({
+                            source: vectorSource,
+                        });
+
+                        map.addLayer(markerVectorLayer);
+
+                        // map on click get coordinate and set marker
+                        map.on('click', function(evt) {
+                            var coordinate = evt.coordinate;
+                            var myLatlng = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+
+                            marker.setGeometry(new ol.geom.Point(
+                                coordinate
+                            ));
+
+                            $('#modalSelectLocation #latlang').val(myLatlng[1] + ', ' + myLatlng[0]);
+
+                        });
+                    }, function(error) {
+                        alert('Lokasi diperlukan untuk menambahkan aduan, silahkan aktifkan GPS anda dan izinkan aplikasi untuk mengakses lokasi anda.');
+                        window.location.href = window.history.back();
+                    }, {
+                        maximumAge: 10000,
+                        timeout: 5000,
+                        enableHighAccuracy: true
+                    });
+                } else {
+                    alert('Geolocation is not supported by this browser.');
+                    window.location.href = window.history.back();
+                }
+            }
+
+            initMap();
+
+            $('#modalSelectLocation').on('shown.bs.modal', function() {
+                map.updateSize();
+            });
+
+            $('#modalSelectLocation').on('hidden.bs.modal', function() {
+                map.updateSize();
+            });
+
+            clearMarker = () => {
+                var vectorSource = new ol.source.Vector({
+                    features: []
+                });
+
+                var markerVectorLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                });
+
+                map.addLayer(markerVectorLayer);
+            }
+
+            setLatLang = () => {
+                var latlang = $('#modalSelectLocation #latlang').val();
+                $('#fAddAduan #latlang').val(latlang);
+            }
         });
     </script>
 <?php endif ?>

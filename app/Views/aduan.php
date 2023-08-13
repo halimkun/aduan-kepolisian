@@ -18,9 +18,12 @@
                 <h4 class="text-<?= userColor() ?>">Daftar Aduan</h4>
                 <?php if ($tambah_aduan) : ?>
                     <div class="card-header-action">
-                        <button class="btn btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-toggle="modal" data-target="#tambahAduan">
+                        <a class="btn btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" href="/admin/aduan/add">
                             <i class="fas fa-plus"></i>
-                        </button>
+                        </a>
+                        <!-- <button class="btn btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-toggle="modal" data-target="#tambahAduan">
+                            <i class="fas fa-plus"></i>
+                        </button> -->
                     </div>
                 <?php endif ?>
             </div>
@@ -88,17 +91,21 @@
                     <tbody>
                         <?php $i = 1 ?>
                         <?php foreach ($aduan as $item) : ?>
+                            <?php $loc = explode(",", $item->latlang) ?>
                             <tr data-u="<?= $item->user_id ?>" data-i="<?= $item->id ?>">
                                 <td id="row_nomor"><?= $i++ ?></td>
                                 <td id="row_nomor_aduan"><kbd><?= $item->nomor ?></kbd></td>
                                 <td id="row_status" data-dt='<?= $item->id ?>' data-stts='<?= $item->status ?>'><?= badgeStatusGen(getStatusAduan($item->status)->status_aduan) ?></td>
                                 <td id="row_pelapor"><?= getUserName($item->user_id) ?></td>
-                                <td id="row_tanggal"><abbr title="Tanggal Kejadian"><?= date_format(date_create($item->tanggal), "D, d F Y") ?></abbr></td>
+                                <td id="row_tanggal">
+                                    <abbr title="Tanggal Kejadian"><?= date_format(date_create($item->tanggal), "D, d F Y") ?></abbr>
+                                </td>
                                 <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis)->jenis_aduan ?></u></b></td>
                                 <td id="row_judul"><?= $item->judul ?></td>
                                 <td id="row_lokasi"><?= $item->lokasi ?></td>
                                 <td id="row_kronologi" class="d-none"><?= $item->keterangan ?></td>
-                                <td id="row_action">
+                                <td id="row_action" style="width: 60px">
+                                    <a class="btn btn-sm btn-icon shadow btn-secondary text-danger" href="https://maps.google.com/maps?&z=15&q=<?= $loc[0] ?>+<?= $loc[1] ?>" target="_blank" title="buka maps"><i class="fa fa-map-marker-alt"></i></a>
                                     <button class="btn btn-update-status btn-sm btn-icon btn-<?= userColor() ?> shadow-sm" data-stts='<?= $item->status ?>' data-item="<?= $item->id ?>" title="Update Status Aduan">
                                         <i class="fas fa-tag"></i>
                                     </button>
@@ -164,6 +171,7 @@
 <script src="<?= base_url('assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') ?>"></script>
 <script src="<?= base_url('assets/modules/chocolat/js/jquery.chocolat.min.js') ?>"></script>
+<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.5.0/build/ol.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -257,11 +265,11 @@
             const item = $(this).data('item');
             t.find("#data").val(item), t.find("#status").val(status), t.modal("toggle")
         }));
-        
+
         var selector = "";
         <?php if (!$agent->isMobile()) : ?>
             selector = "tr td#row_nomor, tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
-        <?php else: ?>
+        <?php else : ?>
             selector = "tr td#row_nomor_aduan, tr td#row_status, tr td#row_pelapor, tr td#row_tanggal, tr td#row_jenis, tr td#row_judul, tr td#row_lokasi, tr td#row_kronologi";
         <?php endif; ?>
 
@@ -296,7 +304,7 @@
                 }
 
                 const detailLaporan = `
-                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status_aduan}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis_aduan}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi}</td></tr><tr><td style="width:40%;"><b>kronologi</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="${foto}" data-title="${i.data.judul}"></div></div></div>
+                        <div class="mb-3"> <h5>Detail Laporan</h5><div class="dropdown-divider"></div><table style="width:100% !important;"> <tr><td style="width:40%;"><b>Nomor</b></td><td style="width:30px;">:</td><td>${i.data.nomor}</td></tr><tr><td style="width:40%;"><b>Status</b></td><td style="width:30px;">:</td><td>${i.data.status_aduan}</td></tr><tr><td style="width:40%;"><b>Tanggal Diajukan</b></td><td style="width:30px;">:</td><td>${i.data.tanggal}</td></tr><tr><td style="width:40%;"><b>Jenis</b></td><td style="width:30px;">:</td><td>${i.data.jenis_aduan}</td></tr><tr><td style="width:40%;"><b>Judul</b></td><td style="width:30px;">:</td><td>${i.data.judul}</td></tr><tr><td style="width:40%;"><b>Lokasi</b></td><td style="width:30px;">:</td><td>${i.data.lokasi} <span class="mx-3"><a class="btn btn-sm btn-icon shadow btn-secondary text-danger" href="https://maps.google.com/maps?&z=15&q=<?= $loc[0] ?>+<?= $loc[1] ?>" target="_blank" title="buka maps"><i class="fa fa-map-marker-alt"></i></a></span></td></tr><tr><td style="width:40%;"><b>kronologi</b></td><td style="width:30px;">:</td><td>${i.data.keterangan}</td></tr></table> </div> <div class="mb-3"> <h5>Bukti Laporan</h5><div class="dropdown-divider"></div><div class="gallery gallery-md" data-item-height="150"><div class="gallery-item" data-image="${foto}" data-title="${i.data.judul}"></div></div></div>
                     `;
 
                 modalDetail.find(".dLaporan").append(detailLaporan);
@@ -316,6 +324,111 @@
                 $(".load_data_detail").hide();
             }, 1000);
         });
+
+        var map = null;
+
+        function initMap() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    var myLatlng = new ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857');
+
+                    // modalSelectLocation latlang
+                    $('#modalSelectLocation #latlang').val(latitude + ', ' + longitude);
+
+                    map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            })
+                        ],
+                        view: new ol.View({
+                            center: myLatlng,
+                            zoom: 15
+                        })
+                    });
+
+                    var marker = new ol.Feature({
+                        geometry: new ol.geom.Point(
+                            myLatlng
+                        ),
+                    });
+
+                    var iconStyle = new ol.style.Style({
+                        image: new ol.style.Icon({
+                            anchor: [0.5, 1],
+                            scale: 0.03,
+                            src: 'https://www.iconarchive.com/download/i103443/paomedia/small-n-flat/map-marker.1024.png',
+                        }),
+                    });
+
+                    marker.setStyle(iconStyle);
+
+                    var vectorSource = new ol.source.Vector({
+                        features: [marker]
+                    });
+
+                    var markerVectorLayer = new ol.layer.Vector({
+                        source: vectorSource,
+                    });
+
+                    map.addLayer(markerVectorLayer);
+
+                    // map on click get coordinate and set marker
+                    map.on('click', function(evt) {
+                        var coordinate = evt.coordinate;
+                        var myLatlng = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+
+                        marker.setGeometry(new ol.geom.Point(
+                            coordinate
+                        ));
+
+                        $('#modalSelectLocation #latlang').val(myLatlng[1] + ', ' + myLatlng[0]);
+
+                    });
+                }, function(error) {
+                    alert('Lokasi diperlukan untuk menambahkan aduan, silahkan aktifkan GPS anda dan izinkan aplikasi untuk mengakses lokasi anda.');
+                    window.location.href = window.history.back();
+                }, {
+                    maximumAge: 10000,
+                    timeout: 5000,
+                    enableHighAccuracy: true
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+                window.location.href = window.history.back();
+            }
+        }
+
+        initMap();
+
+        $('#modalSelectLocation').on('shown.bs.modal', function() {
+            map.updateSize();
+        });
+
+        $('#modalSelectLocation').on('hidden.bs.modal', function() {
+            map.updateSize();
+        });
+
+        clearMarker = () => {
+            var vectorSource = new ol.source.Vector({
+                features: []
+            });
+
+            var markerVectorLayer = new ol.layer.Vector({
+                source: vectorSource,
+            });
+
+            map.addLayer(markerVectorLayer);
+        }
+
+        setLatLang = () => {
+            var latlang = $('#modalSelectLocation #latlang').val();
+            $('#fAddAduan #latlang').val(latlang);
+        }
     });
 </script>
 <?= $this->endSection(); ?>

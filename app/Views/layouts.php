@@ -52,6 +52,7 @@
     <link rel="manifest" href="/manifest.json" />
     <!-- PWA End -->
 
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.5.0/css/ol.css" type="text/css">
     <script>
         if (navigator.serviceWorker) {
             navigator.serviceWorker.register('/sw.js').then(function(registration) {

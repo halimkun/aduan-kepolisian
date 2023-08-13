@@ -65,6 +65,7 @@ class AduanSeed extends Seeder
                 'jenis' => $fake->randomElement($idj),
                 'judul' => $fake->sentence(6),
                 'lokasi' => $fake->address,
+                'latlang' => $fake->latitude . ', ' . $fake->longitude, // 'lat,lng
                 'keterangan' => $fake->paragraph(3),
                 'foto' => $fake->imageUrl(640, 480, 'Aduan', false),
             ];

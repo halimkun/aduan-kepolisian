@@ -16,7 +16,7 @@ class AduanModel extends Model
     protected $allowedFields    = [
         'user_id', 'nomor', 'status', 'tanggal',
         'jenis', 'judul', 'lokasi', 'keterangan',
-        'foto'
+        'foto', 'latlang'
     ];
 
     // Dates

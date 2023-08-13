@@ -104,6 +104,7 @@ class Warga extends BaseController
             'jenis' => $this->request->getPost('jenis_aduan'),
             'judul' => $this->request->getPost('judul'),
             'lokasi' => $this->request->getPost('lokasi'),
+            'latlang' => $this->request->getPost('latlang'),
             'keterangan' => $this->request->getPost('keterangan'),
             'foto' => $bukti_file_name,
         ];
@@ -167,6 +168,7 @@ class Warga extends BaseController
             'jenis' => $this->request->getPost('jenis_aduan'),
             'judul' => $this->request->getPost('judul'),
             'lokasi' => $this->request->getPost('lokasi'),
+            'latlang' => $this->request->getPost('latlang'),
             'keterangan' => $this->request->getPost('keterangan'),
             'foto' => $bukti_file_name,
         ];

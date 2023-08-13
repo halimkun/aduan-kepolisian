@@ -40,8 +40,8 @@
                 </li>
             <?php endif ?>
 
-            <li class="menu-header">Data</li>
             <?php if (in_array('admin', $roleLogin) || in_array('petugas', $roleLogin)) : ?>
+                <li class="menu-header">laporan</li>
                 <li class="<?= makeActiveSidebar3('laporan') ?>">
                     <a class="nav-link" href="<?= base_url($url . '/laporan') ?>"><i class="fa fa-scroll"></i><span>Laporan</span></a>
                 </li>

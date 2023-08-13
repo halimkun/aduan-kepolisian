@@ -86,11 +86,15 @@
                         <tbody>
                             <?php $i = 1 ?>
                             <?php foreach ($aduan as $item) : ?>
+                                <?php $loc = explode(",", $item->latlang) ?>
                                 <tr data-u="<?= $item->user_id ?>" data-i="<?= $item->id ?>">
                                     <td id="row_nomor"><?= $i++ ?></td>
                                     <td id="row_nomor_aduan"><kbd><?= $item->nomor ?></kbd></td>
                                     <td id="row_status" data-dt='<?= $item->id ?>' data-stts='<?= getStatusAduan($item->status)->status_aduan ?>'><?= badgeStatusGen(getStatusAduan($item->status)->status_aduan) ?></td>
-                                    <td id="row_tanggal"><abbr title="Tanggal Kejadian"><?= $item->tanggal ?></abbr></td>
+                                    <td id="row_tanggal">
+                                        <abbr title="Tanggal Kejadian"><?= $item->tanggal ?></abbr>
+                                        <a href="https://maps.google.com/maps?&z=15&q=<?= $loc[0] ?>+<?=$loc[1]?>" target="_blank" title="buka maps"><i class="fa fa-map-marker-alt pl-3"></i></a>
+                                    </td>
                                     <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis)->jenis_aduan ?></u></b></td>
                                     <td id="row_judul"><?= $item->judul ?></td>
                                     <td id="row_lokasi"><?= $item->lokasi ?></td>

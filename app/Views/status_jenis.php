@@ -81,7 +81,7 @@
                                         <td><?= $no++ ?></td>
                                         <td><?= $s->status_aduan ?></td>
                                         <td>
-                                            <?php if (strtolower($s->status_aduan) != 'belum diproses') : ?>
+                                            <?php if (!in_array(strtolower($s->status_aduan), ['belum diproses', 'selesai'])) : ?>
                                                 <form action="/admin/status-jenis" method="post" onsubmit="return confirm('anda yakin akan menghapus status - <?= $s->status_aduan ?>')">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="id" value="<?= $s->id_status ?>">
