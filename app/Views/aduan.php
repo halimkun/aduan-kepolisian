@@ -100,7 +100,7 @@
                                 <td id="row_tanggal">
                                     <abbr title="Tanggal Kejadian"><?= date_format(date_create($item->tanggal), "D, d F Y") ?></abbr>
                                 </td>
-                                <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis)->jenis_aduan ?></u></b></td>
+                                <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis) ? getJenisAduan($item->jenis)->jenis_aduan : "-" ?></u></b></td>
                                 <td id="row_judul"><?= $item->judul ?></td>
                                 <td id="row_lokasi"><?= $item->lokasi ?></td>
                                 <td id="row_kronologi" class="d-none"><?= $item->keterangan ?></td>

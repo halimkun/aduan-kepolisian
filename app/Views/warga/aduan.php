@@ -95,7 +95,7 @@
                                         <abbr title="Tanggal Kejadian"><?= $item->tanggal ?></abbr>
                                         <a href="https://maps.google.com/maps?&z=15&q=<?= $loc[0] ?>+<?=$loc[1]?>" target="_blank" title="buka maps"><i class="fa fa-map-marker-alt pl-3"></i></a>
                                     </td>
-                                    <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis)->jenis_aduan ?></u></b></td>
+                                    <td id="row_jenis"><b><u><?= getJenisAduan($item->jenis) ? getJenisAduan($item->jenis)->jenis_aduan : "-" ?></u></b></td>
                                     <td id="row_judul"><?= $item->judul ?></td>
                                     <td id="row_lokasi"><?= $item->lokasi ?></td>
                                     <td id="row_kronologi"><?= $item->keterangan ?></td>
